@@ -1,0 +1,43 @@
+.edit-layout {
+  display: flex;
+}
+
+.form-container {
+  width: 100%;
+
+  padding: 30px;
+}
+
+form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+  width: 500px;
+
+  margin-top: 30px;
+}
+
+input {
+  padding: 12px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 6px;
+}
+
+button {
+  padding: 12px;
+
+  border: none;
+
+  background-color: black;
+
+  color: white;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+}

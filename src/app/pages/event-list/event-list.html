@@ -1,0 +1,49 @@
+<div class="events-container">
+
+  <h1>
+    Upcoming Events
+  </h1>
+
+  <app-search-bar
+    (searchEvent)="searchEvents($event)"
+  ></app-search-bar>
+
+  <div
+    class="event-card"
+    *ngFor="let event of events"
+  >
+
+    <img
+      [src]="event.image"
+      alt="event-image"
+    >
+
+    <h2>
+      {{ event.title }}
+    </h2>
+
+    <p>
+      Category: {{ event.category }}
+    </p>
+
+    <p>
+      Date: {{ event.date }}
+    </p>
+
+    <p>
+      Venue: {{ event.venue }}
+    </p>
+
+    <p>
+      Rs. {{ event.price }}
+    </p>
+
+    <button
+      [routerLink]="['/event-details', event.id]"
+    >
+      View Details
+    </button>
+
+  </div>
+
+</div>

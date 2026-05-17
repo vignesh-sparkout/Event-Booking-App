@@ -1,0 +1,37 @@
+<div
+  class="details-container"
+  *ngIf="event"
+>
+
+  <img
+    [src]="event.image"
+    alt="event-image"
+  >
+
+  <h1>
+    {{ event.title }}
+  </h1>
+
+  <p>
+    Category: {{ event.category }}
+  </p>
+
+  <p>
+    Date: {{ event.date }}
+  </p>
+
+  <p>
+    Venue: {{ event.venue }}
+  </p>
+
+  <p>
+    Ticket Price: Rs. {{ event.price }}
+  </p>
+
+  <button>
+    Book Ticket
+  </button>
+
+  <app-booking-form></app-booking-form>
+
+</div>

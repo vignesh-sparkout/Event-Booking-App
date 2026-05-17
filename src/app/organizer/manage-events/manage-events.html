@@ -1,0 +1,65 @@
+<div class="manage-layout">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="manage-container">
+
+    <h1>
+      Manage Events
+    </h1>
+
+    <div
+      class="event-card"
+      *ngFor="let event of events"
+    >
+
+      <img
+        [src]="event.image"
+        alt="event-image"
+      >
+
+      <h2>
+        {{ event.title }}
+      </h2>
+
+      <p>
+        {{ event.category }}
+      </p>
+
+      <p>
+        {{ event.date }}
+      </p>
+
+      <p>
+        {{ event.venue }}
+      </p>
+
+      <p>
+        ₹{{ event.price }}
+      </p>
+
+      <div class="button-group">
+<button
+  class="edit-btn"
+  [routerLink]="[
+    '/organizer/edit-event',
+    event.id
+  ]"
+>
+          Edit
+        </button>
+
+        <button
+          class="delete-btn"
+          (click)="deleteEvent(event.id)"
+        >
+          Delete
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

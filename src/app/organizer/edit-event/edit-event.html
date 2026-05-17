@@ -1,0 +1,65 @@
+<div class="edit-layout">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="form-container">
+
+    <h1>
+      Edit Event
+    </h1>
+
+    <form>
+
+      <input
+        type="text"
+        placeholder="Event Title"
+        [(ngModel)]="title"
+        name="title"
+      >
+
+      <input
+        type="text"
+        placeholder="Category"
+        [(ngModel)]="category"
+        name="category"
+      >
+
+      <input
+        type="date"
+        [(ngModel)]="date"
+        name="date"
+      >
+
+      <input
+        type="text"
+        placeholder="Venue"
+        [(ngModel)]="venue"
+        name="venue"
+      >
+
+      <input
+        type="number"
+        placeholder="Price"
+        [(ngModel)]="price"
+        name="price"
+      >
+
+      <input
+        type="text"
+        placeholder="Image Path"
+        [(ngModel)]="image"
+        name="image"
+      >
+
+      <button
+        type="button"
+        (click)="updateEvent()"
+      >
+        Update Event
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
