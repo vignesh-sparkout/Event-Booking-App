@@ -34,10 +34,29 @@
       name="tickets"
     >
 
-    <button>
+    <button
+      type="button"
+      (click)="confirmBooking()"
+    >
       Confirm Booking
     </button>
 
   </form>
+
+  <div
+    class="success-message"
+    *ngIf="bookingSuccess"
+  >
+
+    <h3>
+      Booking Confirmed
+    </h3>
+
+    <p>
+      Booking ID:
+      {{ bookingId }}
+    </p>
+
+  </div>
 
 </div>

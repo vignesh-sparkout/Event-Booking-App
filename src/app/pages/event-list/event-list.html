@@ -1,49 +1,95 @@
-<div class="events-container">
+<section class="events-container">
 
-  <h1>
-    Upcoming Events
-  </h1>
+  <div class="events-hero">
+    <p class="eyebrow">
+      Live Events
+    </p>
 
-  <app-search-bar
-    (searchEvent)="searchEvents($event)"
-  ></app-search-bar>
+    <h1>
+      Find your next ticket-worthy experience
+    </h1>
+
+    <p class="hero-copy">
+      Explore curated shows, workshops, and festivals with cleaner search, stronger visuals, and quick booking access.
+    </p>
+  </div>
+
+  <div class="events-toolbar">
+    <app-search-bar
+      (searchEvent)="searchEvents($event)"
+    ></app-search-bar>
+
+    <app-filter-bar
+      (categoryChange)="filterEvents($event)"
+    ></app-filter-bar>
+  </div>
 
   <div
-    class="event-card"
-    *ngFor="let event of events"
+    class="empty-state"
+    *ngIf="events.length === 0"
   >
 
-    <img
-      [src]="event.image"
-      alt="event-image"
-    >
-
     <h2>
-      {{ event.title }}
+      No events matched your search
     </h2>
 
     <p>
-      Category: {{ event.category }}
+      Try a different keyword or switch back to all categories.
     </p>
-
-    <p>
-      Date: {{ event.date }}
-    </p>
-
-    <p>
-      Venue: {{ event.venue }}
-    </p>
-
-    <p>
-      Rs. {{ event.price }}
-    </p>
-
-    <button
-      [routerLink]="['/event-details', event.id]"
-    >
-      View Details
-    </button>
 
   </div>
 
-</div>
+  <div
+    class="events-grid"
+    *ngIf="events.length > 0"
+  >
+
+    <article
+      class="event-card"
+      *ngFor="let event of events"
+    >
+
+      <img
+        [src]="event.image"
+        [alt]="event.title"
+      >
+
+      <div class="event-content">
+
+        <p class="category-pill">
+          {{ event.category }}
+        </p>
+
+        <h2>
+          {{ event.title }}
+        </h2>
+
+        <p class="description">
+          {{ event.description }}
+        </p>
+
+        <div class="meta">
+          <span>{{ event.date }}</span>
+          <span>{{ event.venue }}</span>
+        </div>
+
+        <div class="card-footer">
+          <strong>Rs. {{ event.price }}</strong>
+
+          <button
+            [routerLink]="[
+              '/event-details',
+              event.id
+            ]"
+          >
+            View Details
+          </button>
+        </div>
+
+      </div>
+
+    </article>
+
+  </div>
+
+</section>

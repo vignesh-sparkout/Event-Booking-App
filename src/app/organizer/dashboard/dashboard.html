@@ -2,52 +2,81 @@
 
   <app-sidebar></app-sidebar>
 
-  <div class="dashboard-container">
+  <section class="dashboard-container">
 
-    <h1>
-      Organizer Dashboard
-    </h1>
+    <div class="dashboard-hero">
+      <div class="hero-main">
+        <p class="eyebrow">
+          Organizer Overview
+        </p>
+
+        <h1>
+          Keep your event catalog sharp and ready to book
+        </h1>
+
+        <p class="hero-copy">
+          Track your live listings, review your current mix of categories, and keep the next featured event front and center.
+        </p>
+
+      </div>
+
+      <div class="highlight-card">
+        <span class="highlight-label">
+          Next Featured Event
+        </span>
+
+        <strong>
+          {{ nextEventTitle }}
+        </strong>
+      </div>
+    </div>
 
     <div class="dashboard-cards">
 
-      <div class="card">
-
-        <h2>
+      <article class="card accent-blue">
+        <span class="card-label">
           Total Events
-        </h2>
-
-        <p>
-          12
-        </p>
-
-      </div>
-
-      <div class="card">
+        </span>
 
         <h2>
-          Tickets Sold
+          {{ totalEvents }}
         </h2>
 
         <p>
-          340
+          Live events currently visible in your catalog.
         </p>
+      </article>
 
-      </div>
-
-      <div class="card">
+      <article class="card accent-orange">
+        <span class="card-label">
+          Estimated Revenue
+        </span>
 
         <h2>
-          Revenue
+          Rs. {{ totalRevenue }}
         </h2>
 
         <p>
-          Rs. 45,000
+          Combined ticket value across the active event list.
         </p>
+      </article>
 
-      </div>
+      <article class="card accent-green">
+        <span class="card-label">
+          Categories
+        </span>
+
+        <h2>
+          {{ categories }}
+        </h2>
+
+        <p>
+          Unique event categories currently represented.
+        </p>
+      </article>
 
     </div>
 
-  </div>
+  </section>
 
 </div>

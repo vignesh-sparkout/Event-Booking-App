@@ -7,27 +7,50 @@
   <ul class="nav-links">
 
     <li>
-      <a routerLink="">
+
+      <a
+        routerLink="/"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{
+          exact: true
+        }"
+      >
         Home
       </a>
+
     </li>
 
     <li>
-      <a routerLink="/events">
+
+      <a
+        routerLink="/events"
+        routerLinkActive="active-link"
+      >
         Events
       </a>
+
     </li>
 
     <li>
-      <a routerLink="/my-bookings">
+
+      <a
+        routerLink="/my-bookings"
+        routerLinkActive="active-link"
+      >
         My Bookings
       </a>
+
     </li>
 
     <li>
-      <a routerLink="/organizer/dashboard">
+
+      <a
+        routerLink="/organizer/dashboard"
+        routerLinkActive="active-link"
+      >
         Organizer
       </a>
+
     </li>
 
   </ul>

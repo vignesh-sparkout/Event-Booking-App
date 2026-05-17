@@ -1,37 +1,60 @@
-<div
-  class="details-container"
+<section
+  class="details-shell"
   *ngIf="event"
 >
 
-  <img
-    [src]="event.image"
-    alt="event-image"
-  >
+  <div class="details-hero">
+    <img
+      [src]="event.image"
+      [alt]="event.title"
+    >
 
-  <h1>
-    {{ event.title }}
-  </h1>
+    <div class="hero-content">
+      <p class="category-pill">
+        {{ event.category }}
+      </p>
 
-  <p>
-    Category: {{ event.category }}
-  </p>
+      <h1>
+        {{ event.title }}
+      </h1>
 
-  <p>
-    Date: {{ event.date }}
-  </p>
+      <p class="description">
+        {{ event.description }}
+      </p>
 
-  <p>
-    Venue: {{ event.venue }}
-  </p>
+      <div class="meta-grid">
+        <div>
+          <span class="meta-label">Date</span>
+          <strong>{{ event.date }}</strong>
+        </div>
 
-  <p>
-    Ticket Price: Rs. {{ event.price }}
-  </p>
+        <div>
+          <span class="meta-label">Venue</span>
+          <strong>{{ event.venue }}</strong>
+        </div>
 
-  <button>
-    Book Ticket
-  </button>
+        <div>
+          <span class="meta-label">Ticket Price</span>
+          <strong>Rs. {{ event.price }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <app-booking-form></app-booking-form>
+  <div class="booking-panel">
+    <div class="panel-copy">
+      <h2>
+        Reserve your seat
+      </h2>
 
-</div>
+      <p>
+        Complete the booking form below to secure your place for this event.
+      </p>
+    </div>
+
+    <app-booking-form
+      [eventTitle]="event.title"
+    ></app-booking-form>
+  </div>
+
+</section>

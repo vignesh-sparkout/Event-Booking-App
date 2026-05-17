@@ -33,3 +33,14 @@ button {
 
   cursor: pointer;
 }
+.success-message {
+  margin-top: 20px;
+
+  padding: 20px;
+
+  border-radius: 8px;
+
+  background-color: #d4edda;
+
+  color: #155724;
+}

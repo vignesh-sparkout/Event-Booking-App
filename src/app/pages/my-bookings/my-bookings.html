@@ -4,25 +4,41 @@
     My Bookings
   </h1>
 
-  <div class="booking-card">
+  <div
+    class="booking-card"
+    *ngFor="let booking of bookings"
+  >
 
     <h2>
-      Angular Conference 2026
+      {{ booking.eventTitle }}
     </h2>
 
     <p>
-      Booking ID: BK1001
+      Booking ID:
+      {{ booking.bookingId }}
     </p>
 
     <p>
-      Tickets: 2
+      Name:
+      {{ booking.name }}
     </p>
 
     <p>
-      Status: Confirmed
+      Tickets:
+      {{ booking.tickets }}
     </p>
 
-    <button>
+    <p>
+      Status:
+      {{ booking.status }}
+    </p>
+
+    <button
+      *ngIf="booking.status !== 'Cancelled'"
+      (click)="cancelBooking(
+        booking.bookingId
+      )"
+    >
       Cancel Booking
     </button>
 

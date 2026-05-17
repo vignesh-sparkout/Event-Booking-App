@@ -2,59 +2,114 @@
 
   <app-sidebar></app-sidebar>
 
-  <div class="form-container">
+  <div class="form-shell">
 
-    <h1>
-      Create Event
-    </h1>
+    <div class="form-header">
+      <p class="eyebrow">
+        Organizer Workspace
+      </p>
 
-    <form>
+      <h1>
+        Create Event
+      </h1>
 
-      <input
-        type="text"
-        placeholder="Event Title"
-        [(ngModel)]="title"
-        name="title"
-      >
+      <p class="intro">
+        Add a polished event card with a clear title, category, image, and booking details.
+      </p>
+    </div>
 
-      <input
-        type="text"
-        placeholder="Category"
-        [(ngModel)]="category"
-        name="category"
-      >
+    <form
+      class="event-form"
+      (ngSubmit)="createEvent()"
+    >
 
-      <input
-        type="date"
-        [(ngModel)]="date"
-        name="date"
-      >
+      <div class="input-grid">
 
-      <input
-        type="text"
-        placeholder="Venue"
-        [(ngModel)]="venue"
-        name="venue"
-      >
+        <label>
+          <span>Event Title</span>
+          <input
+            type="text"
+            placeholder="Angular UI Summit"
+            [(ngModel)]="title"
+            name="title"
+            required
+          >
+        </label>
 
-      <input
-        type="number"
-        placeholder="Price"
-        [(ngModel)]="price"
-        name="price"
-      >
+        <label>
+          <span>Category</span>
+          <input
+            type="text"
+            placeholder="Technology"
+            [(ngModel)]="category"
+            name="category"
+            required
+          >
+        </label>
 
-      <input
-        type="text"
-        placeholder="Image Path"
-        [(ngModel)]="image"
-        name="image"
-      >
+        <label class="full-width">
+          <span>Description</span>
+          <textarea
+            placeholder="Tell attendees what makes this event worth booking."
+            [(ngModel)]="description"
+            name="description"
+            required
+          ></textarea>
+        </label>
 
-      <button
-        type="button"
-        (click)="createEvent()"
-      >
+        <label>
+          <span>Date</span>
+          <input
+            type="date"
+            [(ngModel)]="date"
+            name="date"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Venue</span>
+          <input
+            type="text"
+            placeholder="Chennai Trade Center"
+            [(ngModel)]="venue"
+            name="venue"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Ticket Price</span>
+          <input
+            type="number"
+            placeholder="500"
+            [(ngModel)]="price"
+            name="price"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Image Path</span>
+          <input
+            type="text"
+            placeholder="images/workshop-event.jpg"
+            [(ngModel)]="image"
+            name="image"
+          >
+        </label>
+
+      </div>
+
+      <div class="image-hints">
+        <span>Try:</span>
+        <span>`images/tech-banner.jpg`</span>
+        <span>`images/music-event.jpg`</span>
+        <span>`images/workshop-event.jpg`</span>
+        <span>`images/food-festival.jpg`</span>
+      </div>
+
+      <button type="submit">
         Create Event
       </button>
 

@@ -3,10 +3,9 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { Sidebar } from '../../layout/sidebar/sidebar';
-
 import { EventService } from '../../services/event';
+import { Event } from '../../Models/event.model';
 
 @Component({
   selector: 'app-edit-event',
@@ -25,13 +24,10 @@ export class EditEvent {
   title = '';
 
   category = '';
-
+  description = '';
   date = '';
-
   venue = '';
-
   price = 0;
-
   image = '';
 
   constructor(
@@ -53,6 +49,8 @@ export class EditEvent {
 
       this.category = event.category;
 
+      this.description = event.description;
+
       this.date = event.date;
 
       this.venue = event.venue;
@@ -66,23 +64,15 @@ export class EditEvent {
   }
 
   updateEvent() {
-
-    const updatedEvent = {
-
+    const updatedEvent: Event = {
       id: this.id,
-
       title: this.title,
-
       category: this.category,
-
+      description: this.description,
       date: this.date,
-
       venue: this.venue,
-
       price: this.price,
-
-      image: this.image
-
+      image: this.image || 'images/workshop-event.jpg'
     };
 
     this.eventService.updateEvent(updatedEvent);

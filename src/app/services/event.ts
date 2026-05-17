@@ -5,103 +5,111 @@ import { Event } from '../Models/event.model';
   providedIn: 'root',
 })
 export class EventService {
- 
-  events: Event[] = [];
+  private events: Event[] = [];
+  private readonly defaultEvents: Event[] = [
+    {
+      id: 1,
+      title: 'Angular Conference 2026',
+      category: 'Technology',
+      description: 'A full-day Angular conference focused on standalone APIs, routing, and production-ready UI patterns.',
+      date: '20 June 2026',
+      venue: 'Chennai',
+      price: 500,
+      image: 'images/workshop-event.jpg',
+    },
+    {
+      id: 2,
+      title: 'Music Night Festival',
+      category: 'Music',
+      description: 'An outdoor live music evening featuring indie bands, food stalls, and a city-wide crowd.',
+      date: '25 June 2026',
+      venue: 'Bangalore',
+      price: 1000,
+      image: 'images/music-event.jpg',
+    },
+    {
+      id: 3,
+      title: 'Champions Sports Carnival',
+      category: 'Sports',
+      description: 'A high-energy sports festival with live screenings, fan zones, fitness challenges, and family activities.',
+      date: '30 June 2026',
+      venue: 'Hyderabad',
+      price: 750,
+      image: 'images/sports-event.jpg',
+    },
+    {
+      id: 4,
+      title: 'Street Food Festival',
+      category: 'Food',
+      description: 'A weekend food celebration packed with regional tasting stalls, chef specials, dessert counters, and live music.',
+      date: '05 July 2026',
+      venue: 'Mumbai',
+      price: 350,
+      image: 'images/food-festival.jpg',
+    },
+  ];
 
   constructor() {
-
-    const savedEvents =
-      localStorage.getItem('events');
+    const savedEvents = localStorage.getItem('events');
 
     if (savedEvents) {
-
-      this.events = JSON.parse(savedEvents);
-
+      const parsedEvents = JSON.parse(savedEvents) as Event[];
+      this.events = this.mergeDefaultEvents(parsedEvents);
+    } else {
+      this.events = [...this.defaultEvents];
+      this.saveEvents();
     }
-    else {
-
-      this.events = [
-
-        {
-          id: 1,
-          title: 'Angular Conference 2026',
-          category: 'Technology',
-          date: '20 June 2026',
-          venue: 'Chennai',
-          price: 500,
-          image: 'assets/images/tech-banner.jpg'
-        },
-
-        {
-          id: 2,
-          title: 'Music Night Festival',
-          category: 'Music',
-          date: '25 June 2026',
-          venue: 'Bangalore',
-          price: 1000,
-          image: 'assets/images/music-banner.jpg'
-        }
-
-      ];
-
-      localStorage.setItem(
-        'events',
-        JSON.stringify(this.events)
-      );
-
-    }
-
   }
 
-  getEvents() {
-    return this.events;
+  getEvents(): Event[] {
+    return [...this.events];
   }
 
-  getEventById(id: number) {
+  getEventById(id: number): Event | undefined {
+    return this.events.find(event => event.id === id);
+  }
 
-    return this.events.find(
-      event => event.id === id
+  addEvent(event: Event): void {
+    this.events.push(event);
+    this.saveEvents();
+  }
+
+  updateEvent(updatedEvent: Event): void {
+    this.events = this.events.map(event =>
+      event.id === updatedEvent.id ? updatedEvent : event
     );
 
+    this.saveEvents();
   }
 
-  addEvent(event: Event) {
+  deleteEvent(id: number): void {
+    this.events = this.events.filter(event => event.id !== id);
+    this.saveEvents();
+  }
 
-    this.events.push(event);
+  private saveEvents(): void {
+    localStorage.setItem('events', JSON.stringify(this.events));
+  }
+
+  private mergeDefaultEvents(savedEvents: Event[]): Event[] {
+    const defaultEventIds = new Set(
+      this.defaultEvents.map(event => event.id)
+    );
+
+    const customEvents = savedEvents.filter(
+      event => !defaultEventIds.has(event.id)
+    );
+
+    const mergedEvents = [
+      ...this.defaultEvents,
+      ...customEvents,
+    ];
 
     localStorage.setItem(
       'events',
-      JSON.stringify(this.events)
+      JSON.stringify(mergedEvents)
     );
 
+    return mergedEvents;
   }
-  deleteEvent(id: number) {
-
-  this.events = this.events.filter(
-    event => event.id !== id
-  );
-
-  localStorage.setItem(
-    'events',
-    JSON.stringify(this.events)
-  );
-
-}
-updateEvent(updatedEvent: Event) {
-
-  this.events = this.events.map(event =>
-
-    event.id === updatedEvent.id
-      ? updatedEvent
-      : event
-
-  );
-
-  localStorage.setItem(
-    'events',
-    JSON.stringify(this.events)
-  );
-
-}
-
 }

@@ -2,64 +2,80 @@
 
   <app-sidebar></app-sidebar>
 
-  <div class="manage-container">
+  <section class="manage-container">
 
-    <h1>
-      Manage Events
-    </h1>
+    <div class="manage-header">
+      <p class="eyebrow">
+        Organizer Workspace
+      </p>
 
-    <div
-      class="event-card"
-      *ngFor="let event of events"
-    >
+      <h1>
+        Manage Events
+      </h1>
 
-      <img
-        [src]="event.image"
-        alt="event-image"
+      <p>
+        Review live listings, swap visuals, and remove outdated events from your catalog.
+      </p>
+    </div>
+
+    <div class="manage-grid">
+
+      <article
+        class="event-card"
+        *ngFor="let event of events"
       >
 
-      <h2>
-        {{ event.title }}
-      </h2>
-
-      <p>
-        {{ event.category }}
-      </p>
-
-      <p>
-        {{ event.date }}
-      </p>
-
-      <p>
-        {{ event.venue }}
-      </p>
-
-      <p>
-        ₹{{ event.price }}
-      </p>
-
-      <div class="button-group">
-<button
-  class="edit-btn"
-  [routerLink]="[
-    '/organizer/edit-event',
-    event.id
-  ]"
->
-          Edit
-        </button>
-
-        <button
-          class="delete-btn"
-          (click)="deleteEvent(event.id)"
+        <img
+          [src]="event.image"
+          [alt]="event.title"
         >
-          Delete
-        </button>
 
-      </div>
+        <div class="card-body">
+          <p class="category-pill">
+            {{ event.category }}
+          </p>
+
+          <h2>
+            {{ event.title }}
+          </h2>
+
+          <p class="description">
+            {{ event.description }}
+          </p>
+
+          <div class="meta">
+            <span>{{ event.date }}</span>
+            <span>{{ event.venue }}</span>
+          </div>
+
+          <strong class="price">
+            Rs. {{ event.price }}
+          </strong>
+
+          <div class="button-group">
+            <button
+              class="edit-btn"
+              [routerLink]="[
+                '/organizer/edit-event',
+                event.id
+              ]"
+            >
+              Edit
+            </button>
+
+            <button
+              class="delete-btn"
+              (click)="deleteEvent(event.id)"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+
+      </article>
 
     </div>
 
-  </div>
+  </section>
 
 </div>

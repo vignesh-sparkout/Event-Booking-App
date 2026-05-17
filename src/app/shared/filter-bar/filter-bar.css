@@ -1,0 +1,13 @@
+.filter-container {
+  margin-bottom: 20px;
+}
+
+select {
+  padding: 12px;
+
+  width: 250px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 6px;
+}
