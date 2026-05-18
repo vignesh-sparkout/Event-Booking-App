@@ -10,7 +10,7 @@
     </h1>
 
     <p class="hero-copy">
-      Explore curated shows, workshops, and festivals with cleaner search, stronger visuals, and quick booking access.
+      Search by event, city, venue, or organizer, then narrow results by category, date, price, and location.
     </p>
   </div>
 
@@ -69,12 +69,25 @@
         </p>
 
         <div class="meta">
-          <span>{{ event.date }}</span>
-          <span>{{ event.venue }}</span>
+          <span>{{ event.date | date: 'mediumDate' }}</span>
+          <span>{{ getEventTime(event) }}</span>
+          <span>{{ event.venue }}, {{ event.city }}</span>
+        </div>
+
+        <div class="seat-row">
+          <span>
+            {{ event.availableSeats }} seats left
+          </span>
+
+          <span>
+            By {{ event.organizerName }}
+          </span>
         </div>
 
         <div class="card-footer">
-          <strong>Rs. {{ event.price }}</strong>
+          <strong>
+            {{ event.price === 0 ? 'Free' : 'Rs. ' + event.price }}
+          </strong>
 
           <button
             [routerLink]="[

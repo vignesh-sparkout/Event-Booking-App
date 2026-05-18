@@ -50,3 +50,35 @@
 
   font-weight: bold;
 }
+
+.logout-btn {
+  padding: 9px 14px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background: #1f2937;
+  color: #f8fafc;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.logout-btn:hover {
+  background: #263244;
+}
+
+@media (max-width: 760px) {
+  .navbar {
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 16px 20px;
+  }
+
+  .nav-links {
+    order: 3;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 0;
+    margin: 0;
+  }
+}

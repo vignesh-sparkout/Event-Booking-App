@@ -1,0 +1,92 @@
+.login-shell {
+  min-height: calc(100vh - 150px);
+  display: grid;
+  place-items: center;
+  padding: 42px 20px;
+  background:
+    radial-gradient(circle at top left, rgba(0, 188, 212, 0.16), transparent 26%),
+    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+}
+
+.login-card {
+  width: min(100%, 430px);
+  padding: 28px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 22px 52px rgba(15, 23, 42, 0.1);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #0c7c90;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  color: #111827;
+}
+
+.intro {
+  margin: 12px 0 22px;
+  color: #52606d;
+  line-height: 1.6;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  color: #233044;
+  font-weight: 700;
+}
+
+input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #d8dde6;
+  border-radius: 8px;
+  background: #fbfcfe;
+  font: inherit;
+}
+
+input:focus {
+  border-color: #0c7c90;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(12, 124, 144, 0.12);
+}
+
+.error-message {
+  margin: 14px 0 0;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 13px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #0c7c90;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 16px;
+  color: #0c7c90;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}

@@ -4,44 +4,67 @@
     Book Tickets
   </h2>
 
-  <form>
+  <input
+    type="text"
+    placeholder="Your Name"
+    [(ngModel)]="name"
+    [disabled]="bookingSuccess"
+  >
 
-    <input
-      type="text"
-      placeholder="Enter Name"
-      [(ngModel)]="name"
-      name="name"
-    >
+  <input
+    type="email"
+    placeholder="Your Email"
+    [(ngModel)]="email"
+    [disabled]="bookingSuccess"
+  >
 
-    <input
-      type="email"
-      placeholder="Enter Email"
-      [(ngModel)]="email"
-      name="email"
-    >
+  <input
+    type="text"
+    placeholder="Phone Number"
+    [(ngModel)]="phone"
+    [disabled]="bookingSuccess"
+  >
 
-    <input
-      type="text"
-      placeholder="Enter Phone"
-      [(ngModel)]="phone"
-      name="phone"
-    >
+  <input
+    type="number"
+    placeholder="Number of Tickets"
+    min="1"
+    [max]="availableSeats"
+    [(ngModel)]="tickets"
+    [disabled]="bookingSuccess"
+  >
 
-    <input
-      type="number"
-      placeholder="Number of Tickets"
-      [(ngModel)]="tickets"
-      name="tickets"
-    >
+  <p
+    class="error-message"
+    *ngIf="formError"
+  >
+    {{ formError }}
+  </p>
 
-    <button
-      type="button"
-      (click)="confirmBooking()"
-    >
-      Confirm Booking
-    </button>
+  <p
+    class="error-message"
+    *ngIf="seatError"
+  >
+    {{ seatError }}
+  </p>
 
-  </form>
+  <p class="total-amount">
+    Total Amount:
+    {{ totalAmount === 0 ? 'Free' : 'Rs. ' + totalAmount }}
+  </p>
+
+  <button
+    (click)="confirmBooking()"
+    [disabled]="availableSeats === 0 || bookingSuccess"
+  >
+    {{
+      bookingSuccess
+        ? 'Booking Confirmed'
+        : availableSeats === 0
+          ? 'Sold Out'
+          : 'Confirm Booking'
+    }}
+  </button>
 
   <div
     class="success-message"
@@ -49,12 +72,16 @@
   >
 
     <h3>
-      Booking Confirmed
+      Booking Successful
     </h3>
 
     <p>
       Booking ID:
       {{ bookingId }}
+    </p>
+
+    <p>
+      You can view this ticket in My Bookings.
     </p>
 
   </div>

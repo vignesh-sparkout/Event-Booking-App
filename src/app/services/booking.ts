@@ -7,7 +7,7 @@ import { Booking } from '../Models/booking.model';
 })
 export class BookingService {
 
-  bookings: Booking[] = [];
+  private bookings: Booking[] = [];
 
   constructor() {
 
@@ -16,22 +16,93 @@ export class BookingService {
 
     if (savedBookings) {
 
+      const parsedBookings =
+        JSON.parse(savedBookings) as Partial<Booking>[];
+
       this.bookings =
-        JSON.parse(savedBookings);
+        parsedBookings.map(booking =>
+          this.normalizeBooking(booking)
+        );
 
     }
 
   }
 
-  getBookings() {
+  getBookings(): Booking[] {
 
-    return this.bookings;
+    return [...this.bookings];
 
   }
 
-  addBooking(booking: Booking) {
+  addBooking(booking: Booking): void {
 
-    this.bookings.push(booking);
+    this.bookings.push(
+      this.normalizeBooking(booking)
+    );
+
+    this.saveBookings();
+
+  }
+
+  cancelBooking(bookingId: string): Booking | undefined {
+
+    let cancelledBooking: Booking | undefined;
+
+    this.bookings = this.bookings.map(booking => {
+
+      if (
+        booking.bookingId === bookingId &&
+        booking.status === 'Confirmed'
+      ) {
+
+        cancelledBooking = booking;
+
+        return {
+          ...booking,
+          status: 'Cancelled'
+        };
+
+      }
+
+      return booking;
+
+    });
+
+    this.saveBookings();
+
+    return cancelledBooking;
+
+  }
+
+  getBookingsByEvent(eventId: number): Booking[] {
+
+    return this.bookings.filter(
+      booking =>
+        booking.eventId === eventId &&
+        booking.status === 'Confirmed'
+    );
+
+  }
+
+  getTicketsSold(eventId: number): number {
+
+    return this.getBookingsByEvent(eventId).reduce(
+      (total, booking) => total + booking.tickets,
+      0
+    );
+
+  }
+
+  getRevenueForEvent(eventId: number): number {
+
+    return this.getBookingsByEvent(eventId).reduce(
+      (total, booking) => total + booking.totalAmount,
+      0
+    );
+
+  }
+
+  private saveBookings(): void {
 
     localStorage.setItem(
       'bookings',
@@ -39,25 +110,27 @@ export class BookingService {
     );
 
   }
-  cancelBooking(bookingId: string) {
 
-  this.bookings = this.bookings.map(
-    booking =>
+  private normalizeBooking(booking: Partial<Booking>): Booking {
 
-      booking.bookingId === bookingId
-        ? {
-            ...booking,
-            status: 'Cancelled'
-          }
-        : booking
+    return {
+      bookingId:
+        booking.bookingId ||
+        `BK${Date.now()}`,
+      eventId: Number(booking.eventId) || 0,
+      eventTitle: booking.eventTitle || 'Untitled Event',
+      eventDate: booking.eventDate || '',
+      name: booking.name || '',
+      email: booking.email || '',
+      phone: booking.phone || '',
+      tickets: Number(booking.tickets) || 1,
+      totalAmount: Number(booking.totalAmount) || 0,
+      bookingDate:
+        booking.bookingDate ||
+        new Date().toISOString(),
+      status: booking.status || 'Confirmed'
+    };
 
-  );
-
-  localStorage.setItem(
-    'bookings',
-    JSON.stringify(this.bookings)
-  );
-
-}
+  }
 
 }

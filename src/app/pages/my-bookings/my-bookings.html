@@ -1,47 +1,88 @@
 <div class="booking-container">
 
-  <h1>
-    My Bookings
-  </h1>
+  <div class="page-header">
+    <p class="eyebrow">
+      Attendee
+    </p>
+
+    <h1>
+      My Bookings
+    </h1>
+  </div>
 
   <div
-    class="booking-card"
-    *ngFor="let booking of bookings"
+    class="empty-state"
+    *ngIf="bookings.length === 0"
   >
+    No bookings yet.
+  </div>
 
-    <h2>
-      {{ booking.eventTitle }}
-    </h2>
-
-    <p>
-      Booking ID:
-      {{ booking.bookingId }}
-    </p>
-
-    <p>
-      Name:
-      {{ booking.name }}
-    </p>
-
-    <p>
-      Tickets:
-      {{ booking.tickets }}
-    </p>
-
-    <p>
-      Status:
-      {{ booking.status }}
-    </p>
-
-    <button
-      *ngIf="booking.status !== 'Cancelled'"
-      (click)="cancelBooking(
-        booking.bookingId
-      )"
+  <div class="booking-grid">
+    <article
+      class="booking-card"
+      *ngFor="let booking of bookings"
     >
-      Cancel Booking
-    </button>
 
+      <div class="card-top">
+        <h2>
+          {{ booking.eventTitle }}
+        </h2>
+
+        <span
+          class="status"
+          [class.cancelled]="booking.status === 'Cancelled'"
+        >
+          {{ booking.status }}
+        </span>
+
+        <span
+          class="timing"
+          [class.past]="getBookingTiming(booking) === 'Past'"
+        >
+          {{ getBookingTiming(booking) }}
+        </span>
+      </div>
+
+      <p>
+        Booking ID:
+        <strong>{{ booking.bookingId }}</strong>
+      </p>
+
+      <p>
+        Event Date:
+        <strong>{{ booking.eventDate | date: 'mediumDate' }}</strong>
+      </p>
+
+      <p>
+        Name:
+        <strong>{{ booking.name }}</strong>
+      </p>
+
+      <p>
+        Tickets:
+        <strong>{{ booking.tickets }}</strong>
+      </p>
+
+      <p>
+        Amount:
+        <strong>
+          {{ booking.totalAmount === 0 ? 'Free' : 'Rs. ' + booking.totalAmount }}
+        </strong>
+      </p>
+
+      <p>
+        Booked On:
+        <strong>{{ booking.bookingDate | date: 'medium' }}</strong>
+      </p>
+
+      <button
+        *ngIf="canCancel(booking)"
+        (click)="cancelBooking(booking.bookingId)"
+      >
+        Cancel Booking
+      </button>
+
+    </article>
   </div>
 
 </div>

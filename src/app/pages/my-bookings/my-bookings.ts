@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 
 import { BookingService } from '../../services/booking';
 
+import { EventService } from '../../services/event';
+
+import { Booking } from '../../Models/booking.model';
+
 @Component({
   selector: 'app-my-bookings',
   standalone: true,
@@ -13,30 +17,56 @@ import { BookingService } from '../../services/booking';
 })
 export class MyBookings {
 
-  bookings: any[] = [];
+  bookings: Booking[] = [];
 
   constructor(
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private eventService: EventService
   ) {
 
     this.loadBookings();
 
   }
 
-  loadBookings() {
+  loadBookings(): void {
 
     this.bookings =
       this.bookingService.getBookings();
 
   }
 
-  cancelBooking(bookingId: string) {
+  cancelBooking(bookingId: string): void {
 
-    this.bookingService.cancelBooking(
-      bookingId
-    );
+    const cancelledBooking =
+      this.bookingService.cancelBooking(bookingId);
+
+    if (cancelledBooking) {
+
+      this.eventService.releaseSeats(
+        cancelledBooking.eventId,
+        cancelledBooking.tickets
+      );
+
+    }
 
     this.loadBookings();
+
+  }
+
+  canCancel(booking: Booking): boolean {
+
+    return (
+      booking.status === 'Confirmed' &&
+      new Date(booking.eventDate) > new Date()
+    );
+
+  }
+
+  getBookingTiming(booking: Booking): 'Upcoming' | 'Past' {
+
+    return new Date(booking.eventDate) > new Date()
+      ? 'Upcoming'
+      : 'Past';
 
   }
 

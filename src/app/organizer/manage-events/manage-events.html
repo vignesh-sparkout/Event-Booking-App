@@ -44,13 +44,31 @@
           </p>
 
           <div class="meta">
-            <span>{{ event.date }}</span>
-            <span>{{ event.venue }}</span>
+            <span>{{ event.date | date: 'mediumDate' }}</span>
+            <span>{{ event.venue }}, {{ event.city }}</span>
+            <span>{{ event.status }}</span>
           </div>
 
           <strong class="price">
-            Rs. {{ event.price }}
+            {{ event.price === 0 ? 'Free' : 'Rs. ' + event.price }}
           </strong>
+
+          <div class="summary-grid">
+            <div>
+              <span>Sold</span>
+              <strong>{{ getTicketsSold(event.id) }}</strong>
+            </div>
+
+            <div>
+              <span>Revenue</span>
+              <strong>Rs. {{ getRevenue(event.id) }}</strong>
+            </div>
+
+            <div>
+              <span>Seats Left</span>
+              <strong>{{ event.availableSeats }}</strong>
+            </div>
+          </div>
 
           <div class="button-group">
             <button
@@ -64,10 +82,21 @@
             </button>
 
             <button
-              class="delete-btn"
-              (click)="deleteEvent(event.id)"
+              class="attendees-btn"
+              [routerLink]="[
+                '/organizer/attendees',
+                event.id
+              ]"
             >
-              Delete
+              Attendees
+            </button>
+
+            <button
+              class="delete-btn"
+              (click)="cancelEvent(event.id)"
+              [disabled]="event.status === 'Cancelled'"
+            >
+              Cancel
             </button>
           </div>
         </div>

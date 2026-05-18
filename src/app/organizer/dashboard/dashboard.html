@@ -11,11 +11,11 @@
         </p>
 
         <h1>
-          Keep your event catalog sharp and ready to book
+          Keep your event catalog ready to book
         </h1>
 
         <p class="hero-copy">
-          Track your live listings, review your current mix of categories, and keep the next featured event front and center.
+          Track live listings, confirmed bookings, revenue, and remaining seats from one clean workspace.
         </p>
 
       </div>
@@ -25,9 +25,25 @@
           Next Featured Event
         </span>
 
-        <strong>
-          {{ nextEventTitle }}
-        </strong>
+        @if (featuredEvent) {
+          <img
+            class="highlight-image"
+            [src]="featuredEvent.image"
+            [alt]="featuredEvent.title"
+          >
+
+          <strong>
+            {{ featuredEvent.title }}
+          </strong>
+
+          <p class="highlight-meta">
+            {{ featuredEvent.date | date: 'mediumDate' }} - {{ featuredEvent.venue }}
+          </p>
+        } @else {
+          <strong>
+            {{ nextEventTitle }}
+          </strong>
+        }
       </div>
     </div>
 
@@ -43,13 +59,13 @@
         </h2>
 
         <p>
-          Live events currently visible in your catalog.
+          Events currently managed in the organizer catalog.
         </p>
       </article>
 
       <article class="card accent-orange">
         <span class="card-label">
-          Estimated Revenue
+          Revenue Earned
         </span>
 
         <h2>
@@ -57,21 +73,35 @@
         </h2>
 
         <p>
-          Combined ticket value across the active event list.
+          Confirmed ticket value across all bookings.
         </p>
       </article>
 
       <article class="card accent-green">
         <span class="card-label">
-          Categories
+          Tickets Sold
         </span>
 
         <h2>
-          {{ categories }}
+          {{ ticketsSold }}
         </h2>
 
         <p>
-          Unique event categories currently represented.
+          Tickets booked by attendees.
+        </p>
+      </article>
+
+      <article class="card accent-blue">
+        <span class="card-label">
+          Seats Remaining
+        </span>
+
+        <h2>
+          {{ seatsRemaining }}
+        </h2>
+
+        <p>
+          Seats still available across managed events.
         </p>
       </article>
 

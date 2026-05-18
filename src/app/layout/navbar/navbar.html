@@ -45,6 +45,7 @@
     <li>
 
       <a
+        *ngIf="adminState$ | async"
         routerLink="/organizer/dashboard"
         routerLinkActive="active-link"
       >
@@ -53,6 +54,26 @@
 
     </li>
 
+    <li *ngIf="!(adminState$ | async)">
+
+      <a
+        routerLink="/admin-login"
+        routerLinkActive="active-link"
+      >
+        Admin Login
+      </a>
+
+    </li>
+
   </ul>
+
+  <button
+    *ngIf="adminState$ | async"
+    type="button"
+    class="logout-btn"
+    (click)="logout()"
+  >
+    Logout
+  </button>
 
 </nav>

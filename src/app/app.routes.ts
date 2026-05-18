@@ -7,6 +7,9 @@ import { CreateEvent } from './organizer/create-event/create-event';
 import { ManageEvents } from './organizer/manage-events/manage-events';
 import { MyBookings } from './pages/my-bookings/my-bookings';
 import { EditEvent } from './organizer/edit-event/edit-event';
+import { Attendees } from './organizer/attendees/attendees';
+import { adminGuard } from './services/admin.guard';
+import { AdminLogin } from './pages/admin-login/admin-login';
 export const routes: Routes = [
 
 { path: '',component: Home }, 
@@ -18,16 +21,19 @@ export const routes: Routes = [
     component: EventDetails
   },
 
-  {
+{
   path: 'organizer/dashboard',
+  canActivate: [adminGuard],
   component: Dashboard
 },
 {
   path: 'organizer/create-event',
+  canActivate: [adminGuard],
   component: CreateEvent
 },
 {
   path: 'organizer/manage-events',
+  canActivate: [adminGuard],
   component: ManageEvents
 },
 {
@@ -35,8 +41,27 @@ export const routes: Routes = [
   component: MyBookings
 },
 {
+  path: 'admin-login',
+  component: AdminLogin
+},
+{
+  path: 'signup',
+  component: AdminLogin
+},
+{
   path: 'organizer/edit-event/:id',
+  canActivate: [adminGuard],
   component: EditEvent
+},
+{
+  path: 'organizer/attendees',
+  canActivate: [adminGuard],
+  component: Attendees
+},
+{
+  path: 'organizer/attendees/:id',
+  canActivate: [adminGuard],
+  component: Attendees
 }
 
 ];

@@ -4,63 +4,179 @@
 
   <div class="form-container">
 
-    <h1>
-      Edit Event
-    </h1>
+    <div class="form-header">
+      <p class="eyebrow">
+        Organizer Workspace
+      </p>
 
-    <form>
+      <h1>
+        Edit Event
+      </h1>
+    </div>
 
-      <input
-        type="text"
-        placeholder="Event Title"
-        [(ngModel)]="title"
-        name="title"
-      >
+    <form
+      class="event-form"
+      (ngSubmit)="updateEvent()"
+    >
 
-      <input
-        type="text"
-        placeholder="Category"
-        [(ngModel)]="category"
-        name="category"
-      >
+      <div class="input-grid">
 
-      <textarea
-        placeholder="Event Description"
-        [(ngModel)]="description"
-        name="description"
-      ></textarea>
+        <label>
+          <span>Event Title</span>
+          <input
+            type="text"
+            [(ngModel)]="title"
+            name="title"
+            required
+          >
+        </label>
 
-      <input
-        type="date"
-        [(ngModel)]="date"
-        name="date"
-      >
+        <label>
+          <span>Category</span>
+          <select
+            [(ngModel)]="category"
+            name="category"
+            required
+          >
+            <option
+              *ngFor="let item of categories"
+              [value]="item"
+            >
+              {{ item }}
+            </option>
+          </select>
+        </label>
 
-      <input
-        type="text"
-        placeholder="Venue"
-        [(ngModel)]="venue"
-        name="venue"
-      >
+        <label class="full-width">
+          <span>Description</span>
+          <textarea
+            [(ngModel)]="description"
+            name="description"
+            required
+          ></textarea>
+        </label>
 
-      <input
-        type="number"
-        placeholder="Price"
-        [(ngModel)]="price"
-        name="price"
-      >
+        <label>
+          <span>Start Date & Time</span>
+          <input
+            type="datetime-local"
+            [(ngModel)]="startDateTime"
+            name="startDateTime"
+            required
+          >
+        </label>
 
-      <input
-        type="text"
-        placeholder="Image Path"
-        [(ngModel)]="image"
-        name="image"
-      >
+        <label>
+          <span>End Date & Time</span>
+          <input
+            type="datetime-local"
+            [(ngModel)]="endDateTime"
+            name="endDateTime"
+            required
+          >
+        </label>
 
-      <button
-        type="button"
-        (click)="updateEvent()"
-      >
+        <label>
+          <span>Venue</span>
+          <input
+            type="text"
+            [(ngModel)]="venue"
+            name="venue"
+            required
+          >
+        </label>
+
+        <label>
+          <span>City</span>
+          <input
+            type="text"
+            [(ngModel)]="city"
+            name="city"
+            required
+          >
+        </label>
+
+        <label class="full-width">
+          <span>Venue Address</span>
+          <input
+            type="text"
+            [(ngModel)]="address"
+            name="address"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Ticket Price</span>
+          <input
+            type="number"
+            min="0"
+            [(ngModel)]="price"
+            name="price"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Total Seats</span>
+          <input
+            type="number"
+            min="1"
+            [(ngModel)]="totalSeats"
+            name="totalSeats"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Organizer Name</span>
+          <input
+            type="text"
+            [(ngModel)]="organizerName"
+            name="organizerName"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Organizer Email</span>
+          <input
+            type="email"
+            [(ngModel)]="organizerEmail"
+            name="organizerEmail"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Cover Image Path</span>
+          <input
+            type="text"
+            [(ngModel)]="image"
+            name="image"
+          >
+        </label>
+
+        <label>
+          <span>Gallery Paths</span>
+          <input
+            type="text"
+            [(ngModel)]="galleryText"
+            name="galleryText"
+          >
+        </label>
+
+        <label class="full-width">
+          <span>Rules / Contact / Additional Info</span>
+          <textarea
+            [(ngModel)]="additionalInfo"
+            name="additionalInfo"
+          ></textarea>
+        </label>
+
+      </div>
+
+      <button type="submit">
         Update Event
       </button>
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Sidebar } from '../../layout/sidebar/sidebar';
 import { EventService } from '../../services/event';
+import { BookingService } from '../../services/booking';
 import { RouterLink } from '@angular/router';
 import { Event } from '../../Models/event.model';
 @Component({
@@ -20,7 +21,8 @@ export class ManageEvents {
   events: Event[] = [];
 
   constructor(
-    private eventService: EventService
+    private eventService: EventService,
+    private bookingService: BookingService
   ) {
 
     this.events =
@@ -28,12 +30,24 @@ export class ManageEvents {
 
   }
 
-  deleteEvent(id: number) {
+  cancelEvent(id: number): void {
 
-    this.eventService.deleteEvent(id);
+    this.eventService.cancelEvent(id);
 
     this.events =
       this.eventService.getEvents();
+
+  }
+
+  getTicketsSold(eventId: number): number {
+
+    return this.bookingService.getTicketsSold(eventId);
+
+  }
+
+  getRevenue(eventId: number): number {
+
+    return this.bookingService.getRevenueForEvent(eventId);
 
   }
 

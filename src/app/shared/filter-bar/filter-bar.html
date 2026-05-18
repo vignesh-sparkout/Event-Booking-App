@@ -1,34 +1,44 @@
 <div class="filter-container">
 
   <select
-    [(ngModel)]="selectedCategory"
+    [(ngModel)]="filters.category"
     (change)="filterCategory()"
+    aria-label="Filter by category"
+  >
+    <option value="">All Categories</option>
+    <option
+      *ngFor="let category of categories"
+      [value]="category"
+    >
+      {{ category }}
+    </option>
+  </select>
+
+  <input
+    type="text"
+    placeholder="City"
+    [(ngModel)]="filters.city"
+    (input)="filterCategory()"
   >
 
-    <option value="">
-      All Categories
+  <select
+    [(ngModel)]="filters.price"
+    (change)="filterCategory()"
+    aria-label="Filter by price"
+  >
+    <option
+      *ngFor="let option of priceOptions"
+      [value]="option.value"
+    >
+      {{ option.label }}
     </option>
-
-    <option value="Technology">
-      Technology
-    </option>
-
-    <option value="Music">
-      Music
-    </option>
-
-    <option value="Workshop">
-      Workshop
-    </option>
-
-    <option value="Sports">
-      Sports
-    </option>
-
-    <option value="Food">
-      Food
-    </option>
-
   </select>
+
+  <input
+    type="date"
+    [(ngModel)]="filters.startDate"
+    (change)="filterCategory()"
+    aria-label="Filter from date"
+  >
 
 </div>

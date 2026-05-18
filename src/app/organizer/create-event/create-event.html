@@ -14,7 +14,7 @@
       </h1>
 
       <p class="intro">
-        Add a polished event card with a clear title, category, image, and booking details.
+        Add all event details attendees need before they book.
       </p>
     </div>
 
@@ -29,7 +29,7 @@
           <span>Event Title</span>
           <input
             type="text"
-            placeholder="Angular UI Summit"
+            placeholder="Angular Conference 2026"
             [(ngModel)]="title"
             name="title"
             required
@@ -38,19 +38,24 @@
 
         <label>
           <span>Category</span>
-          <input
-            type="text"
-            placeholder="Technology"
+          <select
             [(ngModel)]="category"
             name="category"
             required
           >
+            <option
+              *ngFor="let item of categories"
+              [value]="item"
+            >
+              {{ item }}
+            </option>
+          </select>
         </label>
 
         <label class="full-width">
           <span>Description</span>
           <textarea
-            placeholder="Tell attendees what makes this event worth booking."
+            placeholder="Describe the event, schedule, speakers, and experience."
             [(ngModel)]="description"
             name="description"
             required
@@ -58,11 +63,21 @@
         </label>
 
         <label>
-          <span>Date</span>
+          <span>Start Date & Time</span>
           <input
-            type="date"
-            [(ngModel)]="date"
-            name="date"
+            type="datetime-local"
+            [(ngModel)]="startDateTime"
+            name="startDateTime"
+            required
+          >
+        </label>
+
+        <label>
+          <span>End Date & Time</span>
+          <input
+            type="datetime-local"
+            [(ngModel)]="endDateTime"
+            name="endDateTime"
             required
           >
         </label>
@@ -71,9 +86,31 @@
           <span>Venue</span>
           <input
             type="text"
-            placeholder="Chennai Trade Center"
+            placeholder="Chennai Trade Centre"
             [(ngModel)]="venue"
             name="venue"
+            required
+          >
+        </label>
+
+        <label>
+          <span>City</span>
+          <input
+            type="text"
+            placeholder="Chennai"
+            [(ngModel)]="city"
+            name="city"
+            required
+          >
+        </label>
+
+        <label class="full-width">
+          <span>Venue Address</span>
+          <input
+            type="text"
+            placeholder="Full address"
+            [(ngModel)]="address"
+            name="address"
             required
           >
         </label>
@@ -82,7 +119,8 @@
           <span>Ticket Price</span>
           <input
             type="number"
-            placeholder="500"
+            min="0"
+            placeholder="0 for free"
             [(ngModel)]="price"
             name="price"
             required
@@ -90,7 +128,41 @@
         </label>
 
         <label>
-          <span>Image Path</span>
+          <span>Total Seats</span>
+          <input
+            type="number"
+            min="1"
+            placeholder="100"
+            [(ngModel)]="totalSeats"
+            name="totalSeats"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Organizer Name</span>
+          <input
+            type="text"
+            placeholder="Organizer or company"
+            [(ngModel)]="organizerName"
+            name="organizerName"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Organizer Email</span>
+          <input
+            type="email"
+            placeholder="organizer@example.com"
+            [(ngModel)]="organizerEmail"
+            name="organizerEmail"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Cover Image Path</span>
           <input
             type="text"
             placeholder="images/workshop-event.jpg"
@@ -99,14 +171,25 @@
           >
         </label>
 
-      </div>
+        <label>
+          <span>Gallery Paths</span>
+          <input
+            type="text"
+            placeholder="images/a.jpg, images/b.jpg"
+            [(ngModel)]="galleryText"
+            name="galleryText"
+          >
+        </label>
 
-      <div class="image-hints">
-        <span>Try:</span>
-        <span>`images/tech-banner.jpg`</span>
-        <span>`images/music-event.jpg`</span>
-        <span>`images/workshop-event.jpg`</span>
-        <span>`images/food-festival.jpg`</span>
+        <label class="full-width">
+          <span>Rules / Contact / Additional Info</span>
+          <textarea
+            placeholder="Rules, contact number, entry notes, refund policy."
+            [(ngModel)]="additionalInfo"
+            name="additionalInfo"
+          ></textarea>
+        </label>
+
       </div>
 
       <button type="submit">

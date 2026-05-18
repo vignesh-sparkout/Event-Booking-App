@@ -41,7 +41,7 @@
   margin-top: 28px;
   padding: 28px;
   border: 1px solid rgba(20, 33, 61, 0.08);
-  border-radius: 24px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 24px 55px rgba(20, 33, 61, 0.08);
 }
@@ -69,17 +69,19 @@ label span {
 }
 
 input,
+select,
 textarea {
   width: 100%;
   padding: 13px 14px;
   border: 1px solid #d8dde6;
-  border-radius: 14px;
+  border-radius: 8px;
   background: #fbfcfe;
   font: inherit;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 input:focus,
+select:focus,
 textarea:focus {
   border-color: #f77f00;
   outline: none;
@@ -89,15 +91,6 @@ textarea:focus {
 textarea {
   min-height: 130px;
   resize: vertical;
-}
-
-.image-hints {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-  color: #5a6778;
-  font-size: 0.9rem;
 }
 
 .image-hints span:not(:first-child) {
@@ -110,7 +103,7 @@ button {
   margin-top: 22px;
   padding: 13px 22px;
   border: none;
-  border-radius: 999px;
+  border-radius: 8px;
   background: linear-gradient(135deg, #f77f00 0%, #ff9f1c 100%);
   color: #fff;
   font-weight: 700;
