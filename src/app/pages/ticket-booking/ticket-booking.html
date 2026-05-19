@@ -1,0 +1,89 @@
+<section
+  class="booking-shell"
+  *ngIf="event"
+>
+  <div class="booking-page">
+
+    <div class="event-summary">
+      <img
+        [src]="event.image"
+        [alt]="event.title"
+      >
+    </div>
+
+    <div class="booking-card">
+      <app-booking-form
+        *ngIf="event.availableSeats > 0"
+        [eventTitle]="event.title"
+        [eventDate]="event.date"
+        [ticketPrice]="event.price"
+        [eventId]="event.id"
+        [availableSeats]="event.availableSeats"
+        [backLink]="[
+          '/event-details',
+          event.id
+        ]"
+        (bookingCompleted)="completeBooking($event)"
+      ></app-booking-form>
+
+      <div
+        class="sold-out"
+        *ngIf="event.availableSeats === 0"
+      >
+        <h2>
+          Event Sold Out
+        </h2>
+
+        <p>
+          Tickets are no longer available for this event.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div
+  class="success-modal-backdrop"
+  *ngIf="showSuccessModal"
+  aria-live="polite"
+>
+  <section class="success-modal">
+    <div class="success-icon">
+      <span></span>
+    </div>
+
+    <p class="success-kicker">
+      Booking Confirmed
+    </p>
+
+    <h2>
+      Booking Successful
+    </h2>
+
+    <p>
+      Your ticket has been saved. Redirecting to My Bookings.
+    </p>
+
+    <strong>
+      {{ successBookingId }}
+    </strong>
+  </section>
+</div>
+
+<section
+  class="not-found"
+  *ngIf="!event"
+>
+  <h1>
+    Event not found
+  </h1>
+
+  <p>
+    The event may have been removed or cancelled.
+  </p>
+
+  <a routerLink="/events">
+    Browse events
+  </a>
+</section>

@@ -1,30 +1,10 @@
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core';
-
+import {Component,ElementRef,OnDestroy, OnInit,ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import {
-  FormsModule,
-  NgForm
-} from '@angular/forms';
-
+import {FormsModule,NgForm} from '@angular/forms';
 import { Router } from '@angular/router';
-
-import {
-  Editor,
-  NgxEditorModule,
-  Toolbar
-} from 'ngx-editor';
-
+import {Editor,NgxEditorModule,Toolbar} from 'ngx-editor';
 import { Sidebar } from '../../layout/sidebar/sidebar';
-
 import { EventService } from '../../services/event';
-
 import { Event } from '../../Models/event.model';
 
 @Component({
@@ -121,6 +101,29 @@ export class CreateEvent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
+  get minimumStartDateTime(): string {
+
+    return this.formatDateTimeInput(
+      this.getTodayStart()
+    );
+
+  }
+
+  get minimumEndDateTime(): string {
+
+    const todayStart =
+      this.getTodayStart();
+    const startDate =
+      this.parseDateTimeInput(this.startDateTime);
+
+    if (startDate && startDate > todayStart) {
+      return this.formatDateTimeInput(startDate);
+    }
+
+    return this.formatDateTimeInput(todayStart);
+
+  }
+
   ngOnInit(): void {
 
     this.editor =
@@ -167,10 +170,17 @@ export class CreateEvent implements OnInit, OnDestroy {
       return;
     }
 
-    if (new Date(this.startDateTime) < new Date()) {
+    if (this.isBeforeToday(this.startDateTime)) {
       this.validationMessage =
-        'Start date and time cannot be in the past.';
+        'Start date and time cannot be before today.';
       this.markFieldAsTouched(form, 'startDateTime');
+      return;
+    }
+
+    if (this.isBeforeToday(this.endDateTime)) {
+      this.validationMessage =
+        'End date and time cannot be before today.';
+      this.markFieldAsTouched(form, 'endDateTime');
       return;
     }
 
@@ -329,6 +339,21 @@ export class CreateEvent implements OnInit, OnDestroy {
 
   addDescriptionLink(): void {}
 
+  onStartDateTimeChange(value: string): void {
+
+    this.startDateTime = value;
+
+    const startDate =
+      this.parseDateTimeInput(this.startDateTime);
+    const endDate =
+      this.parseDateTimeInput(this.endDateTime);
+
+    if (startDate && endDate && endDate <= startDate) {
+      this.endDateTime = '';
+    }
+
+  }
+
   private resetForm(): void {
 
     this.title = '';
@@ -433,6 +458,54 @@ export class CreateEvent implements OnInit, OnDestroy {
   ): void {
 
     form.controls[controlName]?.markAsTouched();
+
+  }
+
+  private isBeforeToday(value: string): boolean {
+
+    const date =
+      this.parseDateTimeInput(value);
+
+    return !!date && date < this.getTodayStart();
+
+  }
+
+  private parseDateTimeInput(value: string): Date | undefined {
+
+    if (!value) {
+      return undefined;
+    }
+
+    const date =
+      new Date(value);
+
+    return Number.isNaN(date.getTime())
+      ? undefined
+      : date;
+
+  }
+
+  private getTodayStart(): Date {
+
+    const today =
+      new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+    return today;
+
+  }
+
+  private formatDateTimeInput(date: Date): string {
+
+    const pad =
+      (value: number) => String(value).padStart(2, '0');
+
+    return [
+      date.getFullYear(),
+      pad(date.getMonth() + 1),
+      pad(date.getDate())
+    ].join('-') + `T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 
   }
 

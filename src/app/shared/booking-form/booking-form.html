@@ -10,6 +10,10 @@
     <h2>
       Book Tickets
     </h2>
+
+    <p>
+      {{ eventTitle }}
+    </p>
   </div>
 
   <div class="form-grid">
@@ -192,37 +196,27 @@
     </div>
   </div>
 
-  <button
-    type="submit"
-    [disabled]="availableSeats === 0 || bookingSuccess"
-  >
-    {{
-      bookingSuccess
-        ? 'Booking Confirmed'
-        : availableSeats === 0
-          ? 'Sold Out'
-          : 'Confirm Booking'
-    }}
-  </button>
+  <div class="form-actions">
+    <button
+      type="submit"
+      [disabled]="availableSeats === 0 || bookingSuccess"
+    >
+      {{
+        bookingSuccess
+          ? 'Booking Confirmed'
+          : availableSeats === 0
+            ? 'Sold Out'
+            : 'Confirm Booking'
+      }}
+    </button>
 
-  <div
-    class="success-message"
-    *ngIf="bookingSuccess"
-  >
-
-    <h3>
-      Booking Successful
-    </h3>
-
-    <p>
-      Booking ID:
-      {{ bookingId }}
-    </p>
-
-    <p>
-      You can view this ticket in My Bookings.
-    </p>
-
+    <a
+      *ngIf="backLink"
+      class="back-action"
+      [routerLink]="backLink"
+    >
+      Back
+    </a>
   </div>
 
 </form>

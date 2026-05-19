@@ -105,7 +105,9 @@
             #startDateTimeInput="ngModel"
             type="datetime-local"
             [(ngModel)]="startDateTime"
+            (ngModelChange)="onStartDateTimeChange($event)"
             name="startDateTime"
+            [min]="minimumStartDateTime"
             [class.input-error]="startDateTimeInput.invalid && startDateTimeInput.touched"
             required
           >
@@ -125,6 +127,7 @@
             type="datetime-local"
             [(ngModel)]="endDateTime"
             name="endDateTime"
+            [min]="minimumEndDateTime"
             [class.input-error]="endDateTimeInput.invalid && endDateTimeInput.touched"
             required
           >

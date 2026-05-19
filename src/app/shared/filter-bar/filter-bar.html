@@ -29,9 +29,17 @@
 
   <input
     type="date"
-    [(ngModel)]="filters.startDate"
+    [(ngModel)]="filters.fromDate"
     (change)="filterCategory()"
-    aria-label="Filter by date"
+    aria-label="Filter from date"
+  >
+
+  <input
+    type="date"
+    [(ngModel)]="filters.toDate"
+    (change)="filterCategory()"
+    [min]="minimumToDate"
+    aria-label="Filter to date"
   >
 
 </div>

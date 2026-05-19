@@ -11,7 +11,8 @@ export interface EventFilters {
   category: string;
   city: string;
   price: string;
-  startDate: string;
+  fromDate: string;
+  toDate: string;
 }
 
 @Component({
@@ -30,7 +31,8 @@ export class FilterBar {
     category: '',
     city: '',
     price: '',
-    startDate: ''
+    fromDate: '',
+    toDate: ''
   };
 
   categories = [
@@ -65,7 +67,21 @@ export class FilterBar {
   categoryChange =
     new EventEmitter<EventFilters>();
 
+  get minimumToDate(): string | undefined {
+
+    return this.filters.fromDate || undefined;
+
+  }
+
   filterCategory() {
+
+    if (
+      this.filters.fromDate &&
+      this.filters.toDate &&
+      this.filters.toDate < this.filters.fromDate
+    ) {
+      this.filters.toDate = this.filters.fromDate;
+    }
 
     this.categoryChange.emit(
       { ...this.filters }

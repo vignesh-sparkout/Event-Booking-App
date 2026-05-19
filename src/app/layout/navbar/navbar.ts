@@ -25,6 +25,12 @@ export class Navbar {
 
   adminState$: Observable<boolean>;
 
+  get isOrganizerPage(): boolean {
+
+    return this.router.url.startsWith('/organizer');
+
+  }
+
   constructor(
     private authService: AuthService,
     private router: Router

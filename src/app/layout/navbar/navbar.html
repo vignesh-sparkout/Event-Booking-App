@@ -4,7 +4,10 @@
     Event Booking
   </div>
 
-  <ul class="nav-links">
+  <ul
+    *ngIf="!isOrganizerPage"
+    class="nav-links"
+  >
 
     <li>
 

@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 import { BookingService } from '../../services/booking';
 
@@ -23,7 +24,8 @@ import { Booking } from '../../Models/booking.model';
   standalone: true,
   imports: [
     FormsModule,
-    CommonModule
+    CommonModule,
+    RouterLink
   ],
   templateUrl: './booking-form.html',
   styleUrl: './booking-form.css'
@@ -45,8 +47,11 @@ export class BookingForm {
   @Input()
   availableSeats = 0;
 
+  @Input()
+  backLink: string | unknown[] = '';
+
   @Output()
-  bookingCompleted = new EventEmitter<void>();
+  bookingCompleted = new EventEmitter<string>();
 
   name = '';
   email = '';
@@ -174,7 +179,7 @@ export class BookingForm {
     this.availableSeats =
       this.availableSeats - this.selectedTickets;
     this.bookingSuccess = true;
-    this.bookingCompleted.emit();
+    this.bookingCompleted.emit(this.bookingId);
 
   }
 

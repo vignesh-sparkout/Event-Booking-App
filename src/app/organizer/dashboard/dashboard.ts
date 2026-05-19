@@ -8,10 +8,7 @@ import { Event } from '../../Models/event.model';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [
-    CommonModule,
-    Sidebar
-  ],
+  imports: [CommonModule,Sidebar],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

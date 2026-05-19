@@ -23,7 +23,8 @@ export class EventList {
     category: '',
     city: '',
     price: '',
-    startDate: ''
+    fromDate: '',
+    toDate: ''
   };
 
   constructor(
@@ -84,16 +85,15 @@ export class EventList {
         const matchesPrice =
           this.matchesPriceFilter(event.price);
 
-        const matchesStartDate =
-          !this.filters.startDate ||
-          this.getEventDate(event) === this.filters.startDate;
+        const matchesDateRange =
+          this.matchesDateRange(event);
 
         return (
           matchesKeyword &&
           matchesCategory &&
           matchesCity &&
           matchesPrice &&
-          matchesStartDate
+          matchesDateRange
         );
 
       });
@@ -115,6 +115,18 @@ export class EventList {
     }
 
     return true;
+
+  }
+
+  private matchesDateRange(event: Event): boolean {
+
+    const eventDate =
+      this.getEventDate(event);
+
+    return (
+      (!this.filters.fromDate || eventDate >= this.filters.fromDate) &&
+      (!this.filters.toDate || eventDate <= this.filters.toDate)
+    );
 
   }
 

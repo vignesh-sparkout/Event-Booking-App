@@ -4,15 +4,30 @@
 >
 
   <div class="details-hero">
-    <img
-      [src]="event.image"
-      [alt]="event.title"
-    >
+    <div class="hero-media">
+      <img
+        [src]="event.image"
+        [alt]="event.title"
+      >
+    </div>
 
     <div class="hero-content">
-      <p class="category-pill">
-        {{ event.category }}
-      </p>
+      <div class="hero-topline">
+        <p class="category-pill">
+          {{ event.category }}
+        </p>
+
+        <span
+          class="seat-pill"
+          [class.sold-out]="event.availableSeats === 0"
+        >
+          {{
+            event.availableSeats === 0
+              ? 'Sold Out'
+              : event.availableSeats + ' Seats Left'
+          }}
+        </span>
+      </div>
 
       <h1>
         {{ event.title }}
@@ -23,43 +38,25 @@
         [innerHTML]="event.description"
       ></div>
 
-      <div class="meta-grid">
-        <div>
-          <span class="meta-label">Date</span>
-          <strong>{{ event.date | date: 'fullDate' }}</strong>
-        </div>
+      <div class="hero-actions">
+        <a
+          *ngIf="event.availableSeats > 0"
+          class="book-ticket-btn"
+          [routerLink]="[
+            '/ticket-booking',
+            event.id
+          ]"
+        >
+          Book Ticket
+        </a>
 
-        <div>
-          <span class="meta-label">Time</span>
-          <strong>{{ getEventTime(event) }}</strong>
-        </div>
+        <span
+          class="sold-out-pill"
+          *ngIf="event.availableSeats === 0"
+        >
+          Event Sold Out
+        </span>
 
-        <div>
-          <span class="meta-label">Venue</span>
-          <strong>{{ event.venue }}, {{ event.city }}</strong>
-        </div>
-
-        <div>
-          <span class="meta-label">Ticket Price</span>
-          <strong>
-            {{ event.price === 0 ? 'Free' : 'Rs. ' + event.price }}
-          </strong>
-        </div>
-
-        <div>
-          <span class="meta-label">Available Seats</span>
-          <strong>{{ event.availableSeats }} / {{ event.totalSeats }}</strong>
-        </div>
-
-        <div>
-          <span class="meta-label">Organizer</span>
-          <strong>{{ event.organizerName }}</strong>
-        </div>
-      </div>
-
-      <div class="info-block">
-        <h2>Venue Address</h2>
-        <p>{{ event.address }}</p>
         <a
           class="map-link"
           [href]="getMapUrl(event)"
@@ -68,6 +65,49 @@
         >
           Open map
         </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="details-main">
+    <div class="meta-grid">
+      <div>
+        <span class="meta-label">Date</span>
+        <strong>{{ event.date | date: 'fullDate' }}</strong>
+      </div>
+
+      <div>
+        <span class="meta-label">Time</span>
+        <strong>{{ getEventTime(event) }}</strong>
+      </div>
+
+      <div>
+        <span class="meta-label">Venue</span>
+        <strong>{{ event.venue }}, {{ event.city }}</strong>
+      </div>
+
+      <div>
+        <span class="meta-label">Ticket Price</span>
+        <strong>
+          {{ event.price === 0 ? 'Free' : 'Rs. ' + event.price }}
+        </strong>
+      </div>
+
+      <div>
+        <span class="meta-label">Available Seats</span>
+        <strong>{{ event.availableSeats }} / {{ event.totalSeats }}</strong>
+      </div>
+
+      <div>
+        <span class="meta-label">Organizer</span>
+        <strong>{{ event.organizerName }}</strong>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-block">
+        <h2>Venue Address</h2>
+        <p>{{ event.address }}</p>
       </div>
 
       <div class="info-block">
@@ -78,44 +118,18 @@
   </div>
 
   <div
-    class="gallery-grid"
+    class="gallery-section"
     *ngIf="event.gallery.length > 0"
   >
-    <img
-      *ngFor="let image of event.gallery"
-      [src]="image"
-      [alt]="event.title"
-    >
-  </div>
+    <h2>Gallery</h2>
 
-  <div class="booking-panel">
-    <div class="panel-copy">
-      <h2>
-        Reserve your seat
-      </h2>
-
-      <p>
-        Complete the booking form below to secure your place for this event.
-      </p>
+    <div class="gallery-grid">
+      <img
+        *ngFor="let image of event.gallery"
+        [src]="image"
+        [alt]="event.title"
+      >
     </div>
-
-    <app-booking-form
-      *ngIf="event.availableSeats > 0"
-      [eventTitle]="event.title"
-      [eventDate]="event.date"
-      [ticketPrice]="event.price"
-      [eventId]="event.id"
-      [availableSeats]="event.availableSeats"
-      (bookingCompleted)="loadEvent()"
-    ></app-booking-form>
-
-    <p
-      class="sold-out"
-      *ngIf="event.availableSeats === 0"
-    >
-      Event Sold Out
-    </p>
-
   </div>
 
 </section>

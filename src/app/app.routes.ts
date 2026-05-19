@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 import { EventList } from './pages/event-list/event-list';
 import { EventDetails } from './pages/event-details/event-details';
+import { TicketBooking } from './pages/ticket-booking/ticket-booking';
 import { Dashboard } from './organizer/dashboard/dashboard';
 import { CreateEvent } from './organizer/create-event/create-event';
 import { ManageEvents } from './organizer/manage-events/manage-events';
@@ -19,6 +20,10 @@ export const routes: Routes = [
   {
     path: 'event-details/:id',
     component: EventDetails
+  },
+  {
+    path: 'ticket-booking/:id',
+    component: TicketBooking
   },
 
 {
