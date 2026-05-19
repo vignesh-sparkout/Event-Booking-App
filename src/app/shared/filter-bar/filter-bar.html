@@ -14,13 +14,6 @@
     </option>
   </select>
 
-  <input
-    type="text"
-    placeholder="City"
-    [(ngModel)]="filters.city"
-    (input)="filterCategory()"
-  >
-
   <select
     [(ngModel)]="filters.price"
     (change)="filterCategory()"

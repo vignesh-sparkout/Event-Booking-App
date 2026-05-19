@@ -205,7 +205,7 @@ export class EventService {
     this.events = this.events.map(event =>
 
       event.id === updatedEvent.id
-        ? updatedEvent
+        ? this.normalizeEvent(updatedEvent)
         : event
 
     );
@@ -395,17 +395,27 @@ export class EventService {
         ? new Date().toISOString().slice(0, 10)
         : parsedDate.toISOString().slice(0, 10);
 
+    const category =
+      event.category || 'Workshop';
+
     const image =
       event.image ||
-      'images/workshop-event.jpg';
+      this.getFallbackGallery(category)[0];
 
     const totalSeats =
       Number(event.totalSeats) || 0;
 
+    const gallery =
+      this.getGalleryImages(
+        image,
+        category,
+        event.gallery
+      );
+
     return {
       id: Number(event.id) || Date.now(),
       title: event.title || 'Untitled Event',
-      category: event.category || 'Workshop',
+      category,
       description: event.description || '',
       date,
       startDateTime:
@@ -421,16 +431,70 @@ export class EventService {
       organizerEmail: event.organizerEmail || 'organizer@example.com',
       price: Number(event.price) || 0,
       image,
-      gallery:
-        event.gallery && event.gallery.length > 0
-          ? event.gallery
-          : [image],
+      gallery,
       totalSeats,
       availableSeats:
         event.availableSeats ?? totalSeats,
       additionalInfo: event.additionalInfo || 'Please carry your booking ID and a valid photo ID.',
       status: event.status || 'Active'
     };
+
+  }
+
+  private getGalleryImages(
+    image: string,
+    category: string,
+    gallery?: string[]
+  ): string[] {
+
+    const images = [
+      image,
+      ...(gallery || []),
+      ...this.getFallbackGallery(category)
+    ];
+
+    return Array.from(
+      new Set(images.filter(Boolean))
+    ).slice(0, 3);
+
+  }
+
+  private getFallbackGallery(category: string): string[] {
+
+    const galleries: Record<string, string[]> = {
+      Music: [
+        'images/music-event.jpg',
+        'images/music-event1.jpg',
+        'images/banner.jpg'
+      ],
+      Technology: [
+        'images/workshop-event.jpg',
+        'images/tech-banner.jpg',
+        'images/workshop-event1.jpg'
+      ],
+      Workshop: [
+        'images/workshop-event.jpg',
+        'images/workshop-event1.jpg',
+        'images/tech-banner.jpg'
+      ],
+      Comedy: [
+        'images/comedy-show.jpg',
+        'images/comedy-show1.jpg',
+        'images/banner.jpg'
+      ],
+      Sports: [
+        'images/sports-event.jpg',
+        'images/sport-event2.jpg',
+        'images/dashboard.jpg'
+      ],
+      Food: [
+        'images/food-festival.jpg',
+        'images/feed-festival-event.jpg',
+        'images/banner.jpg'
+      ]
+    };
+
+    return galleries[category] || galleries['Workshop'];
 
   }
 

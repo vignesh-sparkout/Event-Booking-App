@@ -13,6 +13,8 @@ import {
   NgForm
 } from '@angular/forms';
 
+import { Router } from '@angular/router';
+
 import {
   Editor,
   NgxEditorModule,
@@ -54,7 +56,7 @@ export class CreateEvent implements OnInit, OnDestroy {
   ];
 
   title = '';
-  category = 'Technology';
+  category = '';
   description = '';
   startDateTime = '';
   endDateTime = '';
@@ -115,7 +117,8 @@ export class CreateEvent implements OnInit, OnDestroy {
   private readonly uploadImageQuality = 0.82;
 
   constructor(
-    private eventService: EventService
+    private eventService: EventService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -139,9 +142,7 @@ export class CreateEvent implements OnInit, OnDestroy {
       this.getFirstMissingRequiredField();
 
     if (missingField) {
-      this.validationMessage =
-        `${missingField.label} is required.`;
-      this.markFieldAsTouched(form, missingField.name);
+      form.control.markAllAsTouched();
       return;
     }
 
@@ -220,7 +221,7 @@ export class CreateEvent implements OnInit, OnDestroy {
     this.resetForm();
     form.resetForm({
       title: '',
-      category: 'Technology',
+      category: '',
       description: '',
       startDateTime: '',
       endDateTime: '',
@@ -235,6 +236,9 @@ export class CreateEvent implements OnInit, OnDestroy {
       totalSeats: 0
     });
     this.clearUploadInputs();
+    this.router.navigate([
+      '/organizer/manage-events'
+    ]);
 
   }
 
@@ -328,7 +332,7 @@ export class CreateEvent implements OnInit, OnDestroy {
   private resetForm(): void {
 
     this.title = '';
-    this.category = 'Technology';
+    this.category = '';
     this.description = '';
     this.startDateTime = '';
     this.endDateTime = '';

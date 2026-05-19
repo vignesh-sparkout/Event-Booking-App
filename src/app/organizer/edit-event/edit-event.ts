@@ -178,9 +178,7 @@ export class EditEvent implements OnInit, OnDestroy {
       this.getFirstMissingRequiredField();
 
     if (missingField) {
-      this.validationMessage =
-        `${missingField.label} is required.`;
-      this.markFieldAsTouched(form, missingField.name);
+      form.control.markAllAsTouched();
       return;
     }
 

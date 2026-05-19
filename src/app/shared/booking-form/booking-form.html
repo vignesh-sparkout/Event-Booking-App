@@ -4,70 +4,100 @@
   (ngSubmit)="confirmBooking(bookingForm)"
 >
 
-  <h2>
-    Book Tickets
-  </h2>
+  <div class="form-heading">
+    <span>Ticket Booking</span>
+
+    <h2>
+      Book Tickets
+    </h2>
+  </div>
+
+  <div class="form-grid">
+    <label>
+      <span>Full Name</span>
+
+      <input
+        #nameInput="ngModel"
+        type="text"
+        placeholder="Enter your name"
+        [(ngModel)]="name"
+        name="name"
+        [class.input-error]="nameInput.invalid && nameInput.touched"
+        [disabled]="bookingSuccess"
+        required
+      >
+
+      <small
+        class="field-error"
+        *ngIf="nameInput.errors?.['required'] && nameInput.touched"
+      >
+        Name is required.
+      </small>
+    </label>
+
+    <label>
+      <span>Email Address</span>
+
+      <input
+        #emailInput="ngModel"
+        type="email"
+        placeholder="Enter your email"
+        [(ngModel)]="email"
+        name="email"
+        [class.input-error]="emailInput.invalid && emailInput.touched"
+        [disabled]="bookingSuccess"
+        email
+        required
+      >
+
+      <small
+        class="field-error"
+        *ngIf="emailInput.errors?.['required'] && emailInput.touched"
+      >
+        Email is required.
+      </small>
+
+      <small
+        class="field-error"
+        *ngIf="emailInput.errors?.['email'] && emailInput.touched"
+      >
+        Please enter a valid email address.
+      </small>
+    </label>
+  </div>
 
   <label>
-    <input
-      #nameInput="ngModel"
-      type="text"
-      placeholder="Your Name"
-      [(ngModel)]="name"
-      name="name"
-      [class.input-error]="nameInput.invalid && nameInput.touched"
-      [disabled]="bookingSuccess"
-      required
-    >
+    <span>Phone Number</span>
 
-    <small
-      class="field-error"
-      *ngIf="nameInput.errors?.['required'] && nameInput.touched"
-    >
-      Name is required.
-    </small>
-  </label>
+    <div class="phone-row">
+      <select
+        #countryCodeInput="ngModel"
+        class="country-code"
+        [(ngModel)]="countryCode"
+        name="countryCode"
+        [disabled]="bookingSuccess"
+        required
+      >
+        <option
+          *ngFor="let country of countryCodes"
+          [value]="country.code"
+        >
+          {{ country.code }} {{ country.label }}
+        </option>
+      </select>
 
-  <label>
-    <input
-      #emailInput="ngModel"
-      type="email"
-      placeholder="Your Email"
-      [(ngModel)]="email"
-      name="email"
-      [class.input-error]="emailInput.invalid && emailInput.touched"
-      [disabled]="bookingSuccess"
-      email
-      required
-    >
-
-    <small
-      class="field-error"
-      *ngIf="emailInput.errors?.['required'] && emailInput.touched"
-    >
-      Email is required.
-    </small>
-
-    <small
-      class="field-error"
-      *ngIf="emailInput.errors?.['email'] && emailInput.touched"
-    >
-      Please enter a valid email address.
-    </small>
-  </label>
-
-  <label>
-    <input
-      #phoneInput="ngModel"
-      type="tel"
-      placeholder="Phone Number with country code"
-      [(ngModel)]="phone"
-      name="phone"
-      [class.input-error]="phoneInput.invalid && phoneInput.touched"
-      [disabled]="bookingSuccess"
-      [pattern]="phonePattern"
-      required
-    >
+      <input
+        #phoneInput="ngModel"
+        type="tel"
+        placeholder="Enter phone number"
+        [(ngModel)]="phone"
+        name="phone"
+        [class.input-error]="phoneInput.invalid && phoneInput.touched"
+        [disabled]="bookingSuccess"
+        [pattern]="phonePattern"
+        required
+      >
+    </div>
 
     <small
       class="field-error"
@@ -80,23 +110,35 @@
       class="field-error"
       *ngIf="phoneInput.errors?.['pattern'] && phoneInput.touched"
     >
-      Enter phone number with country code, like +91 9876543210.
+      Enter a valid phone number.
     </small>
   </label>
 
   <label>
-    <input
+    <span>Tickets</span>
+
+    <select
       #ticketsInput="ngModel"
-      type="number"
-      placeholder="Number of Tickets"
-      min="1"
-      [max]="availableSeats"
       [(ngModel)]="tickets"
       name="tickets"
       [class.input-error]="ticketsInput.invalid && ticketsInput.touched"
       [disabled]="bookingSuccess"
       required
     >
+      <option
+        [ngValue]="null"
+        disabled
+      >
+        Select Tickets
+      </option>
+
+      <option
+        *ngFor="let ticket of ticketOptions"
+        [ngValue]="ticket"
+      >
+        {{ ticket }}
+      </option>
+    </select>
 
     <small
       class="field-error"
@@ -107,14 +149,7 @@
 
     <small
       class="field-error"
-      *ngIf="ticketsInput.errors?.['min'] && ticketsInput.touched"
-    >
-      Please select at least 1 ticket.
-    </small>
-
-    <small
-      class="field-error"
-      *ngIf="ticketsInput.errors?.['max'] && ticketsInput.touched"
+      *ngIf="tickets && tickets > availableSeats && ticketsInput.touched"
     >
       Tickets cannot be more than available seats.
     </small>
@@ -134,10 +169,28 @@
     {{ seatError }}
   </p>
 
-  <p class="total-amount">
-    Total Amount:
-    {{ totalAmount === 0 ? 'Free' : 'Rs. ' + totalAmount }}
-  </p>
+  <div class="booking-summary">
+    <div>
+      <span>Price per ticket</span>
+      <strong>
+        {{ ticketPrice === 0 ? 'Free' : 'Rs. ' + ticketPrice }}
+      </strong>
+    </div>
+
+    <div>
+      <span>Selected tickets</span>
+      <strong>
+        {{ tickets || '-' }}
+      </strong>
+    </div>
+
+    <div class="summary-total">
+      <span>Total amount</span>
+      <strong>
+        {{ totalAmount === 0 ? 'Free' : 'Rs. ' + totalAmount }}
+      </strong>
+    </div>
+  </div>
 
   <button
     type="submit"

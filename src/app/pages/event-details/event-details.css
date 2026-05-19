@@ -9,15 +9,17 @@
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
   gap: 28px;
-  align-items: stretch;
+  align-items: start;
 }
 
 .details-hero img {
+  display: block;
   width: 100%;
-  height: 100%;
-  min-height: 360px;
+  height: clamp(280px, 42vw, 520px);
+  min-height: 0;
   border-radius: 8px;
   object-fit: cover;
+  object-position: center;
   box-shadow: 0 24px 48px rgba(15, 23, 42, 0.12);
 }
 
@@ -169,6 +171,10 @@
 
   .details-hero {
     grid-template-columns: 1fr;
+  }
+
+  .details-hero img {
+    height: clamp(240px, 58vw, 380px);
   }
 
   .meta-grid {

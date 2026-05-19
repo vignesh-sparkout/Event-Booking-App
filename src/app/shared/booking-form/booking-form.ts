@@ -50,14 +50,45 @@ export class BookingForm {
 
   name = '';
   email = '';
+  countryCode = '+91';
   phone = '';
-  tickets = 1;
+  tickets: number | null = null;
   bookingSuccess = false;
   bookingId = '';
   seatError = '';
   formError = '';
+  readonly countryCodes = [
+    {
+      label: 'India',
+      code: '+91'
+    },
+    {
+      label: 'United States',
+      code: '+1'
+    },
+    {
+      label: 'United Kingdom',
+      code: '+44'
+    },
+    {
+      label: 'Australia',
+      code: '+61'
+    },
+    {
+      label: 'Canada',
+      code: '+1'
+    },
+    {
+      label: 'Singapore',
+      code: '+65'
+    },
+    {
+      label: 'United Arab Emirates',
+      code: '+971'
+    }
+  ];
   readonly phonePattern =
-    '^\\+[1-9][0-9]{0,3}[\\s-]?[0-9]{6,14}$';
+    '^[0-9]{6,14}$';
 
   constructor(
     private bookingService: BookingService,
@@ -66,7 +97,24 @@ export class BookingForm {
 
   get totalAmount(): number {
 
-    return this.ticketPrice * this.tickets;
+    return this.ticketPrice * this.selectedTickets;
+
+  }
+
+  get ticketOptions(): number[] {
+
+    return Array.from(
+      {
+        length: this.availableSeats
+      },
+      (_, index) => index + 1
+    );
+
+  }
+
+  private get selectedTickets(): number {
+
+    return Number(this.tickets || 0);
 
   }
 
@@ -79,7 +127,7 @@ export class BookingForm {
       return;
     }
 
-    if (this.tickets < 1) {
+    if (this.selectedTickets < 1) {
 
       this.formError =
         'Please select at least 1 ticket.';
@@ -88,7 +136,7 @@ export class BookingForm {
 
     }
 
-    if (this.tickets > this.availableSeats) {
+    if (this.selectedTickets > this.availableSeats) {
 
       this.seatError =
         'Not enough seats available.';
@@ -109,8 +157,8 @@ export class BookingForm {
       eventDate: this.eventDate,
       name: this.name.trim(),
       email: this.email.trim(),
-      phone: this.phone.trim(),
-      tickets: this.tickets,
+      phone: `${this.countryCode} ${this.phone.trim()}`,
+      tickets: this.selectedTickets,
       totalAmount: this.totalAmount,
       bookingDate: new Date().toISOString(),
       status: 'Confirmed'
@@ -120,11 +168,11 @@ export class BookingForm {
 
     this.eventService.reduceSeats(
       this.eventId,
-      this.tickets
+      this.selectedTickets
     );
 
     this.availableSeats =
-      this.availableSeats - this.tickets;
+      this.availableSeats - this.selectedTickets;
     this.bookingSuccess = true;
     this.bookingCompleted.emit();
 
