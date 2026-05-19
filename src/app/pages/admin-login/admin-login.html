@@ -1,41 +1,72 @@
 <section class="login-shell">
 
   <form
+    #loginForm="ngForm"
     class="login-card"
-    (ngSubmit)="login()"
+    (ngSubmit)="login(loginForm)"
   >
     <p class="eyebrow">
       Admin Access
     </p>
 
-    <h1>
-      Admin Sign In
-    </h1>
-
     <p class="intro">
-      Sign in to create events, manage bookings, and view attendee reports.
+      Sign in to create events.
     </p>
 
     <label>
       <span>Email</span>
       <input
+        #emailInput="ngModel"
         type="email"
-        placeholder="admin@example.com"
+        placeholder="admin@gmail.com"
         [(ngModel)]="email"
         name="email"
+        [class.input-error]="emailInput.invalid && emailInput.touched"
+        email
         required
       >
+
+      <small
+        class="field-error"
+        *ngIf="emailInput.errors?.['required'] && emailInput.touched"
+      >
+        Email is required.
+      </small>
+
+      <small
+        class="field-error"
+        *ngIf="emailInput.errors?.['email'] && emailInput.touched"
+      >
+        Please enter a valid email address.
+      </small>
     </label>
 
     <label>
       <span>Password</span>
       <input
+        #passwordInput="ngModel"
         type="password"
         placeholder="Enter password"
         [(ngModel)]="password"
         name="password"
+        [class.input-error]="passwordInput.invalid && passwordInput.touched"
+        minlength="6"
         required
       >
+
+      <small
+        class="field-error"
+        *ngIf="passwordInput.errors?.['required'] && passwordInput.touched"
+      >
+        Password is required.
+      </small>
+
+      <small
+        class="field-error"
+        *ngIf="passwordInput.errors?.['minlength'] && passwordInput.touched"
+      >
+        Password must be at least 6 characters.
+      </small>
     </label>
 
     <p

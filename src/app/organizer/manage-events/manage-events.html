@@ -39,9 +39,10 @@
             {{ event.title }}
           </h2>
 
-          <p class="description">
-            {{ event.description }}
-          </p>
+          <div
+            class="description"
+            [innerHTML]="event.description"
+          ></div>
 
           <div class="meta">
             <span>{{ event.date | date: 'mediumDate' }}</span>

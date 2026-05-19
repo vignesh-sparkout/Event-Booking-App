@@ -19,8 +19,9 @@
     </div>
 
     <form
+      #eventForm="ngForm"
       class="event-form"
-      (ngSubmit)="createEvent()"
+      (ngSubmit)="createEvent(eventForm)"
     >
 
       <div class="input-grid">
@@ -28,19 +29,30 @@
         <label>
           <span>Event Title</span>
           <input
+            #titleInput="ngModel"
             type="text"
             placeholder="Angular Conference 2026"
             [(ngModel)]="title"
             name="title"
+            [class.input-error]="titleInput.invalid && titleInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="titleInput.errors?.['required'] && titleInput.touched"
+          >
+            Event title is required.
+          </small>
         </label>
 
         <label>
           <span>Category</span>
           <select
+            #categoryInput="ngModel"
             [(ngModel)]="category"
             name="category"
+            [class.input-error]="categoryInput.invalid && categoryInput.touched"
             required
           >
             <option
@@ -50,115 +62,297 @@
               {{ item }}
             </option>
           </select>
+
+          <small
+            class="field-error"
+            *ngIf="categoryInput.errors?.['required'] && categoryInput.touched"
+          >
+            Category is required.
+          </small>
         </label>
 
         <label class="full-width">
           <span>Description</span>
+
+          <div class="rich-text-toolbar">
+            <button
+              type="button"
+              title="Bold"
+              (click)="applyRichText('bold')"
+            >
+              B
+            </button>
+
+            <button
+              type="button"
+              title="Italic"
+              (click)="applyRichText('italic')"
+            >
+              I
+            </button>
+
+            <button
+              type="button"
+              title="Underline"
+              (click)="applyRichText('underline')"
+            >
+              U
+            </button>
+
+            <button
+              type="button"
+              title="Bullet list"
+              (click)="applyRichText('insertUnorderedList')"
+            >
+              •
+            </button>
+
+            <button
+              type="button"
+              title="Numbered list"
+              (click)="applyRichText('insertOrderedList')"
+            >
+              1.
+            </button>
+
+            <button
+              type="button"
+              title="Clear formatting"
+              (click)="applyRichText('removeFormat')"
+            >
+              Tx
+            </button>
+          </div>
+
+          <div
+            #descriptionEditor
+            class="rich-text-editor"
+            [class.input-error]="descriptionInput.invalid && descriptionInput.touched"
+            contenteditable="true"
+            role="textbox"
+            aria-label="Description"
+            data-placeholder="Describe the event, schedule, speakers, and experience."
+            (input)="syncDescriptionFromEditor()"
+            (blur)="descriptionInput.control.markAsTouched()"
+          ></div>
+
           <textarea
-            placeholder="Describe the event, schedule, speakers, and experience."
+            #descriptionInput="ngModel"
+            class="hidden-rich-input"
             [(ngModel)]="description"
             name="description"
+            [class.input-error]="descriptionInput.invalid && descriptionInput.touched"
             required
           ></textarea>
+
+          <small
+            class="field-error"
+            *ngIf="descriptionInput.errors?.['required'] && descriptionInput.touched"
+          >
+            Description is required.
+          </small>
         </label>
 
         <label>
           <span>Start Date & Time</span>
           <input
+            #startDateTimeInput="ngModel"
             type="datetime-local"
             [(ngModel)]="startDateTime"
             name="startDateTime"
+            [class.input-error]="startDateTimeInput.invalid && startDateTimeInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="startDateTimeInput.errors?.['required'] && startDateTimeInput.touched"
+          >
+            Start date and time is required.
+          </small>
         </label>
 
         <label>
           <span>End Date & Time</span>
           <input
+            #endDateTimeInput="ngModel"
             type="datetime-local"
             [(ngModel)]="endDateTime"
             name="endDateTime"
+            [class.input-error]="endDateTimeInput.invalid && endDateTimeInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="endDateTimeInput.errors?.['required'] && endDateTimeInput.touched"
+          >
+            End date and time is required.
+          </small>
         </label>
 
         <label>
           <span>Venue</span>
           <input
+            #venueInput="ngModel"
             type="text"
             placeholder="Chennai Trade Centre"
             [(ngModel)]="venue"
             name="venue"
+            [class.input-error]="venueInput.invalid && venueInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="venueInput.errors?.['required'] && venueInput.touched"
+          >
+            Venue is required.
+          </small>
         </label>
 
         <label>
           <span>City</span>
           <input
+            #cityInput="ngModel"
             type="text"
             placeholder="Chennai"
             [(ngModel)]="city"
             name="city"
+            [class.input-error]="cityInput.invalid && cityInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="cityInput.errors?.['required'] && cityInput.touched"
+          >
+            City is required.
+          </small>
         </label>
 
         <label class="full-width">
           <span>Venue Address</span>
           <input
+            #addressInput="ngModel"
             type="text"
             placeholder="Full address"
             [(ngModel)]="address"
             name="address"
+            [class.input-error]="addressInput.invalid && addressInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="addressInput.errors?.['required'] && addressInput.touched"
+          >
+            Venue address is required.
+          </small>
         </label>
 
         <label>
           <span>Ticket Price</span>
           <input
+            #priceInput="ngModel"
             type="number"
             min="0"
             placeholder="0 for free"
             [(ngModel)]="price"
             name="price"
+            [class.input-error]="priceInput.invalid && priceInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="priceInput.errors?.['required'] && priceInput.touched"
+          >
+            Ticket price is required.
+          </small>
+
+          <small
+            class="field-error"
+            *ngIf="priceInput.errors?.['min'] && priceInput.touched"
+          >
+            Ticket price cannot be negative.
+          </small>
         </label>
 
         <label>
           <span>Total Seats</span>
           <input
+            #totalSeatsInput="ngModel"
             type="number"
             min="1"
             placeholder="100"
             [(ngModel)]="totalSeats"
             name="totalSeats"
+            [class.input-error]="totalSeatsInput.invalid && totalSeatsInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="totalSeatsInput.errors?.['required'] && totalSeatsInput.touched"
+          >
+            Total seats is required.
+          </small>
+
+          <small
+            class="field-error"
+            *ngIf="totalSeatsInput.errors?.['min'] && totalSeatsInput.touched"
+          >
+            Total seats must be at least 1.
+          </small>
         </label>
 
         <label>
           <span>Organizer Name</span>
           <input
+            #organizerNameInput="ngModel"
             type="text"
             placeholder="Organizer or company"
             [(ngModel)]="organizerName"
             name="organizerName"
+            [class.input-error]="organizerNameInput.invalid && organizerNameInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="organizerNameInput.errors?.['required'] && organizerNameInput.touched"
+          >
+            Organizer name is required.
+          </small>
         </label>
 
         <label>
           <span>Organizer Email</span>
           <input
+            #organizerEmailInput="ngModel"
             type="email"
             placeholder="organizer@example.com"
             [(ngModel)]="organizerEmail"
             name="organizerEmail"
+            [class.input-error]="organizerEmailInput.invalid && organizerEmailInput.touched"
+            email
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="organizerEmailInput.errors?.['required'] && organizerEmailInput.touched"
+          >
+            Organizer email is required.
+          </small>
+
+          <small
+            class="field-error"
+            *ngIf="organizerEmailInput.errors?.['email'] && organizerEmailInput.touched"
+          >
+            Please enter a valid organizer email.
+          </small>
         </label>
 
         <label>
@@ -191,6 +385,13 @@
         </label>
 
       </div>
+
+      <p
+        class="error-message"
+        *ngIf="validationMessage"
+      >
+        {{ validationMessage }}
+      </p>
 
       <button type="submit">
         Create Event

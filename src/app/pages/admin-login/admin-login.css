@@ -60,6 +60,21 @@ input:focus {
   box-shadow: 0 0 0 4px rgba(12, 124, 144, 0.12);
 }
 
+input.input-error {
+  border-color: #b91c1c;
+}
+
+input.input-error:focus {
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.12);
+}
+
+.field-error {
+  color: #b91c1c;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
 .error-message {
   margin: 14px 0 0;
   color: #b91c1c;

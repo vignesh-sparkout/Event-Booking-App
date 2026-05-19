@@ -25,8 +25,7 @@ export class ManageEvents {
     private bookingService: BookingService
   ) {
 
-    this.events =
-      this.eventService.getEvents();
+    this.loadActiveEvents();
 
   }
 
@@ -34,8 +33,7 @@ export class ManageEvents {
 
     this.eventService.cancelEvent(id);
 
-    this.events =
-      this.eventService.getEvents();
+    this.loadActiveEvents();
 
   }
 
@@ -48,6 +46,13 @@ export class ManageEvents {
   getRevenue(eventId: number): number {
 
     return this.bookingService.getRevenueForEvent(eventId);
+
+  }
+
+  private loadActiveEvents(): void {
+
+    this.events =
+      this.eventService.getActiveEvents();
 
   }
 

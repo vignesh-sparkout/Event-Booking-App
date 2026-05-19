@@ -50,6 +50,39 @@
   line-height: 1.7;
 }
 
+.description :where(p, ul, ol, blockquote) {
+  margin: 0 0 10px;
+}
+
+.description :where(ul, ol) {
+  padding-left: 22px;
+}
+
+.description :where(h2, h3) {
+  margin: 6px 0 10px;
+  color: #162033;
+  line-height: 1.25;
+}
+
+.description h2 {
+  font-size: 1.2rem;
+}
+
+.description h3 {
+  font-size: 1.05rem;
+}
+
+.description blockquote {
+  padding-left: 12px;
+  border-left: 3px solid #0b7285;
+  color: #4b5563;
+}
+
+.description a {
+  color: #0b7285;
+  font-weight: 700;
+}
+
 .meta-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  NgForm
+} from '@angular/forms';
 import {
   ActivatedRoute,
   Router,
@@ -42,11 +45,17 @@ export class AdminLogin {
 
   }
 
-  login(): void {
+  login(form: NgForm): void {
+
+    if (form.invalid) {
+      this.errorMessage = '';
+      form.control.markAllAsTouched();
+      return;
+    }
 
     const loggedIn =
       this.authService.login(
-        this.email,
+        this.email.trim(),
         this.password
       );
 
@@ -60,5 +69,4 @@ export class AdminLogin {
     this.router.navigateByUrl(this.returnUrl);
 
   }
-
 }
