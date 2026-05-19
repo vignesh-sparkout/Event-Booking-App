@@ -15,8 +15,9 @@
     </div>
 
     <form
+      #editForm="ngForm"
       class="event-form"
-      (ngSubmit)="updateEvent()"
+      (ngSubmit)="updateEvent(editForm)"
     >
 
       <div class="input-grid">
@@ -24,18 +25,30 @@
         <label>
           <span>Event Title</span>
           <input
+            #titleInput="ngModel"
             type="text"
+            placeholder="Enter Event Title"
             [(ngModel)]="title"
             name="title"
+            [class.input-error]="titleInput.invalid && titleInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="titleInput.errors?.['required'] && titleInput.touched"
+          >
+            Event title is required.
+          </small>
         </label>
 
         <label>
           <span>Category</span>
           <select
+            #categoryInput="ngModel"
             [(ngModel)]="category"
             name="category"
+            [class.input-error]="categoryInput.invalid && categoryInput.touched"
             required
           >
             <option
@@ -45,136 +58,363 @@
               {{ item }}
             </option>
           </select>
+
+          <small
+            class="field-error"
+            *ngIf="categoryInput.errors?.['required'] && categoryInput.touched"
+          >
+            Category is required.
+          </small>
         </label>
 
         <label class="full-width">
           <span>Description</span>
-          <textarea
-            [(ngModel)]="description"
-            name="description"
-            required
-          ></textarea>
+
+          <div
+            class="editor"
+            [class.input-error]="descriptionInput.invalid && descriptionInput.touched"
+          >
+            <ngx-editor-menu
+              [editor]="editor"
+              [toolbar]="toolbar"
+            ></ngx-editor-menu>
+
+            <ngx-editor
+              #descriptionInput="ngModel"
+              [editor]="editor"
+              [(ngModel)]="description"
+              name="description"
+              outputFormat="html"
+              placeholder="Describe the event, schedule, speakers, and experience."
+              (focusOut)="descriptionInput.control.markAsTouched()"
+              required
+            ></ngx-editor>
+          </div>
+
+          <small
+            class="field-error"
+            *ngIf="descriptionInput.errors?.['required'] && descriptionInput.touched"
+          >
+            Description is required.
+          </small>
         </label>
 
         <label>
           <span>Start Date & Time</span>
           <input
+            #startDateTimeInput="ngModel"
             type="datetime-local"
             [(ngModel)]="startDateTime"
             name="startDateTime"
+            [class.input-error]="startDateTimeInput.invalid && startDateTimeInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="startDateTimeInput.errors?.['required'] && startDateTimeInput.touched"
+          >
+            Start date and time is required.
+          </small>
         </label>
 
         <label>
           <span>End Date & Time</span>
           <input
+            #endDateTimeInput="ngModel"
             type="datetime-local"
             [(ngModel)]="endDateTime"
             name="endDateTime"
+            [class.input-error]="endDateTimeInput.invalid && endDateTimeInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="endDateTimeInput.errors?.['required'] && endDateTimeInput.touched"
+          >
+            End date and time is required.
+          </small>
         </label>
 
         <label>
           <span>Venue</span>
           <input
+            #venueInput="ngModel"
             type="text"
+            placeholder="Enter Event Venue"
             [(ngModel)]="venue"
             name="venue"
+            [class.input-error]="venueInput.invalid && venueInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="venueInput.errors?.['required'] && venueInput.touched"
+          >
+            Venue is required.
+          </small>
         </label>
 
         <label>
           <span>City</span>
           <input
+            #cityInput="ngModel"
             type="text"
+            placeholder="Enter City"
             [(ngModel)]="city"
             name="city"
+            [class.input-error]="cityInput.invalid && cityInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="cityInput.errors?.['required'] && cityInput.touched"
+          >
+            City is required.
+          </small>
         </label>
 
         <label class="full-width">
           <span>Venue Address</span>
           <input
+            #addressInput="ngModel"
             type="text"
+            placeholder="Full address"
             [(ngModel)]="address"
             name="address"
+            [class.input-error]="addressInput.invalid && addressInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="addressInput.errors?.['required'] && addressInput.touched"
+          >
+            Venue address is required.
+          </small>
         </label>
 
         <label>
           <span>Ticket Price</span>
           <input
+            #priceInput="ngModel"
             type="number"
             min="0"
+            placeholder="0 for free"
             [(ngModel)]="price"
             name="price"
+            [class.input-error]="priceInput.invalid && priceInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="priceInput.errors?.['required'] && priceInput.touched"
+          >
+            Ticket price is required.
+          </small>
+
+          <small
+            class="field-error"
+            *ngIf="priceInput.errors?.['min'] && priceInput.touched"
+          >
+            Ticket price cannot be negative.
+          </small>
         </label>
 
         <label>
           <span>Total Seats</span>
           <input
+            #totalSeatsInput="ngModel"
             type="number"
             min="1"
+            placeholder="100"
             [(ngModel)]="totalSeats"
             name="totalSeats"
+            [class.input-error]="totalSeatsInput.invalid && totalSeatsInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="totalSeatsInput.errors?.['required'] && totalSeatsInput.touched"
+          >
+            Total seats is required.
+          </small>
+
+          <small
+            class="field-error"
+            *ngIf="totalSeatsInput.errors?.['min'] && totalSeatsInput.touched"
+          >
+            Total seats must be at least 1.
+          </small>
         </label>
 
         <label>
           <span>Organizer Name</span>
           <input
+            #organizerNameInput="ngModel"
             type="text"
+            placeholder="Organizer or company"
             [(ngModel)]="organizerName"
             name="organizerName"
+            [class.input-error]="organizerNameInput.invalid && organizerNameInput.touched"
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="organizerNameInput.errors?.['required'] && organizerNameInput.touched"
+          >
+            Organizer name is required.
+          </small>
         </label>
 
         <label>
           <span>Organizer Email</span>
           <input
+            #organizerEmailInput="ngModel"
             type="email"
+            placeholder="organizer@gmail.com"
             [(ngModel)]="organizerEmail"
             name="organizerEmail"
+            [class.input-error]="organizerEmailInput.invalid && organizerEmailInput.touched"
+            email
             required
           >
+
+          <small
+            class="field-error"
+            *ngIf="organizerEmailInput.errors?.['required'] && organizerEmailInput.touched"
+          >
+            Organizer email is required.
+          </small>
+
+          <small
+            class="field-error"
+            *ngIf="organizerEmailInput.errors?.['email'] && organizerEmailInput.touched"
+          >
+            Please enter a valid organizer email.
+          </small>
         </label>
 
-        <label>
-          <span>Cover Image Path</span>
-          <input
-            type="text"
-            [(ngModel)]="image"
-            name="image"
-          >
-        </label>
+        <div
+          class="upload-field"
+          [class.has-file]="image"
+        >
+          <div class="upload-copy">
+            <span>Cover Image</span>
+            <small>
+              Upload one image for the event card and banner.
+            </small>
+          </div>
 
-        <label>
-          <span>Gallery Paths</span>
           <input
-            type="text"
-            [(ngModel)]="galleryText"
-            name="galleryText"
+            #coverImageInput
+            class="file-input"
+            type="file"
+            accept="image/*"
+            (change)="onCoverImageSelected($event)"
           >
-        </label>
+
+          <div class="upload-actions">
+            <button
+              type="button"
+              class="upload-btn"
+              (click)="coverImageInput.click()"
+            >
+              {{ image ? 'Change Cover Image' : 'Upload Cover Image' }}
+            </button>
+
+            <button
+              *ngIf="image"
+              type="button"
+              class="clear-upload-btn"
+              (click)="clearCoverImage()"
+            >
+              Clear
+            </button>
+          </div>
+
+          <small
+            class="upload-status"
+            *ngIf="image"
+          >
+            Cover image selected
+          </small>
+        </div>
+
+        <div
+          class="upload-field"
+          [class.has-file]="galleryImages.length > 0"
+        >
+          <div class="upload-copy">
+            <span>Gallery Images</span>
+            <small>
+              Upload multiple images for the event details gallery.
+            </small>
+          </div>
+
+          <input
+            #galleryImageInput
+            class="file-input"
+            type="file"
+            accept="image/*"
+            multiple
+            (change)="onGalleryImagesSelected($event)"
+          >
+
+          <div class="upload-actions">
+            <button
+              type="button"
+              class="upload-btn"
+              (click)="galleryImageInput.click()"
+            >
+              {{
+                galleryImages.length > 0
+                  ? 'Change Gallery Images'
+                  : 'Upload Gallery Images'
+              }}
+            </button>
+
+            <button
+              *ngIf="galleryImages.length > 0"
+              type="button"
+              class="clear-upload-btn"
+              (click)="clearGalleryImages()"
+            >
+              Clear
+            </button>
+          </div>
+
+          <small
+            class="upload-status"
+            *ngIf="galleryImages.length > 0"
+          >
+            {{ galleryImages.length }} gallery image(s) selected
+          </small>
+        </div>
 
         <label class="full-width">
           <span>Rules / Contact / Additional Info</span>
           <textarea
+            placeholder="Rules, contact number, entry notes, refund policy."
             [(ngModel)]="additionalInfo"
             name="additionalInfo"
           ></textarea>
         </label>
 
       </div>
+
+      <p
+        class="error-message"
+        *ngIf="validationMessage"
+      >
+        {{ validationMessage }}
+      </p>
 
       <button type="submit">
         Update Event

@@ -57,13 +57,8 @@ export class EventList {
     const keyword =
       this.searchText.trim().toLowerCase();
 
-    const today =
-      new Date();
-
-    today.setHours(0, 0, 0, 0);
-
     this.events =
-      this.eventService.getActiveEvents().filter(event => {
+      this.eventService.getUpcomingActiveEvents().filter(event => {
 
         const matchesKeyword =
           !keyword ||
@@ -89,18 +84,11 @@ export class EventList {
         const matchesPrice =
           this.matchesPriceFilter(event.price);
 
-        const eventDate =
-          new Date(event.date);
-
-        const isUpcoming =
-          eventDate >= today;
-
         const matchesStartDate =
           !this.filters.startDate ||
-          eventDate >= new Date(this.filters.startDate);
+          this.getEventDate(event) === this.filters.startDate;
 
         return (
-          isUpcoming &&
           matchesKeyword &&
           matchesCategory &&
           matchesCity &&
@@ -139,6 +127,14 @@ export class EventList {
         minute: '2-digit'
       }
     );
+
+  }
+
+  private getEventDate(event: Event): string {
+
+    return event.startDateTime
+      ? event.startDateTime.slice(0, 10)
+      : event.date;
 
   }
 

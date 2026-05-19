@@ -28,7 +28,9 @@ export class Dashboard {
     private eventService: EventService,
     private bookingService: BookingService
   ) {
-    const events = this.eventService.getEvents();
+    const events =
+      this.eventService.getUpcomingActiveEvents();
+
     const bookings =
       this.bookingService.getBookings().filter(
         booking => booking.status === 'Confirmed'

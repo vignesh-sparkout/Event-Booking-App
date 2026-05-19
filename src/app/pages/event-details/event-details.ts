@@ -34,7 +34,7 @@ export class EventDetails {
   loadEvent(): void {
 
     this.event =
-      this.eventService.getEventById(this.eventId);
+      this.eventService.getUpcomingActiveEventById(this.eventId);
 
   }
 

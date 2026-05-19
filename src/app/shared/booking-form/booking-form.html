@@ -1,38 +1,124 @@
-<div class="booking-form">
+<form
+  #bookingForm="ngForm"
+  class="booking-form"
+  (ngSubmit)="confirmBooking(bookingForm)"
+>
 
   <h2>
     Book Tickets
   </h2>
 
-  <input
-    type="text"
-    placeholder="Your Name"
-    [(ngModel)]="name"
-    [disabled]="bookingSuccess"
-  >
+  <label>
+    <input
+      #nameInput="ngModel"
+      type="text"
+      placeholder="Your Name"
+      [(ngModel)]="name"
+      name="name"
+      [class.input-error]="nameInput.invalid && nameInput.touched"
+      [disabled]="bookingSuccess"
+      required
+    >
 
-  <input
-    type="email"
-    placeholder="Your Email"
-    [(ngModel)]="email"
-    [disabled]="bookingSuccess"
-  >
+    <small
+      class="field-error"
+      *ngIf="nameInput.errors?.['required'] && nameInput.touched"
+    >
+      Name is required.
+    </small>
+  </label>
 
-  <input
-    type="text"
-    placeholder="Phone Number"
-    [(ngModel)]="phone"
-    [disabled]="bookingSuccess"
-  >
+  <label>
+    <input
+      #emailInput="ngModel"
+      type="email"
+      placeholder="Your Email"
+      [(ngModel)]="email"
+      name="email"
+      [class.input-error]="emailInput.invalid && emailInput.touched"
+      [disabled]="bookingSuccess"
+      email
+      required
+    >
 
-  <input
-    type="number"
-    placeholder="Number of Tickets"
-    min="1"
-    [max]="availableSeats"
-    [(ngModel)]="tickets"
-    [disabled]="bookingSuccess"
-  >
+    <small
+      class="field-error"
+      *ngIf="emailInput.errors?.['required'] && emailInput.touched"
+    >
+      Email is required.
+    </small>
+
+    <small
+      class="field-error"
+      *ngIf="emailInput.errors?.['email'] && emailInput.touched"
+    >
+      Please enter a valid email address.
+    </small>
+  </label>
+
+  <label>
+    <input
+      #phoneInput="ngModel"
+      type="tel"
+      placeholder="Phone Number with country code"
+      [(ngModel)]="phone"
+      name="phone"
+      [class.input-error]="phoneInput.invalid && phoneInput.touched"
+      [disabled]="bookingSuccess"
+      [pattern]="phonePattern"
+      required
+    >
+
+    <small
+      class="field-error"
+      *ngIf="phoneInput.errors?.['required'] && phoneInput.touched"
+    >
+      Phone number is required.
+    </small>
+
+    <small
+      class="field-error"
+      *ngIf="phoneInput.errors?.['pattern'] && phoneInput.touched"
+    >
+      Enter phone number with country code, like +91 9876543210.
+    </small>
+  </label>
+
+  <label>
+    <input
+      #ticketsInput="ngModel"
+      type="number"
+      placeholder="Number of Tickets"
+      min="1"
+      [max]="availableSeats"
+      [(ngModel)]="tickets"
+      name="tickets"
+      [class.input-error]="ticketsInput.invalid && ticketsInput.touched"
+      [disabled]="bookingSuccess"
+      required
+    >
+
+    <small
+      class="field-error"
+      *ngIf="ticketsInput.errors?.['required'] && ticketsInput.touched"
+    >
+      Number of tickets is required.
+    </small>
+
+    <small
+      class="field-error"
+      *ngIf="ticketsInput.errors?.['min'] && ticketsInput.touched"
+    >
+      Please select at least 1 ticket.
+    </small>
+
+    <small
+      class="field-error"
+      *ngIf="ticketsInput.errors?.['max'] && ticketsInput.touched"
+    >
+      Tickets cannot be more than available seats.
+    </small>
+  </label>
 
   <p
     class="error-message"
@@ -54,7 +140,7 @@
   </p>
 
   <button
-    (click)="confirmBooking()"
+    type="submit"
     [disabled]="availableSeats === 0 || bookingSuccess"
   >
     {{
@@ -86,4 +172,4 @@
 
   </div>
 
-</div>
+</form>

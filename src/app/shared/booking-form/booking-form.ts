@@ -5,7 +5,10 @@ import {
   Output
 } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  NgForm
+} from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
 
@@ -53,6 +56,8 @@ export class BookingForm {
   bookingId = '';
   seatError = '';
   formError = '';
+  readonly phonePattern =
+    '^\\+[1-9][0-9]{0,3}[\\s-]?[0-9]{6,14}$';
 
   constructor(
     private bookingService: BookingService,
@@ -65,15 +70,13 @@ export class BookingForm {
 
   }
 
-  confirmBooking(): void {
+  confirmBooking(form: NgForm): void {
 
-    if (!this.name || !this.email || !this.phone) {
-
-      this.formError =
-        'Please enter name, email, and phone number.';
-
+    if (form.invalid) {
+      this.formError = '';
+      this.seatError = '';
+      form.control.markAllAsTouched();
       return;
-
     }
 
     if (this.tickets < 1) {
@@ -104,9 +107,9 @@ export class BookingForm {
       eventId: this.eventId,
       eventTitle: this.eventTitle,
       eventDate: this.eventDate,
-      name: this.name,
-      email: this.email,
-      phone: this.phone,
+      name: this.name.trim(),
+      email: this.email.trim(),
+      phone: this.phone.trim(),
       tickets: this.tickets,
       totalAmount: this.totalAmount,
       bookingDate: new Date().toISOString(),

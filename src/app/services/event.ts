@@ -152,6 +152,32 @@ export class EventService {
 
   }
 
+  getUpcomingActiveEvents(): Event[] {
+
+    return this.events
+      .filter(
+        event =>
+          event.status === 'Active' &&
+          this.isUpcomingEvent(event)
+      )
+      .sort(
+        (firstEvent, secondEvent) =>
+          this.getEventStartTime(firstEvent) -
+          this.getEventStartTime(secondEvent)
+      );
+
+  }
+
+  getUpcomingActiveEventById(
+    id: number
+  ): Event | undefined {
+
+    return this.getUpcomingActiveEvents().find(
+      event => event.id === id
+    );
+
+  }
+
   getEventById(
     id: number
   ): Event | undefined {
@@ -275,6 +301,30 @@ export class EventService {
       'events',
       JSON.stringify(this.events)
     );
+
+  }
+
+  private isUpcomingEvent(event: Event): boolean {
+
+    const eventEnd =
+      new Date(event.endDateTime || event.date);
+
+    if (Number.isNaN(eventEnd.getTime())) {
+      return true;
+    }
+
+    return eventEnd >= new Date();
+
+  }
+
+  private getEventStartTime(event: Event): number {
+
+    const eventStart =
+      new Date(event.startDateTime || event.date);
+
+    return Number.isNaN(eventStart.getTime())
+      ? Number.MAX_SAFE_INTEGER
+      : eventStart.getTime();
 
   }
 

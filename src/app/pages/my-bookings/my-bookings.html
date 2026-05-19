@@ -1,88 +1,156 @@
-<div class="booking-container">
+<section class="booking-container">
 
   <div class="page-header">
-    <p class="eyebrow">
-      Attendee
-    </p>
+    <div>
+      <p class="eyebrow">
+        Attendee
+      </p>
 
-    <h1>
-      My Bookings
-    </h1>
+      <h1>
+        My Bookings
+      </h1>
+
+      <p class="header-copy">
+        Review your tickets, booking status, and upcoming event details.
+      </p>
+    </div>
+
+    <a
+      routerLink="/events"
+      class="browse-link"
+    >
+      Browse Events
+    </a>
+  </div>
+
+  <div
+    class="summary-grid"
+    *ngIf="bookings.length > 0"
+  >
+    <article>
+      <span>Total Bookings</span>
+      <strong>{{ bookings.length }}</strong>
+    </article>
+
+    <article>
+      <span>Confirmed</span>
+      <strong>{{ confirmedBookingsCount }}</strong>
+    </article>
+
+    <article>
+      <span>Upcoming</span>
+      <strong>{{ upcomingBookingsCount }}</strong>
+    </article>
+
+    <article>
+      <span>Tickets</span>
+      <strong>{{ totalTickets }}</strong>
+    </article>
   </div>
 
   <div
     class="empty-state"
     *ngIf="bookings.length === 0"
   >
-    No bookings yet.
+    <h2>
+      No bookings yet
+    </h2>
+
+    <p>
+      Your confirmed tickets will appear here after you book an event.
+    </p>
+
+    <a routerLink="/events">
+      Find Events
+    </a>
   </div>
 
-  <div class="booking-grid">
+  <div
+    class="booking-grid"
+    *ngIf="bookings.length > 0"
+  >
     <article
       class="booking-card"
       *ngFor="let booking of bookings"
     >
 
       <div class="card-top">
-        <h2>
-          {{ booking.eventTitle }}
-        </h2>
+        <div>
+          <p class="booking-id">
+            {{ booking.bookingId }}
+          </p>
 
-        <span
-          class="status"
-          [class.cancelled]="booking.status === 'Cancelled'"
-        >
-          {{ booking.status }}
-        </span>
+          <h2>
+            {{ booking.eventTitle }}
+          </h2>
+        </div>
 
-        <span
-          class="timing"
-          [class.past]="getBookingTiming(booking) === 'Past'"
-        >
-          {{ getBookingTiming(booking) }}
-        </span>
+        <div class="badge-group">
+          <span
+            class="status"
+            [class.cancelled]="booking.status === 'Cancelled'"
+          >
+            {{ booking.status }}
+          </span>
+
+          <span
+            class="timing"
+            [class.past]="getBookingTiming(booking) === 'Past'"
+          >
+            {{ getBookingTiming(booking) }}
+          </span>
+        </div>
       </div>
 
-      <p>
-        Booking ID:
-        <strong>{{ booking.bookingId }}</strong>
-      </p>
+      <div class="detail-grid">
+        <div>
+          <span>Event Date</span>
+          <strong>{{ booking.eventDate | date: 'mediumDate' }}</strong>
+        </div>
 
-      <p>
-        Event Date:
-        <strong>{{ booking.eventDate | date: 'mediumDate' }}</strong>
-      </p>
+        <div>
+          <span>Booked On</span>
+          <strong>{{ booking.bookingDate | date: 'mediumDate' }}</strong>
+        </div>
 
-      <p>
-        Name:
-        <strong>{{ booking.name }}</strong>
-      </p>
+        <div>
+          <span>Name</span>
+          <strong>{{ booking.name }}</strong>
+        </div>
 
-      <p>
-        Tickets:
-        <strong>{{ booking.tickets }}</strong>
-      </p>
+        <div>
+          <span>Tickets</span>
+          <strong>{{ booking.tickets }}</strong>
+        </div>
 
-      <p>
-        Amount:
-        <strong>
-          {{ booking.totalAmount === 0 ? 'Free' : 'Rs. ' + booking.totalAmount }}
-        </strong>
-      </p>
+        <div>
+          <span>Amount</span>
+          <strong>
+            {{ booking.totalAmount === 0 ? 'Free' : 'Rs. ' + booking.totalAmount }}
+          </strong>
+        </div>
 
-      <p>
-        Booked On:
-        <strong>{{ booking.bookingDate | date: 'medium' }}</strong>
-      </p>
+        <div>
+          <span>Contact</span>
+          <strong>{{ booking.phone }}</strong>
+        </div>
+      </div>
 
-      <button
-        *ngIf="canCancel(booking)"
-        (click)="cancelBooking(booking.bookingId)"
-      >
-        Cancel Booking
-      </button>
+      <div class="card-footer">
+        <span>
+          {{ booking.email }}
+        </span>
+
+        <button
+          *ngIf="canCancel(booking)"
+          type="button"
+          (click)="cancelBooking(booking.bookingId)"
+        >
+          Cancel Booking
+        </button>
+      </div>
 
     </article>
   </div>
 
-</div>
+</section>

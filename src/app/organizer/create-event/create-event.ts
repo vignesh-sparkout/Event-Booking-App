@@ -1,6 +1,8 @@
 import {
   Component,
   ElementRef,
+  OnDestroy,
+  OnInit,
   ViewChild
 } from '@angular/core';
 
@@ -10,6 +12,12 @@ import {
   FormsModule,
   NgForm
 } from '@angular/forms';
+
+import {
+  Editor,
+  NgxEditorModule,
+  Toolbar
+} from 'ngx-editor';
 
 import { Sidebar } from '../../layout/sidebar/sidebar';
 
@@ -23,15 +31,18 @@ import { Event } from '../../Models/event.model';
   imports: [
     Sidebar,
     CommonModule,
-    FormsModule
+    FormsModule,
+    NgxEditorModule
   ],
   templateUrl: './create-event.html',
   styleUrl: './create-event.css'
 })
-export class CreateEvent {
+export class CreateEvent implements OnInit, OnDestroy {
 
-  @ViewChild('descriptionEditor')
-  private descriptionEditor?: ElementRef<HTMLElement>;
+  @ViewChild('coverImageInput')
+  private coverImageInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('galleryImageInput')
+  private galleryImageInput?: ElementRef<HTMLInputElement>;
 
   categories = [
     'Music',
@@ -54,17 +65,71 @@ export class CreateEvent {
   organizerEmail = '';
   price = 0;
   image = '';
-  galleryText = '';
+  galleryImages: string[] = [];
   totalSeats = 0;
   additionalInfo = '';
   validationMessage = '';
+  editor!: Editor;
+  toolbar: Toolbar = [
+    [
+      'bold',
+      'italic',
+      'underline',
+      'strike'
+    ],
+    [
+      'blockquote',
+      'ordered_list',
+      'bullet_list'
+    ],
+    [
+      {
+        heading: [
+          'h2',
+          'h3',
+          'h4'
+        ]
+      }
+    ],
+    [
+      'link',
+      'text_color',
+      'background_color'
+    ],
+    [
+      'align_left',
+      'align_center',
+      'align_right',
+      'align_justify'
+    ],
+    [
+      'undo',
+      'redo',
+      'format_clear'
+    ]
+  ];
 
   private readonly emailPattern =
     /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  private readonly uploadImageMaxSize = 900;
+  private readonly uploadImageQuality = 0.82;
 
   constructor(
     private eventService: EventService
   ) {}
+
+  ngOnInit(): void {
+
+    this.editor =
+      new Editor();
+
+  }
+
+  ngOnDestroy(): void {
+
+    this.editor.destroy();
+
+  }
 
   createEvent(form: NgForm): void {
 
@@ -101,6 +166,13 @@ export class CreateEvent {
       return;
     }
 
+    if (new Date(this.startDateTime) < new Date()) {
+      this.validationMessage =
+        'Start date and time cannot be in the past.';
+      this.markFieldAsTouched(form, 'startDateTime');
+      return;
+    }
+
     if (
       this.startDateTime &&
       this.endDateTime &&
@@ -113,13 +185,9 @@ export class CreateEvent {
     }
 
     const coverImage =
-      this.image || 'images/workshop-event.jpg';
-
-    const gallery =
-      this.galleryText
-        .split(',')
-        .map(image => image.trim())
-        .filter(Boolean);
+      this.image ||
+      this.galleryImages[0] ||
+      'images/workshop-event.jpg';
 
     const newEvent: Event = {
       id: Date.now(),
@@ -137,8 +205,8 @@ export class CreateEvent {
       price: Number(this.price),
       image: coverImage,
       gallery:
-        gallery.length > 0
-          ? gallery
+        this.galleryImages.length > 0
+          ? this.galleryImages
           : [coverImage],
       totalSeats: Number(this.totalSeats),
       availableSeats: Number(this.totalSeats),
@@ -163,33 +231,99 @@ export class CreateEvent {
       organizerEmail: '',
       price: 0,
       image: '',
-      galleryText: '',
       additionalInfo: '',
       totalSeats: 0
     });
-    this.clearDescriptionEditor();
+    this.clearUploadInputs();
+
+  }
+
+  async onCoverImageSelected(event: globalThis.Event): Promise<void> {
+
+    const input =
+      event.target as HTMLInputElement;
+
+    const file =
+      input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    try {
+      this.image =
+        await this.readImageAsCompressedDataUrl(file);
+      this.validationMessage = '';
+    } catch {
+      this.validationMessage =
+        'Unable to upload cover image. Please choose a valid image file.';
+      input.value = '';
+    }
+
+  }
+
+  async onGalleryImagesSelected(event: globalThis.Event): Promise<void> {
+
+    const input =
+      event.target as HTMLInputElement;
+
+    const files =
+      Array.from(input.files || []);
+
+    if (files.length === 0) {
+      return;
+    }
+
+    try {
+      this.galleryImages =
+        await Promise.all(
+          files.map(file =>
+            this.readImageAsCompressedDataUrl(file)
+          )
+        );
+      this.validationMessage = '';
+    } catch {
+      this.galleryImages = [];
+      this.validationMessage =
+        'Unable to upload gallery images. Please choose valid image files.';
+      input.value = '';
+    }
+
+  }
+
+  clearCoverImage(): void {
+
+    this.image = '';
+
+    if (this.coverImageInput) {
+      this.coverImageInput.nativeElement.value = '';
+    }
+
+  }
+
+  clearGalleryImages(): void {
+
+    this.galleryImages = [];
+
+    if (this.galleryImageInput) {
+      this.galleryImageInput.nativeElement.value = '';
+    }
 
   }
 
   applyRichText(command: string): void {
 
-    this.descriptionEditor?.nativeElement.focus();
-    document.execCommand(command, false);
-    this.syncDescriptionFromEditor();
+    void command;
 
   }
 
-  syncDescriptionFromEditor(): void {
+  applyBlockFormat(format: string): void {
 
-    const html =
-      this.descriptionEditor?.nativeElement.innerHTML || '';
-
-    this.description =
-      this.stripHtml(html).length > 0
-        ? html
-        : '';
+    void format;
 
   }
+
+  addDescriptionLink(): void {}
 
   private resetForm(): void {
 
@@ -205,7 +339,7 @@ export class CreateEvent {
     this.organizerEmail = '';
     this.price = 0;
     this.image = '';
-    this.galleryText = '';
+    this.galleryImages = [];
     this.totalSeats = 0;
     this.additionalInfo = '';
     this.validationMessage = '';
@@ -307,11 +441,80 @@ export class CreateEvent {
 
   }
 
-  private clearDescriptionEditor(): void {
+  private clearUploadInputs(): void {
 
-    if (this.descriptionEditor) {
-      this.descriptionEditor.nativeElement.innerHTML = '';
+    if (this.coverImageInput) {
+      this.coverImageInput.nativeElement.value = '';
     }
+
+    if (this.galleryImageInput) {
+      this.galleryImageInput.nativeElement.value = '';
+    }
+
+  }
+
+  private readImageAsCompressedDataUrl(file: File): Promise<string> {
+
+    return new Promise((resolve, reject) => {
+      const reader =
+        new FileReader();
+
+      reader.onload = () => {
+        const image =
+          new Image();
+
+        image.onload = () => {
+          const scale =
+            Math.min(
+              this.uploadImageMaxSize / image.width,
+              this.uploadImageMaxSize / image.height,
+              1
+            );
+
+          const canvas =
+            document.createElement('canvas');
+
+          canvas.width =
+            Math.round(image.width * scale);
+          canvas.height =
+            Math.round(image.height * scale);
+
+          const context =
+            canvas.getContext('2d');
+
+          if (!context) {
+            reject(new Error('Unable to process image.'));
+            return;
+          }
+
+          context.drawImage(
+            image,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
+
+          resolve(
+            canvas.toDataURL(
+              'image/jpeg',
+              this.uploadImageQuality
+            )
+          );
+        };
+
+        image.onerror =
+          () => reject(new Error('Please upload a valid image file.'));
+
+        image.src =
+          String(reader.result || '');
+      };
+
+      reader.onerror =
+        () => reject(reader.error);
+
+      reader.readAsDataURL(file);
+    });
 
   }
 

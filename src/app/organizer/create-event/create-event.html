@@ -31,7 +31,7 @@
           <input
             #titleInput="ngModel"
             type="text"
-            placeholder="Angular Conference 2026"
+            placeholder="Enter Event Title"
             [(ngModel)]="title"
             name="title"
             [class.input-error]="titleInput.invalid && titleInput.touched"
@@ -74,7 +74,7 @@
         <label class="full-width">
           <span>Description</span>
 
-          <div class="rich-text-toolbar">
+          <div class="rich-text-toolbar legacy-rich-text-toolbar">
             <button
               type="button"
               title="Bold"
@@ -124,26 +124,128 @@
             </button>
           </div>
 
-          <div
-            #descriptionEditor
-            class="rich-text-editor"
-            [class.input-error]="descriptionInput.invalid && descriptionInput.touched"
-            contenteditable="true"
-            role="textbox"
-            aria-label="Description"
-            data-placeholder="Describe the event, schedule, speakers, and experience."
-            (input)="syncDescriptionFromEditor()"
-            (blur)="descriptionInput.control.markAsTouched()"
-          ></div>
+          <div class="rich-text-panel">
+            <div class="rich-text-menu">
+              <select
+                aria-label="Text style"
+                (change)="applyBlockFormat($any($event.target).value)"
+              >
+                <option value="P">Paragraph</option>
+                <option value="H2">Heading</option>
+                <option value="H3">Subheading</option>
+                <option value="BLOCKQUOTE">Quote</option>
+              </select>
 
-          <textarea
-            #descriptionInput="ngModel"
-            class="hidden-rich-input"
-            [(ngModel)]="description"
-            name="description"
+              <div class="toolbar-group">
+                <button
+                  type="button"
+                  title="Bold"
+                  (click)="applyRichText('bold')"
+                >
+                  B
+                </button>
+
+                <button
+                  type="button"
+                  title="Italic"
+                  (click)="applyRichText('italic')"
+                >
+                  I
+                </button>
+
+                <button
+                  type="button"
+                  title="Underline"
+                  (click)="applyRichText('underline')"
+                >
+                  U
+                </button>
+              </div>
+
+              <div class="toolbar-group">
+                <button
+                  type="button"
+                  title="Bullet list"
+                  (click)="applyRichText('insertUnorderedList')"
+                >
+                  List
+                </button>
+
+                <button
+                  type="button"
+                  title="Numbered list"
+                  (click)="applyRichText('insertOrderedList')"
+                >
+                  1.
+                </button>
+              </div>
+
+              <div class="toolbar-group">
+                <button
+                  type="button"
+                  title="Align left"
+                  (click)="applyRichText('justifyLeft')"
+                >
+                  Left
+                </button>
+
+                <button
+                  type="button"
+                  title="Center"
+                  (click)="applyRichText('justifyCenter')"
+                >
+                  Center
+                </button>
+              </div>
+
+              <div class="toolbar-group">
+                <button
+                  type="button"
+                  title="Add link"
+                  (click)="addDescriptionLink()"
+                >
+                  Link
+                </button>
+
+                <button
+                  type="button"
+                  title="Undo"
+                  (click)="applyRichText('undo')"
+                >
+                  Undo
+                </button>
+
+                <button
+                  type="button"
+                  title="Clear formatting"
+                  (click)="applyRichText('removeFormat')"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="editor"
             [class.input-error]="descriptionInput.invalid && descriptionInput.touched"
-            required
-          ></textarea>
+          >
+            <ngx-editor-menu
+              [editor]="editor"
+              [toolbar]="toolbar"
+            ></ngx-editor-menu>
+
+            <ngx-editor
+              #descriptionInput="ngModel"
+              [editor]="editor"
+              [(ngModel)]="description"
+              name="description"
+              outputFormat="html"
+              placeholder="Describe the event, schedule, speakers, and experience."
+              (focusOut)="descriptionInput.control.markAsTouched()"
+              required
+            ></ngx-editor>
+          </div>
 
           <small
             class="field-error"
@@ -196,7 +298,7 @@
           <input
             #venueInput="ngModel"
             type="text"
-            placeholder="Chennai Trade Centre"
+            placeholder="Enter Event Venue"
             [(ngModel)]="venue"
             name="venue"
             [class.input-error]="venueInput.invalid && venueInput.touched"
@@ -216,7 +318,7 @@
           <input
             #cityInput="ngModel"
             type="text"
-            placeholder="Chennai"
+            placeholder="Enter City"
             [(ngModel)]="city"
             name="city"
             [class.input-error]="cityInput.invalid && cityInput.touched"
@@ -332,7 +434,7 @@
           <input
             #organizerEmailInput="ngModel"
             type="email"
-            placeholder="organizer@example.com"
+            placeholder="organizer@gmail.com"
             [(ngModel)]="organizerEmail"
             name="organizerEmail"
             [class.input-error]="organizerEmailInput.invalid && organizerEmailInput.touched"
@@ -355,25 +457,102 @@
           </small>
         </label>
 
-        <label>
-          <span>Cover Image Path</span>
-          <input
-            type="text"
-            placeholder="images/workshop-event.jpg"
-            [(ngModel)]="image"
-            name="image"
-          >
-        </label>
+        <div
+          class="upload-field"
+          [class.has-file]="image"
+        >
+          <div class="upload-copy">
+            <span>Cover Image</span>
+            <small>
+              Upload one image for the event card and banner.
+            </small>
+          </div>
 
-        <label>
-          <span>Gallery Paths</span>
           <input
-            type="text"
-            placeholder="images/a.jpg, images/b.jpg"
-            [(ngModel)]="galleryText"
-            name="galleryText"
+            #coverImageInput
+            class="file-input"
+            type="file"
+            accept="image/*"
+            (change)="onCoverImageSelected($event)"
           >
-        </label>
+
+          <div class="upload-actions">
+            <button
+              type="button"
+              class="upload-btn"
+              (click)="coverImageInput.click()"
+            >
+              {{ image ? 'Change Cover Image' : 'Upload Cover Image' }}
+            </button>
+
+            <button
+              *ngIf="image"
+              type="button"
+              class="clear-upload-btn"
+              (click)="clearCoverImage()"
+            >
+              Clear
+            </button>
+          </div>
+
+          <small
+            class="upload-status"
+            *ngIf="image"
+          >
+            Cover image selected
+          </small>
+        </div>
+
+        <div
+          class="upload-field"
+          [class.has-file]="galleryImages.length > 0"
+        >
+          <div class="upload-copy">
+            <span>Gallery Images</span>
+            <small>
+              Upload multiple images for the event details gallery.
+            </small>
+          </div>
+
+          <input
+            #galleryImageInput
+            class="file-input"
+            type="file"
+            accept="image/*"
+            multiple
+            (change)="onGalleryImagesSelected($event)"
+          >
+
+          <div class="upload-actions">
+            <button
+              type="button"
+              class="upload-btn"
+              (click)="galleryImageInput.click()"
+            >
+              {{
+                galleryImages.length > 0
+                  ? 'Change Gallery Images'
+                  : 'Upload Gallery Images'
+              }}
+            </button>
+
+            <button
+              *ngIf="galleryImages.length > 0"
+              type="button"
+              class="clear-upload-btn"
+              (click)="clearGalleryImages()"
+            >
+              Clear
+            </button>
+          </div>
+
+          <small
+            class="upload-status"
+            *ngIf="galleryImages.length > 0"
+          >
+            {{ galleryImages.length }} gallery image(s) selected
+          </small>
+        </div>
 
         <label class="full-width">
           <span>Rules / Contact / Additional Info</span>

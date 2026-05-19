@@ -1,7 +1,9 @@
 .edit-layout {
   display: flex;
   min-height: 100vh;
-  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  background:
+    radial-gradient(circle at top right, rgba(255, 186, 73, 0.18), transparent 28%),
+    linear-gradient(180deg, #fff9f1 0%, #f4f7fb 100%);
 }
 
 .form-container {
@@ -9,9 +11,13 @@
   padding: 36px;
 }
 
+.form-header {
+  max-width: 760px;
+}
+
 .eyebrow {
   margin: 0 0 8px;
-  color: #2563eb;
+  color: #b35c00;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -19,17 +25,18 @@
 
 .form-header h1 {
   margin: 0;
-  color: #162033;
+  font-size: 2.2rem;
+  color: #14213d;
 }
 
 .event-form {
-  max-width: 920px;
-  margin-top: 26px;
+  max-width: 900px;
+  margin-top: 28px;
   padding: 28px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(20, 33, 61, 0.08);
   border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 24px 55px rgba(20, 33, 61, 0.08);
 }
 
 .input-grid {
@@ -42,12 +49,18 @@
   grid-column: 1 / -1;
 }
 
-label {
+label,
+.upload-field {
   display: flex;
   flex-direction: column;
   gap: 8px;
   color: #233044;
   font-weight: 600;
+}
+
+label span,
+.upload-copy span {
+  font-size: 0.95rem;
 }
 
 input,
@@ -59,11 +72,187 @@ textarea {
   border-radius: 8px;
   background: #fbfcfe;
   font: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #f77f00;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(247, 127, 0, 0.12);
+}
+
+input.input-error,
+select.input-error,
+textarea.input-error,
+.editor.input-error {
+  border-color: #b91c1c;
+}
+
+input.input-error:focus,
+select.input-error:focus,
+textarea.input-error:focus {
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.12);
 }
 
 textarea {
-  min-height: 120px;
+  min-height: 130px;
   resize: vertical;
+}
+
+.editor {
+  overflow: hidden;
+  border: 1px solid #d8dde6;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(20, 33, 61, 0.06);
+}
+
+:host ::ng-deep .NgxEditor__MenuBar {
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+  padding: 10px;
+}
+
+:host ::ng-deep .NgxEditor {
+  min-height: 220px;
+  border: none;
+  border-radius: 0;
+  color: #233044;
+  font: inherit;
+  line-height: 1.65;
+}
+
+:host ::ng-deep .NgxEditor__Content {
+  min-height: 220px;
+  padding: 18px;
+}
+
+:host ::ng-deep .NgxEditor__Content p {
+  margin: 0 0 10px;
+}
+
+:host ::ng-deep .NgxEditor__Content h2,
+:host ::ng-deep .NgxEditor__Content h3,
+:host ::ng-deep .NgxEditor__Content h4 {
+  margin: 10px 0;
+  color: #14213d;
+  line-height: 1.25;
+}
+
+:host ::ng-deep .NgxEditor__Content ul,
+:host ::ng-deep .NgxEditor__Content ol {
+  margin: 8px 0 8px 24px;
+}
+
+:host ::ng-deep .NgxEditor__Content blockquote {
+  margin: 10px 0;
+  padding-left: 14px;
+  border-left: 3px solid #f77f00;
+  color: #4b5563;
+}
+
+:host ::ng-deep .NgxEditor__Content a {
+  color: #0c7c90;
+  font-weight: 700;
+}
+
+.upload-field {
+  min-height: 150px;
+  justify-content: space-between;
+  padding: 18px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.upload-field:hover {
+  border-color: #f77f00;
+  background: #fffaf3;
+}
+
+.upload-field.has-file {
+  border-style: solid;
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+
+.upload-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.upload-copy small {
+  color: #64748b;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.upload-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-btn {
+  width: fit-content;
+  margin-top: 0;
+  padding: 11px 18px;
+  background: #0c7c90;
+  box-shadow: 0 10px 20px rgba(12, 124, 144, 0.16);
+}
+
+.upload-btn:hover {
+  background: #096b7d;
+}
+
+.clear-upload-btn {
+  width: fit-content;
+  margin-top: 0;
+  padding: 11px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff;
+  color: #b91c1c;
+  cursor: pointer;
+  font-weight: 800;
+  box-shadow: none;
+}
+
+.clear-upload-btn:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.upload-status {
+  color: #15803d;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.field-error,
+.error-message {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.field-error {
+  font-size: 0.84rem;
+}
+
+.error-message {
+  margin: 18px 0 0;
 }
 
 button {
@@ -71,10 +260,15 @@ button {
   padding: 13px 22px;
   border: none;
   border-radius: 8px;
-  background: #162033;
+  background: #0c7c90;
   color: #fff;
   cursor: pointer;
   font-weight: 700;
+  box-shadow: 0 14px 28px rgba(12, 124, 144, 0.22);
+}
+
+button:hover {
+  background: #096b7d;
 }
 
 @media (max-width: 768px) {

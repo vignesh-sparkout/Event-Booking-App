@@ -17,6 +17,27 @@ input {
   font: inherit;
 }
 
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+input:focus {
+  border-color: #0c7c90;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(12, 124, 144, 0.12);
+}
+
+input.input-error {
+  border-color: #b91c1c;
+}
+
+input.input-error:focus {
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.12);
+}
+
 button {
   padding: 12px;
   border: none;
@@ -42,6 +63,12 @@ button:disabled {
   margin: 0;
   color: #b91c1c;
   font-size: 14px;
+}
+
+.field-error {
+  color: #b91c1c;
+  font-size: 0.84rem;
+  font-weight: 700;
 }
 
 .success-message {

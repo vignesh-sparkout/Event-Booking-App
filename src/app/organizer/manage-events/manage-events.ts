@@ -29,9 +29,18 @@ export class ManageEvents {
 
   }
 
-  cancelEvent(id: number): void {
+  cancelEvent(event: Event): void {
 
-    this.eventService.cancelEvent(id);
+    const confirmed =
+      window.confirm(
+        `Are you sure you want to cancel "${event.title}"?`
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.eventService.cancelEvent(event.id);
 
     this.loadActiveEvents();
 
@@ -52,7 +61,7 @@ export class ManageEvents {
   private loadActiveEvents(): void {
 
     this.events =
-      this.eventService.getActiveEvents();
+      this.eventService.getUpcomingActiveEvents();
 
   }
 
