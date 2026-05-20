@@ -98,31 +98,31 @@
     *ngIf="bookings.length > 0"
   >
     <article
-      class="booking-card"
+      class="booking-card group ring-1 ring-cyan-900/5 transition duration-300 ease-out hover:-translate-y-1 hover:ring-cyan-700/20"
       *ngFor="let booking of bookings"
     >
 
-      <div class="card-top">
+      <div class="card-top transition duration-300 group-hover:bg-cyan-50/90">
         <div>
-          <p class="booking-id">
+          <p class="booking-id shadow-sm transition duration-300 group-hover:bg-cyan-100">
             {{ booking.bookingId }}
           </p>
 
-          <h2>
+          <h2 class="transition duration-300 group-hover:text-cyan-950">
             {{ booking.eventTitle }}
           </h2>
         </div>
 
         <div class="badge-group">
           <span
-            class="status"
+            class="status shadow-sm transition duration-300 group-hover:scale-105"
             [class.cancelled]="booking.status === 'Cancelled'"
           >
             {{ booking.status }}
           </span>
 
           <span
-            class="timing"
+            class="timing shadow-sm transition duration-300 group-hover:scale-105"
             [class.past]="getBookingTiming(booking) === 'Past'"
           >
             {{ getBookingTiming(booking) }}
@@ -131,29 +131,29 @@
       </div>
 
       <div class="detail-grid">
-        <div>
+        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
           <span>Event Date</span>
           <strong>{{ booking.eventDate | date: 'mediumDate' }}</strong>
         </div>
 
-        <div>
+        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
           <span>Booked On</span>
           <strong>{{ booking.bookingDate | date: 'mediumDate' }}</strong>
         </div>
 
-        <div>
+        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
           <span>Name</span>
           <strong>{{ booking.name }}</strong>
         </div>
 
-        <div>
+        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
           <span>Tickets</span>
-          <strong>{{ booking.tickets }}</strong>
+          <strong class="text-cyan-800">{{ booking.tickets }}</strong>
         </div>
 
-        <div>
+        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
           <span>Amount</span>
-          <strong>
+          <strong class="text-emerald-700">
             <ng-container *ngIf="booking.totalAmount === 0; else paidBookingAmount">
               Free
             </ng-container>
@@ -164,21 +164,22 @@
           </strong>
         </div>
 
-        <div>
+        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
           <span>Contact</span>
           <strong>{{ booking.phone }}</strong>
         </div>
       </div>
 
-      <div class="card-footer">
-        <span>
+      <div class="card-footer transition duration-300 group-hover:border-cyan-300/70">
+        <span class="font-semibold text-slate-600">
           {{ booking.email }}
         </span>
 
         <button
           *ngIf="canCancel(booking)"
           type="button"
-          (click)="cancelBooking(booking.bookingId)"
+          class="transition duration-300 hover:-translate-y-0.5 active:translate-y-0"
+          (click)="openCancelDialog(booking)"
         >
           Cancel Booking
         </button>
@@ -188,3 +189,60 @@
   </div>
 
 </section>
+
+<div
+  class="cancel-modal-backdrop"
+  *ngIf="bookingToCancel"
+  role="presentation"
+>
+  <section
+    class="cancel-modal"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="cancel-modal-title"
+    aria-describedby="cancel-modal-description"
+  >
+    <div
+      class="warning-icon"
+      aria-hidden="true"
+    >
+      !
+    </div>
+
+    <p class="modal-kicker">
+      Confirm cancellation
+    </p>
+
+    <h2 id="cancel-modal-title">
+      Cancel {{ bookingToCancel.eventTitle }}?
+    </h2>
+
+    <p id="cancel-modal-description">
+      This booking will be marked as cancelled and the reserved seats will be released.
+    </p>
+
+    <div class="event-preview">
+      <span>Booking</span>
+      <strong>{{ bookingToCancel.bookingId }}</strong>
+      <small>{{ bookingToCancel.tickets }} ticket(s) for {{ bookingToCancel.name }}</small>
+    </div>
+
+    <div class="modal-actions">
+      <button
+        type="button"
+        class="keep-btn"
+        (click)="closeCancelDialog()"
+      >
+        Keep Booking
+      </button>
+
+      <button
+        type="button"
+        class="confirm-delete-btn"
+        (click)="confirmCancelBooking()"
+      >
+        Yes, Cancel Booking
+      </button>
+    </div>
+  </section>
+</div>

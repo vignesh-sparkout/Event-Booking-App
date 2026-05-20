@@ -1,31 +1,22 @@
 import { Component } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
-
 import { FormsModule } from '@angular/forms';
-
 import { RouterLink } from '@angular/router';
-
 import { BookingService } from '../../services/booking';
-
 import { EventService } from '../../services/event';
-
 import { Booking } from '../../Models/booking.model';
 
 @Component({
   selector: 'app-my-bookings',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterLink
-  ],
+  imports: [ CommonModule,FormsModule, RouterLink],
   templateUrl: './my-bookings.html',
   styleUrl: './my-bookings.css'
 })
 export class MyBookings {
 
   bookings: Booking[] = [];
+  bookingToCancel?: Booking;
   currentAttendeeEmail = '';
   lookupEmail = '';
   private readonly attendeeEmailKey =
@@ -105,19 +96,28 @@ export class MyBookings {
 
   }
 
-  cancelBooking(bookingId: string): void {
+  openCancelDialog(booking: Booking): void {
 
-    const confirmed =
-      window.confirm(
-        'Are you sure you want to cancel this booking?'
-      );
+    this.bookingToCancel = booking;
 
-    if (!confirmed) {
+  }
+
+  closeCancelDialog(): void {
+
+    this.bookingToCancel = undefined;
+
+  }
+
+  confirmCancelBooking(): void {
+
+    if (!this.bookingToCancel) {
       return;
     }
 
     const cancelledBooking =
-      this.bookingService.cancelBooking(bookingId);
+      this.bookingService.cancelBooking(
+        this.bookingToCancel.bookingId
+      );
 
     if (cancelledBooking) {
 
@@ -128,6 +128,7 @@ export class MyBookings {
 
     }
 
+    this.closeCancelDialog();
     this.loadBookings();
 
   }

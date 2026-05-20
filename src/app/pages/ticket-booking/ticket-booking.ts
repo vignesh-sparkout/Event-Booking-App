@@ -1,13 +1,6 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  OnDestroy
-} from '@angular/core';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink
-} from '@angular/router';
+import {Component,OnDestroy} from '@angular/core';
+import {ActivatedRoute,Router,RouterLink} from '@angular/router';
 import { Event } from '../../Models/event.model';
 import { BookingForm } from '../../shared/booking-form/booking-form';
 import { EventService } from '../../services/event';
@@ -15,11 +8,7 @@ import { EventService } from '../../services/event';
 @Component({
   selector: 'app-ticket-booking',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    BookingForm
-  ],
+  imports: [CommonModule,RouterLink,BookingForm],
   templateUrl: './ticket-booking.html',
   styleUrl: './ticket-booking.css'
 })

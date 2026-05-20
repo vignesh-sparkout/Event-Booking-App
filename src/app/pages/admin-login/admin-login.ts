@@ -1,27 +1,13 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  OnDestroy
-} from '@angular/core';
-import {
-  FormsModule,
-  NgForm
-} from '@angular/forms';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink
-} from '@angular/router';
+import {Component,OnDestroy} from '@angular/core';
+import {FormsModule,NgForm} from '@angular/forms';
+import {ActivatedRoute,Router,RouterLink} from '@angular/router';
 import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-admin-login',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterLink
-  ],
+  imports: [CommonModule,FormsModule,RouterLink],
   templateUrl: './admin-login.html',
   styleUrl: './admin-login.css'
 })
@@ -80,7 +66,7 @@ export class AdminLogin implements OnDestroy {
       () => {
         this.router.navigateByUrl(this.returnUrl);
       },
-      1500
+      1300
     );
 
   }

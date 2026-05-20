@@ -42,7 +42,7 @@ export class EventService {
       category: 'Music',
       description:
         'An outdoor live music evening featuring indie bands, food stalls, and a city-wide crowd.',
-      date: '2026-06-25',
+      date: '2026-05-30',
       startDateTime: '2026-06-25T18:30',
       endDateTime: '2026-06-25T22:30',
       venue: 'Palace Grounds',
@@ -51,11 +51,11 @@ export class EventService {
       organizerName: 'SoundStage Live',
       organizerEmail: 'hello@soundstage.in',
       price: 1000,
-      image: 'images/music-event.jpg',
+      image: 'images/music1.png',
       gallery: [
-        'images/music-event.jpg',
-        'images/music-event1.jpg',
-        'images/banner.jpg'
+        'images/music2.png',
+        'images/music3.png',
+        'images/music-event.jpg'
       ],
       totalSeats: 200,
       availableSeats: 200,
