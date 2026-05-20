@@ -1,72 +1,81 @@
 import { Routes } from '@angular/router';
-import { Home } from './pages/home/home';
-import { EventList } from './pages/event-list/event-list';
-import { EventDetails } from './pages/event-details/event-details';
-import { TicketBooking } from './pages/ticket-booking/ticket-booking';
-import { Dashboard } from './organizer/dashboard/dashboard';
-import { CreateEvent } from './organizer/create-event/create-event';
-import { ManageEvents } from './organizer/manage-events/manage-events';
-import { MyBookings } from './pages/my-bookings/my-bookings';
-import { EditEvent } from './organizer/edit-event/edit-event';
-import { Attendees } from './organizer/attendees/attendees';
 import { adminGuard } from './services/admin.guard';
-import { AdminLogin } from './pages/admin-login/admin-login';
+
 export const routes: Routes = [
 
-{ path: '',component: Home }, 
-{  path: 'events',  component: EventList},
+  {
+    path: '',
+    loadComponent: () =>
+      import('./pages/home/home').then(component => component.Home)
+  },
+  {
+    path: 'events',
+    loadComponent: () =>
+      import('./pages/event-list/event-list').then(component => component.EventList)
+  },
 
 
   {
     path: 'event-details/:id',
-    component: EventDetails
+    loadComponent: () =>
+      import('./pages/event-details/event-details').then(component => component.EventDetails)
   },
   {
     path: 'ticket-booking/:id',
-    component: TicketBooking
+    loadComponent: () =>
+      import('./pages/ticket-booking/ticket-booking').then(component => component.TicketBooking)
   },
 
-{
-  path: 'organizer/dashboard',
-  canActivate: [adminGuard],
-  component: Dashboard
-},
-{
-  path: 'organizer/create-event',
-  canActivate: [adminGuard],
-  component: CreateEvent
-},
-{
-  path: 'organizer/manage-events',
-  canActivate: [adminGuard],
-  component: ManageEvents
-},
-{
-  path: 'my-bookings',
-  component: MyBookings
-},
-{
-  path: 'admin-login',
-  component: AdminLogin
-},
-{
-  path: 'signup',
-  component: AdminLogin
-},
-{
-  path: 'organizer/edit-event/:id',
-  canActivate: [adminGuard],
-  component: EditEvent
-},
-{
-  path: 'organizer/attendees',
-  canActivate: [adminGuard],
-  component: Attendees
-},
-{
-  path: 'organizer/attendees/:id',
-  canActivate: [adminGuard],
-  component: Attendees
-}
+  {
+    path: 'organizer/dashboard',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./organizer/dashboard/dashboard').then(component => component.Dashboard)
+  },
+  {
+    path: 'organizer/create-event',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./organizer/create-event/create-event').then(component => component.CreateEvent)
+  },
+  {
+    path: 'organizer/manage-events',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./organizer/manage-events/manage-events').then(component => component.ManageEvents)
+  },
+  {
+    path: 'my-bookings',
+    loadComponent: () =>
+      import('./pages/my-bookings/my-bookings').then(component => component.MyBookings)
+  },
+  {
+    path: 'admin-login',
+    loadComponent: () =>
+      import('./pages/admin-login/admin-login').then(component => component.AdminLogin)
+  },
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import('./pages/admin-login/admin-login').then(component => component.AdminLogin)
+  },
+  {
+    path: 'organizer/edit-event/:id',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./organizer/edit-event/edit-event').then(component => component.EditEvent)
+  },
+  {
+    path: 'organizer/attendees',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./organizer/attendees/attendees').then(component => component.Attendees)
+  },
+  {
+    path: 'organizer/attendees/:id',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./organizer/attendees/attendees').then(component => component.Attendees)
+  }
 
 ];
