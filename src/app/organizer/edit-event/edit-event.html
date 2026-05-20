@@ -425,6 +425,32 @@
 
     </form>
 
+    <div
+      class="event-success-modal-backdrop"
+      *ngIf="showSuccessModal"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="edit-event-success-title"
+    >
+      <div class="event-success-modal">
+        <div class="event-success-accent"></div>
+
+        <p class="event-success-kicker">
+          Event updated
+        </p>
+
+        <h2 id="edit-event-success-title">
+          Event updated successfully
+        </h2>
+
+        <p>
+          Your latest changes are saved in the organizer panel.
+        </p>
+
+        <div class="event-success-loader"></div>
+      </div>
+    </div>
+
   </div>
 
 </div>

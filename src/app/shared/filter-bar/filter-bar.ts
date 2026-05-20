@@ -61,7 +61,7 @@ export class FilterBar {
       value: 'paid'
     },
     {
-      label: 'Under Rs. 500',
+      label: 'Under ₹500',
       value: 'under-500'
     }
   ];

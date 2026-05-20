@@ -1,10 +1,34 @@
 <div class="search-container">
 
-  <input
-    type="text"
-    placeholder="Search by event, city, venue, or organizer"
-    [(ngModel)]="searchText"
-    (input)="onSearch()"
-  >
+  <span class="field-label">
+    Search
+  </span>
+
+  <span class="search-field">
+    <span
+      class="search-icon"
+      aria-hidden="true"
+    >
+      &#128269;
+    </span>
+
+    <input
+      type="text"
+      aria-label="Search events"
+      placeholder="Event, city, venue, or organizer"
+      [(ngModel)]="searchText"
+      (input)="onSearch()"
+    >
+
+    <button
+      *ngIf="searchText"
+      type="button"
+      class="clear-search"
+      aria-label="Clear search"
+      (click)="clearSearch()"
+    >
+      &times;
+    </button>
+  </span>
 
 </div>

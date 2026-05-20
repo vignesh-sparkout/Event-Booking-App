@@ -167,7 +167,13 @@
     <div>
       <span>Price per ticket</span>
       <strong>
-        {{ ticketPrice === 0 ? 'Free' : 'Rs. ' + ticketPrice }}
+        <ng-container *ngIf="ticketPrice === 0; else paidTicketPrice">
+          Free
+        </ng-container>
+
+        <ng-template #paidTicketPrice>
+          &#8377;{{ ticketPrice }}
+        </ng-template>
       </strong>
     </div>
 
@@ -181,7 +187,13 @@
     <div class="summary-total">
       <span>Total amount</span>
       <strong>
-        {{ totalAmount === 0 ? 'Free' : 'Rs. ' + totalAmount }}
+        <ng-container *ngIf="totalAmount === 0; else paidTotalAmount">
+          Free
+        </ng-container>
+
+        <ng-template #paidTotalAmount>
+          &#8377;{{ totalAmount }}
+        </ng-template>
       </strong>
     </div>
   </div>

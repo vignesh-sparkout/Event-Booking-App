@@ -1,19 +1,56 @@
 .filter-container {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
-  gap: 12px;
+  gap: 14px;
+}
+
+.filter-field {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  color: #263449;
+  font-weight: 800;
+}
+
+.field-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 select,
 input,
 .date-range-toggle {
   width: 100%;
-  padding: 12px 13px;
+  min-height: 48px;
+  padding: 12px 38px 12px 13px;
   border: 1px solid #d5dce6;
   border-radius: 8px;
   background: #fff;
   color: #1f2937;
   font: inherit;
+  font-weight: 600;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+select {
+  appearance: none;
+  background:
+    linear-gradient(45deg, transparent 50%, #64748b 50%) right 17px center / 7px 7px no-repeat,
+    linear-gradient(135deg, #64748b 50%, transparent 50%) right 12px center / 7px 7px no-repeat,
+    #fff;
+  cursor: pointer;
+}
+
+select:focus,
+input:focus,
+.date-range-toggle:focus {
+  border-color: #0c7c90;
+  outline: none;
+  background-color: #fbfeff;
+  box-shadow:
+    0 0 0 4px rgba(12, 124, 144, 0.12),
+    0 10px 24px rgba(12, 124, 144, 0.08);
 }
 
 .date-range {
@@ -21,23 +58,36 @@ input,
 }
 
 .date-range-toggle {
+  position: relative;
   text-align: left;
   cursor: pointer;
 }
 
+.date-range-toggle::after {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #64748b;
+  border-bottom: 2px solid #64748b;
+  content: '';
+  transform: translateY(-65%) rotate(45deg);
+}
+
 .date-range-panel {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 10px);
   right: 0;
   z-index: 10;
   display: grid;
   width: min(320px, 86vw);
   gap: 12px;
-  padding: 14px;
-  border: 1px solid #d5dce6;
+  padding: 16px;
+  border: 1px solid rgba(12, 124, 144, 0.16);
   border-radius: 8px;
   background: #fff;
-  box-shadow: 0 18px 40px rgba(20, 33, 61, 0.16);
+  box-shadow: 0 22px 48px rgba(20, 33, 61, 0.18);
 }
 
 .date-range-panel label {
@@ -68,9 +118,17 @@ input,
   color: #334155;
 }
 
+.clear-btn:hover {
+  background: #dbe4ef;
+}
+
 .apply-btn {
   background: #0c7c90;
   color: #fff;
+}
+
+.apply-btn:hover {
+  background: #096b7d;
 }
 
 @media (max-width: 900px) {

@@ -48,6 +48,7 @@ export class EditEvent implements OnInit, OnDestroy {
   availableSeats = 0;
   additionalInfo = '';
   validationMessage = '';
+  showSuccessModal = false;
   status: Event['status'] = 'Active';
   editor!: Editor;
   toolbar: Toolbar = [
@@ -93,6 +94,7 @@ export class EditEvent implements OnInit, OnDestroy {
     /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   private readonly uploadImageMaxSize = 900;
   private readonly uploadImageQuality = 0.82;
+  private redirectTimer?: ReturnType<typeof setTimeout>;
 
   constructor(
     private route: ActivatedRoute,
@@ -161,11 +163,19 @@ export class EditEvent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
+    if (this.redirectTimer) {
+      clearTimeout(this.redirectTimer);
+    }
+
     this.editor.destroy();
 
   }
 
   updateEvent(form: NgForm): void {
+
+    if (this.showSuccessModal) {
+      return;
+    }
 
     this.validationMessage = '';
 
@@ -264,11 +274,15 @@ export class EditEvent implements OnInit, OnDestroy {
 
     this.eventService.updateEvent(updatedEvent);
 
-    alert('Event Updated Successfully');
-
-    this.router.navigate([
-      '/organizer/manage-events'
-    ]);
+    this.showSuccessModal = true;
+    this.redirectTimer = setTimeout(
+      () => {
+        this.router.navigate([
+          '/organizer/manage-events'
+        ]);
+      },
+      1500
+    );
 
   }
 

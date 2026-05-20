@@ -51,7 +51,13 @@
           </div>
 
           <strong class="price">
-            {{ event.price === 0 ? 'Free' : 'Rs. ' + event.price }}
+            <ng-container *ngIf="event.price === 0; else paidEventPrice">
+              Free
+            </ng-container>
+
+            <ng-template #paidEventPrice>
+              &#8377;{{ event.price }}
+            </ng-template>
           </strong>
 
           <div class="summary-grid">
@@ -62,7 +68,7 @@
 
             <div>
               <span>Revenue</span>
-              <strong>Rs. {{ getRevenue(event.id) }}</strong>
+              <strong>&#8377;{{ getRevenue(event.id) }}</strong>
             </div>
 
             <div>

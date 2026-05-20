@@ -51,6 +51,7 @@ export class CreateEvent implements OnInit, OnDestroy {
   totalSeats = 0;
   additionalInfo = '';
   validationMessage = '';
+  showSuccessModal = false;
   editor!: Editor;
   toolbar: Toolbar = [
     [
@@ -95,6 +96,7 @@ export class CreateEvent implements OnInit, OnDestroy {
     /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   private readonly uploadImageMaxSize = 900;
   private readonly uploadImageQuality = 0.82;
+  private redirectTimer?: ReturnType<typeof setTimeout>;
 
   constructor(
     private eventService: EventService,
@@ -133,11 +135,19 @@ export class CreateEvent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
+    if (this.redirectTimer) {
+      clearTimeout(this.redirectTimer);
+    }
+
     this.editor.destroy();
 
   }
 
   createEvent(form: NgForm): void {
+
+    if (this.showSuccessModal) {
+      return;
+    }
 
     this.validationMessage = '';
 
@@ -227,7 +237,7 @@ export class CreateEvent implements OnInit, OnDestroy {
 
     this.eventService.addEvent(newEvent);
 
-    alert('Event Created Successfully');
+    this.showSuccessModal = true;
     this.resetForm();
     form.resetForm({
       title: '',
@@ -246,9 +256,14 @@ export class CreateEvent implements OnInit, OnDestroy {
       totalSeats: 0
     });
     this.clearUploadInputs();
-    this.router.navigate([
-      '/organizer/manage-events'
-    ]);
+    this.redirectTimer = setTimeout(
+      () => {
+        this.router.navigate([
+          '/organizer/manage-events'
+        ]);
+      },
+      1500
+    );
 
   }
 

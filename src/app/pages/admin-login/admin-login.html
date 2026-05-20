@@ -22,6 +22,7 @@
         [(ngModel)]="email"
         name="email"
         [class.input-error]="emailInput.invalid && emailInput.touched"
+        [disabled]="showSuccessModal"
         email
         required
       >
@@ -50,6 +51,7 @@
         [(ngModel)]="password"
         name="password"
         [class.input-error]="passwordInput.invalid && passwordInput.touched"
+        [disabled]="showSuccessModal"
         minlength="6"
         required
       >
@@ -76,7 +78,10 @@
       {{ errorMessage }}
     </p>
 
-    <button type="submit">
+    <button
+      type="submit"
+      [disabled]="showSuccessModal"
+    >
       Sign In
     </button>
 
@@ -87,5 +92,25 @@
       Back to events
     </a>
   </form>
+
+  <div
+    class="success-modal-backdrop"
+    *ngIf="showSuccessModal"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="admin-login-success-title"
+  >
+    <div class="success-modal">
+      <h2 id="admin-login-success-title">
+        Login successful
+      </h2>
+
+      <p>
+        Welcome back, admin. Redirecting to your organizer panel.
+      </p>
+
+      <div class="redirect-loader"></div>
+    </div>
+  </div>
 
 </section>

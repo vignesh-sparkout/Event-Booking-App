@@ -89,7 +89,13 @@
       <div>
         <span class="meta-label">Ticket Price</span>
         <strong>
-          {{ event.price === 0 ? 'Free' : 'Rs. ' + event.price }}
+          <ng-container *ngIf="event.price === 0; else paidEventPrice">
+            Free
+          </ng-container>
+
+          <ng-template #paidEventPrice>
+            &#8377;{{ event.price }}
+          </ng-template>
         </strong>
       </div>
 

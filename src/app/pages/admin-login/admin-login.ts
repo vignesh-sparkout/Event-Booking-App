@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnDestroy
+} from '@angular/core';
 import {
   FormsModule,
   NgForm
@@ -22,12 +25,14 @@ import { AuthService } from '../../services/auth';
   templateUrl: './admin-login.html',
   styleUrl: './admin-login.css'
 })
-export class AdminLogin {
+export class AdminLogin implements OnDestroy {
 
   email = '';
   password = '';
   errorMessage = '';
+  showSuccessModal = false;
   private returnUrl = '/organizer/dashboard';
+  private redirectTimer?: ReturnType<typeof setTimeout>;
 
   constructor(
     private authService: AuthService,
@@ -46,6 +51,10 @@ export class AdminLogin {
   }
 
   login(form: NgForm): void {
+
+    if (this.showSuccessModal) {
+      return;
+    }
 
     if (form.invalid) {
       this.errorMessage = '';
@@ -66,7 +75,21 @@ export class AdminLogin {
     }
 
     this.errorMessage = '';
-    this.router.navigateByUrl(this.returnUrl);
+    this.showSuccessModal = true;
+    this.redirectTimer = setTimeout(
+      () => {
+        this.router.navigateByUrl(this.returnUrl);
+      },
+      1500
+    );
+
+  }
+
+  ngOnDestroy(): void {
+
+    if (this.redirectTimer) {
+      clearTimeout(this.redirectTimer);
+    }
 
   }
 }

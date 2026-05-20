@@ -70,13 +70,37 @@
         ></div>
 
         <div class="meta">
-          <span>{{ event.date | date: 'mediumDate' }}</span>
-          <span>{{ getEventTime(event) }}</span>
-          <span>{{ event.venue }}, {{ event.city }}</span>
+          <span>
+            <span
+              class="meta-icon"
+              aria-hidden="true"
+            >&#128197;</span>
+            {{ event.date | date: 'mediumDate' }}
+          </span>
+
+          <span>
+            <span
+              class="meta-icon"
+              aria-hidden="true"
+            >&#128337;</span>
+            {{ getEventTime(event) }}
+          </span>
+
+          <span>
+            <span
+              class="meta-icon"
+              aria-hidden="true"
+            >&#128205;</span>
+            {{ event.venue }}, {{ event.city }}
+          </span>
         </div>
 
         <div class="seat-row">
           <span>
+            <span
+              class="meta-icon"
+              aria-hidden="true"
+            >&#128186;</span>
             {{ event.availableSeats }} seats left
           </span>
 
@@ -87,7 +111,13 @@
 
         <div class="card-footer">
           <strong>
-            {{ event.price === 0 ? 'Free' : 'Rs. ' + event.price }}
+            <ng-container *ngIf="event.price === 0; else paidPrice">
+              Free
+            </ng-container>
+
+            <ng-template #paidPrice>
+              &#8377;{{ event.price }}
+            </ng-template>
           </strong>
 
           <button

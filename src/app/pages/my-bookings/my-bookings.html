@@ -154,7 +154,13 @@
         <div>
           <span>Amount</span>
           <strong>
-            {{ booking.totalAmount === 0 ? 'Free' : 'Rs. ' + booking.totalAmount }}
+            <ng-container *ngIf="booking.totalAmount === 0; else paidBookingAmount">
+              Free
+            </ng-container>
+
+            <ng-template #paidBookingAmount>
+              &#8377;{{ booking.totalAmount }}
+            </ng-template>
           </strong>
         </div>
 
