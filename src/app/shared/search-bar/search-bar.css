@@ -1,6 +1,6 @@
 .search-container {
   display: grid;
-  gap: 8px;
+  gap: 6px;
   margin: 0;
   color: #263449;
   font-weight: 800;
@@ -16,8 +16,8 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  min-height: 48px;
-  padding: 0 10px 0 13px;
+  min-height: 42px;
+  padding: 0 8px 0 11px;
   border: 1px solid #d5dce6;
   border-radius: 8px;
   background: #fff;
@@ -35,18 +35,18 @@
 
 .search-icon {
   display: inline-grid;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   place-items: center;
   border-radius: 50%;
   background: #e7f7fb;
-  font-size: 0.82rem;
+  font-size: 0.76rem;
 }
 
 input {
   width: 100%;
   min-width: 0;
-  padding: 13px 10px;
+  padding: 10px 9px;
   border: none;
   outline: none;
   background: transparent;
@@ -57,15 +57,15 @@ input {
 
 .clear-search {
   display: inline-grid;
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   place-items: center;
   border: none;
   border-radius: 50%;
   background: #eef2f7;
   color: #334155;
   cursor: pointer;
-  font-size: 1.15rem;
+  font-size: 1rem;
   line-height: 1;
 }
 

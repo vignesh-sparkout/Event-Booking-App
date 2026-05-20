@@ -100,7 +100,7 @@
 
             <button
               class="delete-btn"
-              (click)="cancelEvent(event)"
+              (click)="openCancelDialog(event)"
               [disabled]="event.status === 'Cancelled'"
             >
               Cancel
@@ -114,4 +114,61 @@
 
   </section>
 
+</div>
+
+<div
+  class="cancel-modal-backdrop"
+  *ngIf="eventToCancel"
+  role="presentation"
+>
+  <section
+    class="cancel-modal"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="cancel-modal-title"
+    aria-describedby="cancel-modal-description"
+  >
+    <div
+      class="warning-icon"
+      aria-hidden="true"
+    >
+      !
+    </div>
+
+    <p class="modal-kicker">
+      Confirm cancellation
+    </p>
+
+    <h2 id="cancel-modal-title">
+      Cancel {{ eventToCancel.title }}?
+    </h2>
+
+    <p id="cancel-modal-description">
+      This event will be removed from your active listings. Attendees will no longer be able to book tickets for it.
+    </p>
+
+    <div class="event-preview">
+      <span>Event</span>
+      <strong>{{ eventToCancel.title }}</strong>
+      <small>{{ eventToCancel.venue }}, {{ eventToCancel.city }}</small>
+    </div>
+
+    <div class="modal-actions">
+      <button
+        type="button"
+        class="keep-btn"
+        (click)="closeCancelDialog()"
+      >
+        Keep Event
+      </button>
+
+      <button
+        type="button"
+        class="confirm-delete-btn"
+        (click)="confirmCancelEvent()"
+      >
+        Yes, Cancel Event
+      </button>
+    </div>
+  </section>
 </div>

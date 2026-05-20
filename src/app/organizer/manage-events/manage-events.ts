@@ -19,6 +19,7 @@ import { Event } from '../../Models/event.model';
 export class ManageEvents {
 
   events: Event[] = [];
+  eventToCancel?: Event;
 
   constructor(
     private eventService: EventService,
@@ -29,18 +30,27 @@ export class ManageEvents {
 
   }
 
-  cancelEvent(event: Event): void {
+  openCancelDialog(event: Event): void {
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to cancel "${event.title}"?`
-      );
+    this.eventToCancel = event;
 
-    if (!confirmed) {
+  }
+
+  closeCancelDialog(): void {
+
+    this.eventToCancel = undefined;
+
+  }
+
+  confirmCancelEvent(): void {
+
+    if (!this.eventToCancel) {
       return;
     }
 
-    this.eventService.cancelEvent(event.id);
+    this.eventService.cancelEvent(this.eventToCancel.id);
+
+    this.closeCancelDialog();
 
     this.loadActiveEvents();
 

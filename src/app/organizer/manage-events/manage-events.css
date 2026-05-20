@@ -188,6 +188,117 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.cancel-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.56);
+}
+
+.cancel-modal {
+  width: min(460px, 100%);
+  padding: 28px;
+  border: 1px solid rgba(220, 38, 38, 0.18);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
+  text-align: center;
+}
+
+.warning-icon {
+  display: inline-grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 50%;
+  background: #fef2f2;
+  color: #d62828;
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.modal-kicker {
+  margin: 14px 0 8px;
+  color: #d62828;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cancel-modal h2 {
+  margin: 0;
+  color: #162033;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.cancel-modal p:not(.modal-kicker) {
+  margin: 12px 0 0;
+  color: #52606d;
+  line-height: 1.6;
+}
+
+.event-preview {
+  display: grid;
+  gap: 4px;
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid #fee2e2;
+  border-radius: 8px;
+  background: #fff7f7;
+  text-align: left;
+}
+
+.event-preview span {
+  color: #b91c1c;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.event-preview strong {
+  color: #162033;
+}
+
+.event-preview small {
+  color: #64748b;
+  font-weight: 700;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.modal-actions button {
+  margin: 0;
+}
+
+.keep-btn {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+}
+
+.keep-btn:hover {
+  background: #f8fafc;
+}
+
+.confirm-delete-btn {
+  background: #d62828;
+  color: #fff;
+}
+
+.confirm-delete-btn:hover {
+  background: #b91c1c;
+}
+
 @media (max-width: 768px) {
   .manage-layout {
     flex-direction: column;
@@ -195,5 +306,13 @@ button:disabled {
 
   .manage-container {
     padding: 24px 18px 34px;
+  }
+
+  .cancel-modal {
+    padding: 24px 20px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
   }
 }
