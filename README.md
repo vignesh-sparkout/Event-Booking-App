@@ -1,59 +1,221 @@
-# EventBookingSystem
+# Event Booking System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+An Angular event booking application for browsing events, viewing event details, booking tickets, managing attendee bookings, and handling organizer event administration.
 
-## Development server
+The project uses local browser storage for demo data, so it can run without a backend API.
 
-To start a local development server, run:
+## Project Description
+
+Event Booking System is a frontend-only Angular application with two main user flows:
+
+- Attendees can browse upcoming events, search/filter events, view event details, book tickets, and manage their bookings.
+- Organizers can log in, view a dashboard, create events, edit events, cancel events, and view attendees.
+
+Default event data is seeded through the event service and saved into `localStorage` on first load.
+
+## Tech Stack
+
+- Angular 21.2
+- Angular Router
+- Angular Forms
+- Standalone Angular components
+- TypeScript 5.9
+- RxJS
+- Tailwind CSS 4
+- ngx-editor
+- Vitest for unit testing
+- Browser `localStorage` for demo persistence
+
+## Main Features
+
+- Home page with event discovery entry point
+- Event listing page
+- Search and filter support
+- Event details page
+- Ticket booking form
+- Booking success modal
+- My Bookings page with booking lookup by email
+- Cancel booking confirmation modal
+- Organizer/admin login
+- Protected organizer routes using route guard
+- Organizer dashboard
+- Create, edit, manage, and cancel events
+- Attendee list for organizer events
+- Seat count update when tickets are booked or cancelled
+
+## Angular Version
+
+This project was generated with Angular CLI `21.2.7`.
+
+Main Angular packages:
+
+```bash
+@angular/core     ^21.2.0
+@angular/cli      ^21.2.7
+@angular/router   ^21.2.0
+@angular/forms    ^21.2.0
+```
+
+## Project Setup
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm start
+```
+
+or:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open the app in your browser:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```text
+http://localhost:4200/
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Build
+
+Create a production build:
 
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
-
-To build the project run:
+or:
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Build output will be generated in the `dist/` folder.
 
-## Running unit tests
+## Run Tests
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Run unit tests:
+
+```bash
+npm test
+```
+
+or:
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+## Demo Admin Login
 
-For end-to-end (e2e) testing, run:
+The organizer/admin area uses a demo login stored in the frontend service.
 
-```bash
-ng e2e
+```text
+Email: vicky@gmail.com
+Password: 121212
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+After login, protected organizer routes can be accessed.
 
-## Additional Resources
+## Important Routes
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| Route | Description |
+| --- | --- |
+| `/` | Home page |
+| `/events` | Event listing page |
+| `/event-details/:id` | Event details page |
+| `/ticket-booking/:id` | Ticket booking page |
+| `/my-bookings` | Attendee booking lookup and cancellation |
+| `/admin-login` | Organizer/admin login |
+| `/organizer/dashboard` | Organizer dashboard |
+| `/organizer/create-event` | Create new event |
+| `/organizer/manage-events` | Manage existing events |
+| `/organizer/edit-event/:id` | Edit selected event |
+| `/organizer/attendees` | View all attendees |
+| `/organizer/attendees/:id` | View attendees for one event |
+
+## Data Storage
+
+This project does not use a backend database.
+
+Data is stored in browser `localStorage`:
+
+- `events` stores event data
+- `bookings` stores booking data
+- `currentAttendeeEmail` stores the last searched attendee email
+- `eventBookingAdminSession` stores admin login session state
+
+Because of this, clearing browser storage will reset saved events, bookings, and login state.
+
+## Project Structure
+
+```text
+src/app/
+  layout/
+    navbar/
+    footer/
+    sidebar/
+  Models/
+    booking.model.ts
+    event.model.ts
+  organizer/
+    attendees/
+    create-event/
+    dashboard/
+    edit-event/
+    manage-events/
+  pages/
+    admin-login/
+    event-details/
+    event-list/
+    home/
+    my-bookings/
+    ticket-booking/
+  services/
+    admin.guard.ts
+    auth.ts
+    booking.ts
+    event.ts
+  shared/
+    booking-form/
+    filter-bar/
+    search-bar/
+```
+
+## Useful Commands
+
+```bash
+npm start
+```
+
+Runs the local development server.
+
+```bash
+npm run build
+```
+
+Builds the application.
+
+```bash
+npm test
+```
+
+Runs unit tests.
+
+```bash
+npm run watch
+```
+
+Builds continuously in development mode.
+
+## Notes
+
+- This is a demo frontend project, so event and booking data are not shared across browsers or devices.
+- Default events are used as seed data for first-time app load.
+- Organizer authentication is frontend-only and should be replaced with backend authentication for production use.
