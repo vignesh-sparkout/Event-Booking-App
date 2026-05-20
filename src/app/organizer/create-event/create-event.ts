@@ -325,20 +325,6 @@ export class CreateEvent implements OnInit, OnDestroy {
 
   }
 
-  applyRichText(command: string): void {
-
-    void command;
-
-  }
-
-  applyBlockFormat(format: string): void {
-
-    void format;
-
-  }
-
-  addDescriptionLink(): void {}
-
   onStartDateTimeChange(value: string): void {
 
     this.startDateTime = value;

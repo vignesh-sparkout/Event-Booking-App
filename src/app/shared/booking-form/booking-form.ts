@@ -32,6 +32,9 @@ import { Booking } from '../../Models/booking.model';
 })
 export class BookingForm {
 
+  private readonly attendeeEmailKey =
+    'currentAttendeeEmail';
+
   @Input()
   eventTitle = '';
 
@@ -106,17 +109,6 @@ export class BookingForm {
 
   }
 
-  get ticketOptions(): number[] {
-
-    return Array.from(
-      {
-        length: this.availableSeats
-      },
-      (_, index) => index + 1
-    );
-
-  }
-
   private get selectedTickets(): number {
 
     return Number(this.tickets || 0);
@@ -155,19 +147,27 @@ export class BookingForm {
     this.bookingId =
       `BK${Date.now().toString().slice(-6)}`;
 
+    const attendeeEmail =
+      this.email.trim().toLowerCase();
+
     const booking: Booking = {
       bookingId: this.bookingId,
       eventId: this.eventId,
       eventTitle: this.eventTitle,
       eventDate: this.eventDate,
       name: this.name.trim(),
-      email: this.email.trim(),
+      email: attendeeEmail,
       phone: `${this.countryCode} ${this.phone.trim()}`,
       tickets: this.selectedTickets,
       totalAmount: this.totalAmount,
       bookingDate: new Date().toISOString(),
       status: 'Confirmed'
     };
+
+    localStorage.setItem(
+      this.attendeeEmailKey,
+      attendeeEmail
+    );
 
     this.bookingService.addBooking(booking);
 

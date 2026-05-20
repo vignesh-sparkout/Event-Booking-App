@@ -27,19 +27,57 @@
     </option>
   </select>
 
-  <input
-    type="date"
-    [(ngModel)]="filters.fromDate"
-    (change)="filterCategory()"
-    aria-label="Filter from date"
-  >
+  <div class="date-range">
+    <button
+      type="button"
+      class="date-range-toggle"
+      (click)="toggleDateRange()"
+      aria-label="Filter by date range"
+    >
+      {{ dateRangeLabel }}
+    </button>
 
-  <input
-    type="date"
-    [(ngModel)]="filters.toDate"
-    (change)="filterCategory()"
-    [min]="minimumToDate"
-    aria-label="Filter to date"
-  >
+    <div
+      class="date-range-panel"
+      *ngIf="dateRangeOpen"
+    >
+      <label>
+        <span>From</span>
+        <input
+          type="date"
+          [(ngModel)]="draftFromDate"
+          aria-label="Date range start"
+        >
+      </label>
+
+      <label>
+        <span>To</span>
+        <input
+          type="date"
+          [(ngModel)]="draftToDate"
+          [min]="draftFromDate || undefined"
+          aria-label="Date range end"
+        >
+      </label>
+
+      <div class="date-range-actions">
+        <button
+          type="button"
+          class="clear-btn"
+          (click)="clearDateRange()"
+        >
+          Clear
+        </button>
+
+        <button
+          type="button"
+          class="apply-btn"
+          (click)="applyDateRange()"
+        >
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
 
 </div>

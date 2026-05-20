@@ -27,6 +27,9 @@ export interface EventFilters {
 })
 export class FilterBar {
 
+  dateRangeOpen = false;
+  draftFromDate = '';
+  draftToDate = '';
   filters: EventFilters = {
     category: '',
     city: '',
@@ -67,24 +70,72 @@ export class FilterBar {
   categoryChange =
     new EventEmitter<EventFilters>();
 
-  get minimumToDate(): string | undefined {
+  get dateRangeLabel(): string {
 
-    return this.filters.fromDate || undefined;
+    if (this.filters.fromDate && this.filters.toDate) {
+      return `${this.formatDisplayDate(this.filters.fromDate)} to ${this.formatDisplayDate(this.filters.toDate)}`;
+    }
+
+    if (this.filters.fromDate) {
+      return `From ${this.formatDisplayDate(this.filters.fromDate)}`;
+    }
+
+    return 'Select Date Range';
 
   }
 
   filterCategory() {
 
-    if (
-      this.filters.fromDate &&
-      this.filters.toDate &&
-      this.filters.toDate < this.filters.fromDate
-    ) {
-      this.filters.toDate = this.filters.fromDate;
-    }
-
     this.categoryChange.emit(
       { ...this.filters }
+    );
+
+  }
+
+  toggleDateRange(): void {
+
+    this.draftFromDate = this.filters.fromDate;
+    this.draftToDate = this.filters.toDate;
+    this.dateRangeOpen = !this.dateRangeOpen;
+
+  }
+
+  applyDateRange(): void {
+
+    if (
+      this.draftFromDate &&
+      this.draftToDate &&
+      this.draftToDate < this.draftFromDate
+    ) {
+      this.draftToDate = this.draftFromDate;
+    }
+
+    this.filters.fromDate = this.draftFromDate;
+    this.filters.toDate = this.draftToDate;
+    this.dateRangeOpen = false;
+    this.filterCategory();
+
+  }
+
+  clearDateRange(): void {
+
+    this.draftFromDate = '';
+    this.draftToDate = '';
+    this.filters.fromDate = '';
+    this.filters.toDate = '';
+    this.dateRangeOpen = false;
+    this.filterCategory();
+
+  }
+
+  private formatDisplayDate(date: string): string {
+
+    return new Date(date).toLocaleDateString(
+      'en-IN',
+      {
+        day: '2-digit',
+        month: 'short'
+      }
     );
 
   }

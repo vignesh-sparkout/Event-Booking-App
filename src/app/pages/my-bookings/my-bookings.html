@@ -23,6 +23,26 @@
     </a>
   </div>
 
+  <form
+    class="lookup-form"
+    (ngSubmit)="findBookings()"
+  >
+    <label>
+      <span>Find My Bookings</span>
+      <input
+        type="email"
+        name="lookupEmail"
+        placeholder="Enter booking email"
+        [(ngModel)]="lookupEmail"
+        required
+      >
+    </label>
+
+    <button type="submit">
+      Search
+    </button>
+  </form>
+
   <div
     class="summary-grid"
     *ngIf="bookings.length > 0"
@@ -53,11 +73,19 @@
     *ngIf="bookings.length === 0"
   >
     <h2>
-      No bookings yet
+      {{
+        currentAttendeeEmail
+          ? 'No booking found for this user'
+          : 'No bookings yet'
+      }}
     </h2>
 
     <p>
-      Your confirmed tickets will appear here after you book an event.
+      {{
+        currentAttendeeEmail
+          ? 'Book an event with this email to see tickets here.'
+          : 'Your confirmed tickets will appear here after you book an event.'
+      }}
     </p>
 
     <a routerLink="/events">

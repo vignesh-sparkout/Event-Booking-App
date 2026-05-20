@@ -120,10 +120,11 @@ export class EventService {
 
     const savedEvents =
       localStorage.getItem('events');
+    const parsedEvents =
+      this.parseSavedEvents(savedEvents);
 
-    if (savedEvents) {
+    if (parsedEvents) {
 
-      const parsedEvents = JSON.parse(savedEvents) as Partial<Event>[];
       this.events = this.mergeDefaultEvents(parsedEvents);
 
     }
@@ -134,6 +135,27 @@ export class EventService {
 
       this.saveEvents();
 
+    }
+
+  }
+
+  private parseSavedEvents(
+    savedEvents: string | null
+  ): Partial<Event>[] | undefined {
+
+    if (!savedEvents) {
+      return undefined;
+    }
+
+    try {
+      const parsedEvents =
+        JSON.parse(savedEvents) as unknown;
+
+      return Array.isArray(parsedEvents)
+        ? parsedEvents as Partial<Event>[]
+        : undefined;
+    } catch {
+      return undefined;
     }
 
   }

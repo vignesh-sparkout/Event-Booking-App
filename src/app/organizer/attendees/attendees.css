@@ -1,12 +1,16 @@
 .attendees-layout {
   display: flex;
   min-height: 100vh;
+  align-items: stretch;
   background: #f8fbff;
 }
 
 .attendees-container {
+  flex: 1;
+  min-width: 0;
   width: 100%;
   padding: 36px;
+  box-sizing: border-box;
 }
 
 .eyebrow {
@@ -24,6 +28,7 @@
 
 .table-wrap {
   margin-top: 28px;
+  max-width: 100%;
   overflow-x: auto;
   border: 1px solid #e2e8f0;
   border-radius: 8px;

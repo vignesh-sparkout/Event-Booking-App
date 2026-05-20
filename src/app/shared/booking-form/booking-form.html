@@ -121,28 +121,18 @@
   <label>
     <span>Tickets</span>
 
-    <select
+    <input
       #ticketsInput="ngModel"
+      type="number"
+      min="1"
+      [max]="availableSeats"
+      placeholder="Enter tickets"
       [(ngModel)]="tickets"
       name="tickets"
       [class.input-error]="ticketsInput.invalid && ticketsInput.touched"
       [disabled]="bookingSuccess"
       required
     >
-      <option
-        [ngValue]="null"
-        disabled
-      >
-        Select Tickets
-      </option>
-
-      <option
-        *ngFor="let ticket of ticketOptions"
-        [ngValue]="ticket"
-      >
-        {{ ticket }}
-      </option>
-    </select>
 
     <small
       class="field-error"

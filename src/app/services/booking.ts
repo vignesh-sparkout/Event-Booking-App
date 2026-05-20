@@ -13,17 +13,37 @@ export class BookingService {
 
     const savedBookings =
       localStorage.getItem('bookings');
+    const parsedBookings =
+      this.parseSavedBookings(savedBookings);
 
-    if (savedBookings) {
-
-      const parsedBookings =
-        JSON.parse(savedBookings) as Partial<Booking>[];
+    if (parsedBookings) {
 
       this.bookings =
         parsedBookings.map(booking =>
           this.normalizeBooking(booking)
         );
 
+    }
+
+  }
+
+  private parseSavedBookings(
+    savedBookings: string | null
+  ): Partial<Booking>[] | undefined {
+
+    if (!savedBookings) {
+      return undefined;
+    }
+
+    try {
+      const parsedBookings =
+        JSON.parse(savedBookings) as unknown;
+
+      return Array.isArray(parsedBookings)
+        ? parsedBookings as Partial<Booking>[]
+        : undefined;
+    } catch {
+      return undefined;
     }
 
   }

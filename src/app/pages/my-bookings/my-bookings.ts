@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
+import { FormsModule } from '@angular/forms';
+
 import { RouterLink } from '@angular/router';
 
 import { BookingService } from '../../services/booking';
@@ -15,6 +17,7 @@ import { Booking } from '../../Models/booking.model';
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     RouterLink
   ],
   templateUrl: './my-bookings.html',
@@ -23,6 +26,10 @@ import { Booking } from '../../Models/booking.model';
 export class MyBookings {
 
   bookings: Booking[] = [];
+  currentAttendeeEmail = '';
+  lookupEmail = '';
+  private readonly attendeeEmailKey =
+    'currentAttendeeEmail';
 
   get confirmedBookingsCount(): number {
 
@@ -58,6 +65,26 @@ export class MyBookings {
     private eventService: EventService
   ) {
 
+    this.lookupEmail =
+      localStorage.getItem(this.attendeeEmailKey) || '';
+    this.currentAttendeeEmail =
+      this.normalizeEmail(this.lookupEmail);
+    this.loadBookings();
+
+  }
+
+  findBookings(): void {
+
+    this.currentAttendeeEmail =
+      this.normalizeEmail(this.lookupEmail);
+
+    if (this.currentAttendeeEmail) {
+      localStorage.setItem(
+        this.attendeeEmailKey,
+        this.currentAttendeeEmail
+      );
+    }
+
     this.loadBookings();
 
   }
@@ -65,11 +92,16 @@ export class MyBookings {
   loadBookings(): void {
 
     this.bookings =
-      this.bookingService.getBookings().sort(
-        (firstBooking, secondBooking) =>
-          new Date(secondBooking.bookingDate).getTime() -
-          new Date(firstBooking.bookingDate).getTime()
-      );
+      this.bookingService.getBookings()
+        .filter(
+          booking =>
+            this.normalizeEmail(booking.email) === this.currentAttendeeEmail
+        )
+        .sort(
+          (firstBooking, secondBooking) =>
+            new Date(secondBooking.bookingDate).getTime() -
+            new Date(firstBooking.bookingDate).getTime()
+        );
 
   }
 
@@ -114,6 +146,12 @@ export class MyBookings {
     return new Date(booking.eventDate) > new Date()
       ? 'Upcoming'
       : 'Past';
+
+  }
+
+  private normalizeEmail(email: string): string {
+
+    return email.trim().toLowerCase();
 
   }
 
