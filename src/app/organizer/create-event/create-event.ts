@@ -208,7 +208,7 @@ export class CreateEvent implements OnInit, OnDestroy {
     const coverImage =
       this.image ||
       this.galleryImages[0] ||
-      'images/workshop-event.jpg';
+      'images/technology/tech.jpg';
 
     const newEvent: Event = {
       id: Date.now(),

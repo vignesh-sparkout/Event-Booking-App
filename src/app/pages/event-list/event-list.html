@@ -1,20 +1,33 @@
 <section class="events-container">
 
   <div class="events-hero">
-    <p class="eyebrow">
-      Live Events
-    </p>
+    <div>
+      <p class="eyebrow">
+        Live Events
+      </p>
 
-    <h1>
-      Find your next ticket-worthy experience
-    </h1>
+      <h1>
+        Find your next ticket-worthy experience
+      </h1>
+
+      <p class="hero-copy">
+        Browse upcoming concerts, workshops, sports, food festivals, and more from one clean booking experience.
+      </p>
+    </div>
+
+    <div class="result-summary">
+      <strong>{{ events.length }}</strong>
+      <span>Upcoming events</span>
+    </div>
   </div>
 
   <div class="events-toolbar">
     <app-search-bar
       (searchEvent)="searchEvents($event)"
     ></app-search-bar>
+  </div>
 
+  <div class="events-filter-panel">
     <app-filter-bar
       (categoryChange)="filterEvents($event)"
     ></app-filter-bar>
@@ -24,12 +37,13 @@
     class="empty-state"
     *ngIf="events.length === 0"
   >
-    <h2>  No events matched your search</h2>
-    <p>  Try a different keyword or switch back to all categories.</p>
+    <h2>No events matched your search</h2>
+    <p>Try a different keyword or switch back to all categories.</p>
   </div>
 
   <div
     class="events-grid"
+    [class.single-result]="events.length === 1"
     *ngIf="events.length > 0"
   >
 
@@ -38,16 +52,29 @@
       *ngFor="let event of events"
     >
 
-      <img
-        [src]="event.image"
-        [alt]="event.title"
-      >
+      <div class="event-media">
+        <img
+          [src]="event.image"
+          [alt]="event.title"
+        >
+
+        <span class="date-badge">
+          <strong>{{ event.date | date: 'dd' }}</strong>
+          {{ event.date | date: 'MMM' }}
+        </span>
+      </div>
 
       <div class="event-content">
 
-        <p class="category-pill">
-          {{ event.category }}
-        </p>
+        <div class="card-topline">
+          <p class="category-pill">
+            {{ event.category }}
+          </p>
+
+          <span class="seat-pill">
+            {{ event.availableSeats }} seats left
+          </span>
+        </div>
 
         <h2>
           {{ event.title }}
@@ -97,14 +124,6 @@
         </div>
 
         <div class="seat-row">
-          <span>
-            <span
-              class="meta-icon"
-              aria-hidden="true"
-            >&#128186;</span>
-            {{ event.availableSeats }} seats left
-          </span>
-
           <span>
             By {{ event.organizerName }}
           </span>

@@ -4,108 +4,181 @@
 
   <section class="dashboard-container">
 
-    <div class="dashboard-hero">
-      <div class="hero-main">
-        <p class="eyebrow">
-          Organizer Overview
-        </p>
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">Organizer Dashboard</p>
 
         <h1>
-          Keep your event catalog ready to book
+          Track bookings, capacity, and event performance
         </h1>
 
-        <p class="hero-copy">
-          Track live listings, confirmed bookings, revenue, and remaining seats from one clean workspace.
+        <p class="header-copy">
+          A focused workspace for keeping listings active and seats moving.
         </p>
-
       </div>
 
-      <div class="highlight-card">
-        <span class="highlight-label">
-          Next Featured Event
-        </span>
+      <div class="header-actions">
+        <a
+          routerLink="/organizer/create-event"
+          class="primary-action"
+        >
+          Create Event
+        </a>
+
+        <a
+          routerLink="/organizer/manage-events"
+          class="secondary-action"
+        >
+          Manage Events
+        </a>
+      </div>
+    </header>
+
+    <section class="hero-grid">
+      <article class="hero-panel">
+        <div>
+          <span>Seat Occupancy</span>
+          <strong>{{ occupancyRate }}%</strong>
+        </div>
+
+        <div class="progress-track">
+          <span [style.width.%]="occupancyRate"></span>
+        </div>
+
+        <p>
+          {{ ticketsSold }} tickets sold from {{ totalSeats }} listed seats.
+        </p>
+      </article>
+
+      <article class="highlight-card">
+        <span class="panel-kicker">Next Featured Event</span>
 
         @if (featuredEvent) {
           <img
-            class="highlight-image"
             [src]="featuredEvent.image"
             [alt]="featuredEvent.title"
           >
 
-          <strong>
-            {{ featuredEvent.title }}
-          </strong>
-
-          <p class="highlight-meta">
-            {{ featuredEvent.date | date: 'mediumDate' }} - {{ featuredEvent.venue }}
-          </p>
+          <div>
+            <strong>{{ featuredEvent.title }}</strong>
+            <p>{{ getEventDate(featuredEvent) }} - {{ featuredEvent.venue }}</p>
+          </div>
         } @else {
-          <strong>
-            {{ nextEventTitle }}
-          </strong>
+          <strong>{{ nextEventTitle }}</strong>
+          <p>Create an event to start accepting bookings.</p>
         }
+      </article>
+    </section>
+
+    <section class="stats-grid">
+      <article
+        class="stat-card"
+        *ngFor="let stat of stats"
+        [ngClass]="stat.tone"
+      >
+        <span>{{ stat.label }}</span>
+        <strong>{{ stat.value }}</strong>
+        <p>{{ stat.note }}</p>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel events-panel">
+        <div class="panel-header">
+          <div>
+            <span class="panel-kicker">Upcoming Events</span>
+            <h2>Performance Snapshot</h2>
+          </div>
+
+          <a routerLink="/organizer/manage-events">View all</a>
+        </div>
+
+        @if (eventSummaries.length > 0) {
+          <div class="event-list">
+            <article
+              class="event-row"
+              *ngFor="let summary of eventSummaries"
+            >
+              <div class="event-thumb">
+                <img
+                  [src]="summary.event.image"
+                  [alt]="summary.event.title"
+                >
+
+                <span>{{ getEventDate(summary.event) }}</span>
+              </div>
+
+              <div class="event-info">
+                <div class="event-title-row">
+                  <strong>{{ summary.event.title }}</strong>
+                  <span>{{ summary.event.category }}</span>
+                </div>
+
+                <p>{{ summary.event.venue }}, {{ summary.event.city }}</p>
+
+                <div class="occupancy-row">
+                  <span>Seat occupancy</span>
+                  <strong>{{ summary.occupancy }}%</strong>
+                </div>
+
+                <div class="mini-progress">
+                  <span [style.width.%]="summary.occupancy"></span>
+                </div>
+              </div>
+
+              <div class="event-metrics">
+                <div>
+                  <span>Tickets sold</span>
+                  <strong>{{ summary.ticketsSold }}</strong>
+                </div>
+
+                <div>
+                  <span>Revenue</span>
+                  <strong>Rs. {{ summary.revenue }}</strong>
+                </div>
+              </div>
+            </article>
+          </div>
+        } @else {
+          <p class="empty-copy">
+            No upcoming active events yet.
+          </p>
+        }
+      </article>
+
+    </section>
+
+    <section class="panel bookings-panel">
+      <div class="panel-header">
+        <div>
+          <span class="panel-kicker">Recent Bookings</span>
+          <h2>Latest Confirmed Tickets</h2>
+        </div>
+
+        <a routerLink="/organizer/attendees">View attendees</a>
       </div>
-    </div>
 
-    <div class="dashboard-cards">
+      @if (recentBookings.length > 0) {
+        <div class="booking-list">
+          <article
+            class="booking-row"
+            *ngFor="let booking of recentBookings"
+          >
+            <div>
+              <strong>{{ booking.name }}</strong>
+              <span>{{ booking.eventTitle }}</span>
+            </div>
 
-      <article class="card accent-blue">
-        <span class="card-label">
-          Total Events
-        </span>
-
-        <h2>
-          {{ totalEvents }}
-        </h2>
-
-        <p>
-          Events currently managed in the organizer catalog.
+            <span>{{ booking.tickets }} tickets</span>
+            <strong>Rs. {{ booking.totalAmount }}</strong>
+          </article>
+        </div>
+      } @else {
+        <p class="empty-copy">
+          Confirmed bookings will appear here.
         </p>
-      </article>
-
-      <article class="card accent-orange">
-        <span class="card-label">
-          Revenue Earned
-        </span>
-
-        <h2>
-          &#8377;{{ totalRevenue }}
-        </h2>
-
-        <p>
-          Confirmed ticket value across all bookings.
-        </p>
-      </article>
-
-      <article class="card accent-green">
-        <span class="card-label">
-          Tickets Sold
-        </span>
-
-        <h2>
-          {{ ticketsSold }}
-        </h2>
-
-        <p>
-          Tickets booked by attendees.
-        </p>
-      </article>
-
-      <article class="card accent-blue">
-        <span class="card-label">
-          Seats Remaining
-        </span>
-
-        <h2>
-          {{ seatsRemaining }}
-        </h2>
-
-        <p>
-          Seats still available across managed events.
-        </p>
-      </article>
-
-    </div>
+      }
+    </section>
 
   </section>
 

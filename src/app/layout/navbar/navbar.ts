@@ -24,6 +24,7 @@ import { AuthService } from '../../services/auth';
 export class Navbar {
 
   adminState$: Observable<boolean>;
+  menuOpen = false;
 
   get isOrganizerPage(): boolean {
 
@@ -44,9 +45,23 @@ export class Navbar {
   logout(): void {
 
     this.authService.logout();
+    this.closeMenu();
     this.router.navigate([
       '/'
     ]);
+
+  }
+
+  toggleMenu(): void {
+
+    this.menuOpen =
+      !this.menuOpen;
+
+  }
+
+  closeMenu(): void {
+
+    this.menuOpen = false;
 
   }
 

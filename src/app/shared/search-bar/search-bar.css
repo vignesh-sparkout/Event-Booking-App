@@ -1,6 +1,6 @@
 .search-container {
   display: grid;
-  gap: 6px;
+  gap: 8px;
   margin: 0;
   color: #263449;
   font-weight: 800;
@@ -10,14 +10,15 @@
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: #4f46e5;
 }
 
 .search-field {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  min-height: 42px;
-  padding: 0 8px 0 11px;
+  min-height: 52px;
+  padding: 0 10px 0 12px;
   border: 1px solid #d5dce6;
   border-radius: 8px;
   background: #fff;
@@ -35,18 +36,19 @@
 
 .search-icon {
   display: inline-grid;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   place-items: center;
   border-radius: 50%;
   background: #eef2ff;
+  color: #4f46e5;
   font-size: 0.76rem;
 }
 
 input {
   width: 100%;
   min-width: 0;
-  padding: 10px 9px;
+  padding: 12px 10px;
   border: none;
   outline: none;
   background: transparent;

@@ -1,6 +1,6 @@
 .filter-container {
   display: grid;
-  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
   gap: 14px;
 }
 
@@ -16,13 +16,14 @@
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: #4f46e5;
 }
 
 select,
 input,
 .date-range-toggle {
   width: 100%;
-  min-height: 48px;
+  min-height: 52px;
   padding: 12px 38px 12px 13px;
   border: 1px solid #d5dce6;
   border-radius: 8px;
@@ -78,7 +79,7 @@ input:focus,
 .date-range-panel {
   position: absolute;
   top: calc(100% + 10px);
-  right: 0;
+  left: 0;
   z-index: 10;
   display: grid;
   width: min(320px, 86vw);

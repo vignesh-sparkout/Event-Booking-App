@@ -1,35 +1,47 @@
-<div class="sidebar">
+<aside class="sidebar">
 
-  <h2>
-    Organizer Panel
-  </h2>
+  <div class="sidebar-brand">
+    <span class="brand-mark">EB</span>
 
-  <ul>
+    <div>
+      <strong>Organizer</strong>
+      <span>Control Panel</span>
+    </div>
+  </div>
 
-    <li>
-      <a routerLink="/organizer/dashboard">
-        Dashboard
-      </a>
-    </li>
+  <nav aria-label="Organizer navigation">
+    <a
+      routerLink="/organizer/dashboard"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <span class="nav-icon">01</span>
+      Dashboard
+    </a>
 
-    <li>
-      <a routerLink="/organizer/create-event">
-        Create Event
-      </a>
-    </li>
+    <a
+      routerLink="/organizer/create-event"
+      routerLinkActive="active-link"
+    >
+      <span class="nav-icon">02</span>
+      Create Event
+    </a>
 
-    <li>
-      <a routerLink="/organizer/manage-events">
-        Manage Events
-      </a>
-    </li>
+    <a
+      routerLink="/organizer/manage-events"
+      routerLinkActive="active-link"
+    >
+      <span class="nav-icon">03</span>
+      Manage Events
+    </a>
 
-    <li>
-      <a routerLink="/organizer/attendees">
-        Attendees
-      </a>
-    </li>
+    <a
+      routerLink="/organizer/attendees"
+      routerLinkActive="active-link"
+    >
+      <span class="nav-icon">04</span>
+      Attendees
+    </a>
+  </nav>
 
-  </ul>
-
-</div>
+</aside>

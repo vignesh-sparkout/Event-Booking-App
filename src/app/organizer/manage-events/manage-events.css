@@ -154,18 +154,26 @@
 }
 
 .button-group {
-  display: flex;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 0.85fr 1.25fr 1fr;
+  gap: 8px;
   margin-top: 18px;
 }
 
 button {
-  flex: 1;
-  padding: 11px 16px;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 0.9rem;
   font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .edit-btn {
@@ -314,5 +322,9 @@ button:disabled {
 
   .modal-actions {
     flex-direction: column;
+  }
+
+  .button-group {
+    grid-template-columns: 1fr;
   }
 }

@@ -9,7 +9,6 @@ import { FormsModule } from '@angular/forms';
 
 export interface EventFilters {
   category: string;
-  city: string;
   price: string;
   fromDate: string;
   toDate: string;
@@ -32,7 +31,6 @@ export class FilterBar {
   draftToDate = '';
   filters: EventFilters = {
     category: '',
-    city: '',
     price: '',
     fromDate: '',
     toDate: ''
@@ -61,7 +59,7 @@ export class FilterBar {
       value: 'paid'
     },
     {
-      label: 'Under ₹500',
+      label: 'Under Rs. 500',
       value: 'under-500'
     }
   ];

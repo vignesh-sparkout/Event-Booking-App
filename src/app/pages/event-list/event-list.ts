@@ -21,7 +21,6 @@ export class EventList {
   private searchText = '';
   private filters: EventFilters = {
     category: '',
-    city: '',
     price: '',
     fromDate: '',
     toDate: ''
@@ -66,7 +65,6 @@ export class EventList {
           [
             event.title,
             event.venue,
-            event.city,
             event.organizerName
           ].some(value =>
             value.toLowerCase().includes(keyword)
@@ -75,12 +73,6 @@ export class EventList {
         const matchesCategory =
           !this.filters.category ||
           event.category === this.filters.category;
-
-        const matchesCity =
-          !this.filters.city ||
-          event.city.toLowerCase().includes(
-            this.filters.city.toLowerCase()
-          );
 
         const matchesPrice =
           this.matchesPriceFilter(event.price);
@@ -91,7 +83,6 @@ export class EventList {
         return (
           matchesKeyword &&
           matchesCategory &&
-          matchesCity &&
           matchesPrice &&
           matchesDateRange
         );

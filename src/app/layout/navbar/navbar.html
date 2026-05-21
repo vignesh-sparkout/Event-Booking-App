@@ -1,6 +1,13 @@
-<nav class="navbar">
+<nav
+  class="navbar"
+  [class.organizer-navbar]="isOrganizerPage"
+>
 
-  <div class="logo">
+  <a
+    class="logo"
+    routerLink="/"
+    (click)="closeMenu()"
+  >
     <span class="logo-mark" aria-hidden="true">
       <svg viewBox="0 0 24 24">
         <path d="M4 9V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a3 3 0 0 0 0 6v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a3 3 0 0 0 0-6Z"></path>
@@ -8,11 +15,26 @@
       </svg>
     </span>
     <span>Event</span> Booking
-  </div>
+  </a>
+
+  <button
+    *ngIf="!isOrganizerPage"
+    type="button"
+    class="menu-toggle"
+    [class.menu-open]="menuOpen"
+    [attr.aria-expanded]="menuOpen"
+    aria-label="Toggle navigation menu"
+    (click)="toggleMenu()"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 
   <ul
     *ngIf="!isOrganizerPage"
     class="nav-links"
+    [class.menu-open]="menuOpen"
   >
 
     <li>
@@ -23,6 +45,7 @@
         [routerLinkActiveOptions]="{
           exact: true
         }"
+        (click)="closeMenu()"
       >
         Home
       </a>
@@ -34,6 +57,7 @@
       <a
         routerLink="/events"
         routerLinkActive="active-link"
+        (click)="closeMenu()"
       >
         Events
       </a>
@@ -45,6 +69,7 @@
       <a
         routerLink="/my-bookings"
         routerLinkActive="active-link"
+        (click)="closeMenu()"
       >
         My Bookings
       </a>
@@ -57,6 +82,7 @@
         *ngIf="adminState$ | async"
         routerLink="/organizer/dashboard"
         routerLinkActive="active-link"
+        (click)="closeMenu()"
       >
         Organizer
       </a>
@@ -66,8 +92,10 @@
     <li *ngIf="!(adminState$ | async)">
 
       <a
+        class="admin-login-link"
         routerLink="/admin-login"
         routerLinkActive="active-link"
+        (click)="closeMenu()"
       >
         <span class="login-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">

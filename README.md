@@ -123,23 +123,6 @@ Password: 121212
 
 After login, protected organizer routes can be accessed.
 
-## Important Routes
-
-| Route | Description |
-| --- | --- |
-| `/` | Home page |
-| `/events` | Event listing page |
-| `/event-details/:id` | Event details page |
-| `/ticket-booking/:id` | Ticket booking page |
-| `/my-bookings` | Attendee booking lookup and cancellation |
-| `/admin-login` | Organizer/admin login |
-| `/organizer/dashboard` | Organizer dashboard |
-| `/organizer/create-event` | Create new event |
-| `/organizer/manage-events` | Manage existing events |
-| `/organizer/edit-event/:id` | Edit selected event |
-| `/organizer/attendees` | View all attendees |
-| `/organizer/attendees/:id` | View attendees for one event |
-
 ## Data Storage
 
 This project does not use a backend database.

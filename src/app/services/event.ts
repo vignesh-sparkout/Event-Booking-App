@@ -25,11 +25,11 @@ export class EventService {
       organizerName: 'Tech Circle India',
       organizerEmail: 'events@techcircle.in',
       price: 500,
-      image: 'images/workshop-event.jpg',
+      image: 'images/technology/tech.jpg',
       gallery: [
-        'images/workshop-event.jpg',
-        'images/tech-banner.jpg',
-        'images/workshop-event1.jpg'
+        'images/technology/tech.jpg',
+        'images/technology/tech-banner.jpg',
+        'images/technology/tech2.jpg'
       ],
       totalSeats: 100,
       availableSeats: 100,
@@ -51,11 +51,11 @@ export class EventService {
       organizerName: 'SoundStage Live',
       organizerEmail: 'hello@soundstage.in',
       price: 1000,
-      image: 'images/music1.png',
+      image: 'images/music/music1.png',
       gallery: [
-        'images/music2.png',
-        'images/music3.png',
-        'images/music-event.jpg'
+        'images/music/music 2.png',
+        'images/music/music3.png',
+        'images/music/music-event.jpg'
       ],
       totalSeats: 200,
       availableSeats: 200,
@@ -77,11 +77,11 @@ export class EventService {
       organizerName: 'Arena Sports Club',
       organizerEmail: 'bookings@arenasports.in',
       price: 750,
-      image: 'images/sports-event.jpg',
+      image: 'images/sports/sports-event.jpg',
       gallery: [
-        'images/sports-event.jpg',
-        'images/sport-event2.jpg',
-        'images/dashboard.jpg'
+        'images/sports/sports-event.jpg',
+        'images/sports/sport-event2.jpg',
+        'images/sports/football3.jpg'
       ],
       totalSeats: 150,
       availableSeats: 150,
@@ -103,11 +103,11 @@ export class EventService {
       organizerName: 'Fork Trail Events',
       organizerEmail: 'care@forktrail.in',
       price: 350,
-      image: 'images/food-festival.jpg',
+      image: 'images/foods/food-festival.jpg',
       gallery: [
-        'images/food-festival.jpg',
-        'images/feed-festival-event.jpg',
-        'images/banner.jpg'
+        'images/foods/food-festival.jpg',
+        'images/foods/feed-festival-event.jpg',
+        'images/foods/foodfes.png'
       ],
       totalSeats: 120,
       availableSeats: 120,
@@ -421,7 +421,7 @@ export class EventService {
       event.category || 'Workshop';
 
     const image =
-      event.image ||
+      this.normalizeImagePath(event.image, category) ||
       this.getFallbackGallery(category)[0];
 
     const totalSeats =
@@ -471,12 +471,19 @@ export class EventService {
 
     const images = [
       image,
-      ...(gallery || []),
+      ...(gallery || []).map(galleryImage =>
+        this.normalizeImagePath(galleryImage, category)
+      ),
       ...this.getFallbackGallery(category)
     ];
 
     return Array.from(
-      new Set(images.filter(Boolean))
+      new Set(
+        images.filter(
+          (galleryImage): galleryImage is string =>
+            Boolean(galleryImage)
+        )
+      )
     ).slice(0, 3);
 
   }
@@ -485,38 +492,133 @@ export class EventService {
 
     const galleries: Record<string, string[]> = {
       Music: [
-        'images/music-event.jpg',
-        'images/music-event1.jpg',
-        'images/banner.jpg'
+        'images/music/music-event.jpg',
+        'images/music/music-event1.jpg',
+        'images/music/musicbg.png'
       ],
       Technology: [
-        'images/workshop-event.jpg',
-        'images/tech-banner.jpg',
-        'images/workshop-event1.jpg'
+        'images/technology/tech.jpg',
+        'images/technology/tech-banner.jpg',
+        'images/technology/tech2.jpg'
       ],
       Workshop: [
-        'images/workshop-event.jpg',
-        'images/workshop-event1.jpg',
-        'images/tech-banner.jpg'
+        'images/technology/tech.jpg',
+        'images/technology/tech2.jpg',
+        'images/technology/tech-banner.jpg'
       ],
       Comedy: [
-        'images/comedy-show.jpg',
-        'images/comedy-show1.jpg',
-        'images/banner.jpg'
+        'images/comedy/comedy-show.jpg',
+        'images/comedy/comedy-show1.jpg',
+        'images/comedy/comedybg.png'
       ],
       Sports: [
-        'images/sports-event.jpg',
-        'images/sport-event2.jpg',
-        'images/dashboard.jpg'
+        'images/sports/sports-event.jpg',
+        'images/sports/sport-event2.jpg',
+        'images/sports/football3.jpg'
       ],
       Food: [
-        'images/food-festival.jpg',
-        'images/feed-festival-event.jpg',
-        'images/banner.jpg'
+        'images/foods/food-festival.jpg',
+        'images/foods/feed-festival-event.jpg',
+        'images/foods/foodfes.png'
       ]
     };
 
     return galleries[category] || galleries['Workshop'];
+
+  }
+
+  private normalizeImagePath(
+    imagePath: string | undefined,
+    category: string
+  ): string | undefined {
+
+    if (!imagePath) {
+      return undefined;
+    }
+
+    if (
+      imagePath.startsWith('data:') ||
+      imagePath.startsWith('blob:') ||
+      imagePath.startsWith('http://') ||
+      imagePath.startsWith('https://')
+    ) {
+      return imagePath;
+    }
+
+    const normalizedPath =
+      imagePath.replace(/^\/+/, '');
+
+    if (!normalizedPath.startsWith('images/')) {
+      return normalizedPath;
+    }
+
+    const legacyImagePaths: Record<string, string> = {
+      'images/baseketball.png': 'images/sports/baseketball.png',
+      'images/baseketball1.png': 'images/sports/baseketball1.png',
+      'images/baseketball2.png': 'images/sports/baseketball2.png',
+      'images/comedy-show.jpg': 'images/comedy/comedy-show.jpg',
+      'images/comedy-show1.jpg': 'images/comedy/comedy-show1.jpg',
+      'images/comedy1.png': 'images/comedy/comedy1.png',
+      'images/comedy2.png': 'images/comedy/comedy2.png',
+      'images/comedybg.png': 'images/comedy/comedybg.png',
+      'images/dashboard.jpg': 'images/home/dashboard.jpg',
+      'images/eventsexample.png': 'images/home/eventsexample.png',
+      'images/example.png': 'images/home/eventsexample.png',
+      'images/feed-festival-event.jpg': 'images/foods/feed-festival-event.jpg',
+      'images/food-festival.jpg': 'images/foods/food-festival.jpg',
+      'images/food1.png': 'images/foods/food1.png',
+      'images/food2.png': 'images/foods/food2.png',
+      'images/foodfes.png': 'images/foods/foodfes.png',
+      'images/football.png': 'images/sports/football.png',
+      'images/football1.png': 'images/sports/football1.png',
+      'images/football2.png': 'images/sports/football2.png',
+      'images/football3.jpg': 'images/sports/football3.jpg',
+      'images/homebg.png': 'images/home/eventsexample.png',
+      'images/homepage.png': 'images/home/eventsexample.png',
+      'images/homepage1.png': 'images/home/eventsexample.png',
+      'images/music 2.png': 'images/music/music 2.png',
+      'images/music-event.jpg': 'images/music/music-event.jpg',
+      'images/music-event1.jpg': 'images/music/music-event1.jpg',
+      'images/music1.png': 'images/music/music1.png',
+      'images/music2.png': 'images/music/music 2.png',
+      'images/music3.png': 'images/music/music3.png',
+      'images/music4.png': 'images/music/music4.png',
+      'images/musicbg.png': 'images/music/musicbg.png',
+      'images/sport-event2.jpg': 'images/sports/sport-event2.jpg',
+      'images/sports-event.jpg': 'images/sports/sports-event.jpg',
+      'images/sports.png': 'images/sports/sports.png',
+      'images/sportsbg.png': 'images/sports/sportsbg.png',
+      'images/tech-banner.jpg': 'images/technology/tech-banner.jpg',
+      'images/tech.jpg': 'images/technology/tech.jpg',
+      'images/tech2.jpg': 'images/technology/tech2.jpg',
+      'images/workshop-event.jpg': 'images/technology/tech.jpg',
+      'images/workshop-event1.jpg': 'images/technology/tech2.jpg'
+    };
+
+    if (legacyImagePaths[normalizedPath]) {
+      return legacyImagePaths[normalizedPath];
+    }
+
+    if (normalizedPath === 'images/banner.jpg') {
+      return this.getCategoryBanner(category);
+    }
+
+    return normalizedPath;
+
+  }
+
+  private getCategoryBanner(category: string): string {
+
+    const categoryBanners: Record<string, string> = {
+      Music: 'images/music/musicbg.png',
+      Technology: 'images/technology/tech-banner.jpg',
+      Workshop: 'images/technology/tech-banner.jpg',
+      Comedy: 'images/comedy/comedybg.png',
+      Sports: 'images/sports/sportsbg.png',
+      Food: 'images/foods/foodfes.png'
+    };
+
+    return categoryBanners[category] || categoryBanners['Workshop'];
 
   }
 
