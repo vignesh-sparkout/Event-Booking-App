@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {
+  Router,
+  RouterOutlet
+} from '@angular/router';
 
 import { Navbar } from './layout/navbar/navbar';
 import { Footer } from './layout/footer/footer';
@@ -16,5 +19,15 @@ import { Footer } from './layout/footer/footer';
   styleUrl: './app.css'
 })
 export class App {
+
+  get isHomePage(): boolean {
+
+    return this.router.url === '/';
+
+  }
+
+  constructor(
+    private router: Router
+  ) {}
 
 }

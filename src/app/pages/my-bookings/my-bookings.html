@@ -98,17 +98,17 @@
     *ngIf="bookings.length > 0"
   >
     <article
-      class="booking-card group ring-1 ring-cyan-900/5 transition duration-300 ease-out hover:-translate-y-1 hover:ring-cyan-700/20"
+      class="booking-card group ring-1 ring-indigo-900/5 transition duration-300 ease-out hover:-translate-y-1 hover:ring-indigo-700/20"
       *ngFor="let booking of bookings"
     >
 
-      <div class="card-top transition duration-300 group-hover:bg-cyan-50/90">
+      <div class="card-top transition duration-300 group-hover:bg-indigo-50/90">
         <div>
-          <p class="booking-id shadow-sm transition duration-300 group-hover:bg-cyan-100">
+          <p class="booking-id shadow-sm transition duration-300 group-hover:bg-indigo-100">
             {{ booking.bookingId }}
           </p>
 
-          <h2 class="transition duration-300 group-hover:text-cyan-950">
+          <h2 class="transition duration-300 group-hover:text-indigo-950">
             {{ booking.eventTitle }}
           </h2>
         </div>
@@ -131,27 +131,27 @@
       </div>
 
       <div class="detail-grid">
-        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
+        <div class="transition duration-300 hover:border-indigo-200 hover:bg-white hover:shadow-md">
           <span>Event Date</span>
           <strong>{{ booking.eventDate | date: 'mediumDate' }}</strong>
         </div>
 
-        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
+        <div class="transition duration-300 hover:border-indigo-200 hover:bg-white hover:shadow-md">
           <span>Booked On</span>
           <strong>{{ booking.bookingDate | date: 'mediumDate' }}</strong>
         </div>
 
-        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
+        <div class="transition duration-300 hover:border-indigo-200 hover:bg-white hover:shadow-md">
           <span>Name</span>
           <strong>{{ booking.name }}</strong>
         </div>
 
-        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
+        <div class="transition duration-300 hover:border-indigo-200 hover:bg-white hover:shadow-md">
           <span>Tickets</span>
-          <strong class="text-cyan-800">{{ booking.tickets }}</strong>
+          <strong class="text-indigo-800">{{ booking.tickets }}</strong>
         </div>
 
-        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
+        <div class="transition duration-300 hover:border-indigo-200 hover:bg-white hover:shadow-md">
           <span>Amount</span>
           <strong class="text-emerald-700">
             <ng-container *ngIf="booking.totalAmount === 0; else paidBookingAmount">
@@ -164,13 +164,13 @@
           </strong>
         </div>
 
-        <div class="transition duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-md">
+        <div class="transition duration-300 hover:border-indigo-200 hover:bg-white hover:shadow-md">
           <span>Contact</span>
           <strong>{{ booking.phone }}</strong>
         </div>
       </div>
 
-      <div class="card-footer transition duration-300 group-hover:border-cyan-300/70">
+      <div class="card-footer transition duration-300 group-hover:border-indigo-300/70">
         <span class="font-semibold text-slate-600">
           {{ booking.email }}
         </span>

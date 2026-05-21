@@ -1,8 +1,8 @@
 .events-container {
   padding: 34px 30px 48px;
   background:
-    radial-gradient(circle at top left, rgba(18, 138, 167, 0.14), transparent 25%),
-    linear-gradient(180deg, #f8fbfd 0%, #ffffff 100%);
+    radial-gradient(circle at top left, rgba(79, 70, 229, 0.14), transparent 25%),
+    linear-gradient(180deg, #f8faff 0%, #ffffff 100%);
 }
 
 .events-hero {
@@ -11,7 +11,7 @@
 
 .eyebrow {
   margin: 0 0 10px;
-  color: #0c7c90;
+  color: #4f46e5;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -39,7 +39,7 @@
   gap: 16px;
   margin-top: 28px;
   padding: 18px;
-  border: 1px solid rgba(12, 124, 144, 0.18);
+  border: 1px solid rgba(79, 70, 229, 0.18);
   border-radius: 8px;
   background: #ffffff;
   box-shadow:
@@ -64,7 +64,7 @@
   inset: 0 auto 0 0;
   width: 5px;
   border-radius: 8px 0 0 8px;
-  background: linear-gradient(180deg, #0c7c90, #f77f00);
+  background: linear-gradient(180deg, #4f46e5, #7c3aed);
   content: '';
 }
 
@@ -113,8 +113,8 @@
   margin: 0 0 12px;
   padding: 6px 12px;
   border-radius: 8px;
-  background: #e7f7fb;
-  color: #0b7285;
+  background: #eef2ff;
+  color: #4f46e5;
   font-size: 0.85rem;
   font-weight: 700;
 }
@@ -154,12 +154,12 @@
 
 .description blockquote {
   padding-left: 12px;
-  border-left: 3px solid #0c7c90;
+  border-left: 3px solid #4f46e5;
   color: #4b5563;
 }
 
 .description a {
-  color: #0c7c90;
+  color: #4f46e5;
   font-weight: 700;
 }
 
@@ -183,8 +183,8 @@
   height: 20px;
   justify-content: center;
   border-radius: 50%;
-  background: #e7f7fb;
-  color: #0c7c90;
+  background: #eef2ff;
+  color: #4f46e5;
   font-size: 0.76rem;
   line-height: 1;
   flex: 0 0 20px;
@@ -219,7 +219,7 @@
 }
 
 .card-footer strong {
-  color: #d45500;
+  color: #4f46e5;
   font-size: 1.1rem;
 }
 
@@ -227,7 +227,7 @@ button {
   padding: 11px 18px;
   border: none;
   border-radius: 8px;
-  background: #0c7c90;
+  background: #4f46e5;
   color: #fff;
   cursor: pointer;
   font-weight: 700;

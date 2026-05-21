@@ -45,12 +45,12 @@ select {
 select:focus,
 input:focus,
 .date-range-toggle:focus {
-  border-color: #0c7c90;
+  border-color: #4f46e5;
   outline: none;
   background-color: #fbfeff;
   box-shadow:
-    0 0 0 4px rgba(12, 124, 144, 0.12),
-    0 10px 24px rgba(12, 124, 144, 0.08);
+    0 0 0 4px rgba(79, 70, 229, 0.12),
+    0 10px 24px rgba(79, 70, 229, 0.08);
 }
 
 .date-range {
@@ -84,7 +84,7 @@ input:focus,
   width: min(320px, 86vw);
   gap: 12px;
   padding: 16px;
-  border: 1px solid rgba(12, 124, 144, 0.16);
+  border: 1px solid rgba(79, 70, 229, 0.16);
   border-radius: 8px;
   background: #fff;
   box-shadow: 0 22px 48px rgba(20, 33, 61, 0.18);
@@ -123,12 +123,12 @@ input:focus,
 }
 
 .apply-btn {
-  background: #0c7c90;
+  background: #4f46e5;
   color: #fff;
 }
 
 .apply-btn:hover {
-  background: #096b7d;
+  background: #4338ca;
 }
 
 @media (max-width: 900px) {

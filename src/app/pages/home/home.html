@@ -1,23 +1,68 @@
-<section class="home-container">
+<main class="home-page">
 
-  <div class="home-copy">
-    <p class="eyebrow">
-      Welcome
-    </p>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Welcome back!</p>
 
-    <h1>
-      Discover events worth showing up for
-    </h1>
+      <h1>
+        Discover Events<br>
+        That <span>Create Memories</span>
+      </h1>
 
-    <p>
-      Browse live concerts, food festivals, workshops, and sports events from one clean booking experience.
-    </p>
-  </div>
+      <p>
+        Explore concerts, workshops, food festivals, sports events and more.
+        Find events you love and book with ease.
+      </p>
+    </div>
 
-  <img
-    class="home-hero-image"
-    src="images/dashboard.jpg" 
-    alt="Event booking dashboard"
-  >
+    <div class="hero-media">
+      <img src="images/homebg.png" alt="Live concert audience">
+    </div>
 
-</section>
+    <aside class="why-panel">
+      <h2>Why Choose Us?</h2>
+      <div class="why-grid">
+        <article *ngFor="let item of benefits">
+          <span>{{ item.icon }}</span>
+          <strong>{{ item.title }}</strong>
+          <p>{{ item.text }}</p>
+        </article>
+      </div>
+    </aside>
+  </section>
+
+  <section class="content-grid">
+    <div class="events-area">
+      <div class="section-heading">
+        <h2>Upcoming Events</h2>
+        <a routerLink="/events">View All</a>
+      </div>
+
+      <div class="event-grid">
+        <article *ngFor="let event of events" class="event-card">
+          <img [src]="event.image" [alt]="event.title">
+
+          <span class="event-date">
+            <strong>{{ event.date | date: 'dd' }}</strong>
+            {{ event.date | date: 'MMM' }}
+          </span>
+
+          <div>
+            <h3>{{ event.title }}</h3>
+            <p>{{ event.venue }}, {{ event.city }}</p>
+            <strong class="price">
+              <ng-container *ngIf="event.price === 0; else paidPrice">
+                Free
+              </ng-container>
+
+              <ng-template #paidPrice>
+                &#8377;{{ event.price }}
+              </ng-template>
+            </strong>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>

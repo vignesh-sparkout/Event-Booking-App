@@ -4,8 +4,8 @@
   place-items: center;
   padding: 42px 20px;
   background:
-    radial-gradient(circle at top left, rgba(0, 188, 212, 0.16), transparent 26%),
-    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+    radial-gradient(circle at top left, rgba(79, 70, 229, 0.16), transparent 26%),
+    linear-gradient(180deg, #f8faff 0%, #ffffff 100%);
 }
 
 .login-card {
@@ -19,7 +19,7 @@
 
 .eyebrow {
   margin: 0 0 8px;
-  color: #0c7c90;
+  color: #4f46e5;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -55,9 +55,9 @@ input {
 }
 
 input:focus {
-  border-color: #0c7c90;
+  border-color: #4f46e5;
   outline: none;
-  box-shadow: 0 0 0 4px rgba(12, 124, 144, 0.12);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
 }
 
 input.input-error {
@@ -87,7 +87,7 @@ button {
   padding: 13px 18px;
   border: none;
   border-radius: 8px;
-  background: #0c7c90;
+  background: #4f46e5;
   color: #fff;
   cursor: pointer;
   font: inherit;
@@ -109,7 +109,7 @@ button {
   width: min(100%, 360px);
   padding: 30px 28px;
   border-radius: 8px;
-  border: 1px solid rgba(12, 124, 144, 0.18);
+  border: 1px solid rgba(79, 70, 229, 0.18);
   background:
     linear-gradient(180deg, #ffffff 0%, #f8fcfd 100%);
   text-align: center;
@@ -143,7 +143,7 @@ button {
   width: 45%;
   height: 100%;
   border-radius: inherit;
-  background: #0c7c90;
+  background: #4f46e5;
   animation: loading-slide 1.5s ease-in-out infinite;
   content: '';
 }
@@ -161,7 +161,7 @@ button {
 .back-link {
   display: inline-block;
   margin-top: 16px;
-  color: #0c7c90;
+  color: #4f46e5;
   font-weight: 700;
   text-decoration: none;
 }
