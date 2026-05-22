@@ -329,3 +329,241 @@ button:hover {
     flex-direction: column;
   }
 }
+
+.date-filter.date-filter {
+  position: relative;
+  display: flex;
+  width: 244px;
+  min-height: 54px;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  padding: 8px 42px 8px 11px;
+  border: 1px solid #d9e0eb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.date-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.1;
+  pointer-events: none;
+}
+
+.date-icon {
+  position: relative;
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(79, 70, 229, 0.18);
+  border-radius: 8px;
+  background: #eef2ff;
+}
+
+.date-icon::before {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 16px;
+  height: 17px;
+  border: 2px solid #4f46e5;
+  border-top-width: 6px;
+  border-radius: 5px;
+  content: '';
+}
+
+.date-icon::after {
+  position: absolute;
+  top: 19px;
+  left: 12px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 7px 0 0 #38bdf8;
+  content: '';
+}
+
+.date-copy > span {
+  display: inline-flex;
+  align-items: center;
+  color: #4f46e5;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.date-copy strong {
+  display: block;
+  overflow: hidden;
+  color: #172033;
+  font-size: 0.95rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.date-filter select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.date-chevron {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid #64748b;
+  border-bottom: 2px solid #64748b;
+  pointer-events: none;
+  transform: translateY(-65%) rotate(45deg);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.date-filter:hover {
+  border-color: rgba(79, 70, 229, 0.36);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.09);
+  transform: translateY(-1px);
+}
+
+.date-filter:focus-within {
+  border-color: rgba(79, 70, 229, 0.52);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.date-filter:focus-within .date-chevron {
+  border-color: #4f46e5;
+  transform: translateY(-35%) rotate(225deg);
+}
+
+button:not(:disabled) {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    border-color 0.22s ease,
+    background 0.22s ease,
+    color 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
+}
+
+button:not(:disabled)::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.58) 45%, transparent 72%);
+  content: '';
+  transform: translateX(-120%);
+  transition: transform 0.45s ease;
+}
+
+button:not(:disabled):hover {
+  border-color: rgba(79, 70, 229, 0.38);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.14);
+  transform: translateY(-3px);
+}
+
+button:not(:disabled):hover::before {
+  transform: translateX(120%);
+}
+
+button:not(:disabled):active {
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.1);
+  transform: translateY(-1px) scale(0.98);
+}
+
+button:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.16);
+}
+
+.tabs button:not(.active):hover,
+.pagination button:not(.active):not(:disabled):hover {
+  background: #f8faff;
+  color: #3730a3;
+}
+
+.filter-button:not(:disabled):hover {
+  background: #4338ca;
+  box-shadow: 0 16px 30px rgba(79, 70, 229, 0.24);
+}
+
+:is(th, td) {
+  position: relative;
+  transition:
+    background-color 0.22s ease,
+    box-shadow 0.22s ease,
+    color 0.22s ease;
+}
+
+thead th {
+  background: #fbfdff;
+}
+
+thead th:hover {
+  background: #eef2ff;
+  color: #3730a3;
+  box-shadow: inset 0 -2px 0 #4f46e5;
+}
+
+tbody td:hover {
+  background: #eef6ff;
+  box-shadow:
+    inset 0 1px 0 rgba(79, 70, 229, 0.1),
+    inset 0 -1px 0 rgba(79, 70, 229, 0.1);
+}
+
+tbody td > * {
+  transition: transform 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+}
+
+tbody td:hover > * {
+  transform: translateX(4px);
+}
+
+tbody td:hover :is(.ticket-count, .status, .avatar) {
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.12);
+}
+
+tbody td:hover .contact-line:first-child,
+tbody td:hover .date-cell,
+tbody td:hover .attendee-cell strong {
+  color: #3730a3;
+}
+
+.table-card,
+.empty-state {
+  animation: attendees-rise-in 0.32s ease both;
+}
+
+@media (max-width: 980px) {
+  .date-filter.date-filter {
+    width: 100%;
+  }
+}
+
+@keyframes attendees-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

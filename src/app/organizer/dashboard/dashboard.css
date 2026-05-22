@@ -358,3 +358,122 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+.primary-action,
+.secondary-action,
+.panel-header a {
+  transition: 0.2s ease;
+}
+
+.primary-action:hover {
+  background: #4338ca;
+}
+
+.primary-action:hover,
+.secondary-action:hover,
+.panel-header a:hover {
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.1);
+  transform: translateY(-2px);
+}
+
+.secondary-action:hover,
+.panel-header a:hover {
+  border-color: rgba(79, 70, 229, 0.42);
+  background: #f8faff;
+  color: #3730a3;
+}
+
+.hero-panel,
+.highlight-card,
+.panel,
+.stat-card {
+  transition: 0.24s ease;
+}
+
+.hero-panel:hover,
+.highlight-card:hover,
+.panel:hover,
+.stat-card:hover {
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+  transform: translateY(-4px);
+}
+
+.event-row,
+.booking-row {
+  transition: 0.22s ease;
+}
+
+.event-row:hover,
+.booking-row:hover {
+  border-color: rgba(79, 70, 229, 0.22);
+  background: #fff;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+  transform: translateY(-3px);
+}
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  border-color: var(--stat-border, rgba(79, 70, 229, 0.14));
+  background: linear-gradient(145deg, #fff 0%, var(--stat-bg, #eef2ff) 100%);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.07);
+}
+
+.stat-card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: var(--stat-accent, #4f46e5);
+  content: '';
+}
+
+.stat-card span {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--stat-chip, #eef2ff);
+  color: var(--stat-accent, #4f46e5);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.stat-card strong {
+  margin-top: 14px;
+  line-height: 1.1;
+}
+
+.stat-card p {
+  margin: 10px 0 0;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+.stat-card.blue {
+  --stat-accent: #2563eb;
+  --stat-bg: #eff6ff;
+  --stat-chip: #dbeafe;
+  --stat-border: rgba(37, 99, 235, 0.18);
+}
+
+.stat-card.violet {
+  --stat-accent: #7c3aed;
+  --stat-bg: #f5f3ff;
+  --stat-chip: #ede9fe;
+  --stat-border: rgba(124, 58, 237, 0.18);
+}
+
+.stat-card.green {
+  --stat-accent: #16a34a;
+  --stat-bg: #f0fdf4;
+  --stat-chip: #dcfce7;
+  --stat-border: rgba(22, 163, 74, 0.18);
+}
+
+.stat-card.amber {
+  --stat-accent: #d97706;
+  --stat-bg: #fffbeb;
+  --stat-chip: #fef3c7;
+  --stat-border: rgba(217, 119, 6, 0.2);
+}

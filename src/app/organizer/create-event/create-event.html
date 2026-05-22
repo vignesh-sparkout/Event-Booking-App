@@ -78,7 +78,7 @@
           </small>
         </label>
 
-        <label class="full-width">
+        <div class="form-field full-width">
           <span>Description</span>
 
           <div
@@ -108,7 +108,7 @@
           >
             Description is required.
           </small>
-        </label>
+        </div>
 
         <label>
           <span>Start Date & Time</span>
@@ -435,32 +435,6 @@
       </button>
 
     </form>
-
-    <div
-      class="event-success-modal-backdrop"
-      *ngIf="showSuccessModal"
-      role="alertdialog"
-      aria-modal="true"
-      aria-labelledby="create-event-success-title"
-    >
-      <div class="event-success-modal">
-        <div class="event-success-accent"></div>
-
-        <p class="event-success-kicker">
-          Event published
-        </p>
-
-        <h2 id="create-event-success-title">
-          Event created successfully
-        </h2>
-
-        <p>
-          Your event is now added to the organizer panel.
-        </p>
-
-        <div class="event-success-loader"></div>
-      </div>
-    </div>
 
   </div>
 

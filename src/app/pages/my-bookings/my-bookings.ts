@@ -19,9 +19,6 @@ export class MyBookings {
   bookingToCancel?: Booking;
   currentAttendeeEmail = '';
   lookupEmail = '';
-  private readonly attendeeEmailKey =
-    'currentAttendeeEmail';
-
   get confirmedBookingsCount(): number {
 
     return this.bookings.filter(
@@ -54,33 +51,23 @@ export class MyBookings {
   constructor(
     private bookingService: BookingService,
     private eventService: EventService
-  ) {
-
-    this.lookupEmail =
-      localStorage.getItem(this.attendeeEmailKey) || '';
-    this.currentAttendeeEmail =
-      this.normalizeEmail(this.lookupEmail);
-    this.loadBookings();
-
-  }
+  ) {}
 
   findBookings(): void {
 
     this.currentAttendeeEmail =
       this.normalizeEmail(this.lookupEmail);
 
-    if (this.currentAttendeeEmail) {
-      localStorage.setItem(
-        this.attendeeEmailKey,
-        this.currentAttendeeEmail
-      );
-    }
-
     this.loadBookings();
 
   }
 
   loadBookings(): void {
+
+    if (!this.currentAttendeeEmail) {
+      this.bookings = [];
+      return;
+    }
 
     this.bookings =
       this.bookingService.getBookings()

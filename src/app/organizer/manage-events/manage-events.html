@@ -117,6 +117,32 @@
 </div>
 
 <div
+  class="event-success-modal-backdrop"
+  *ngIf="successModal as modal"
+  role="alertdialog"
+  aria-modal="true"
+  aria-labelledby="manage-event-success-title"
+>
+  <div class="event-success-modal">
+    <div class="event-success-accent"></div>
+
+    <p class="event-success-kicker">
+      {{ modal.kicker }}
+    </p>
+
+    <h2 id="manage-event-success-title">
+      {{ modal.title }}
+    </h2>
+
+    <p>
+      {{ modal.message }}
+    </p>
+
+    <div class="event-success-loader"></div>
+  </div>
+</div>
+
+<div
   class="cancel-modal-backdrop"
   *ngIf="eventToCancel"
   role="presentation"

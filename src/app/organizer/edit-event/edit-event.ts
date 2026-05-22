@@ -1,4 +1,11 @@
-import { Component,ElementRef, OnDestroy,OnInit,ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormsModule,NgForm} from '@angular/forms';
 import { ActivatedRoute, Router} from '@angular/router';
@@ -99,7 +106,8 @@ export class EditEvent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private eventService: EventService
+    private eventService: EventService,
+    private changeDetector: ChangeDetectorRef
   ) {
 
     this.id = Number(
@@ -179,10 +187,10 @@ export class EditEvent implements OnInit, OnDestroy {
 
     this.validationMessage = '';
 
-    const missingField =
-      this.getFirstMissingRequiredField();
+    const hasMissingRequiredField =
+      this.hasMissingRequiredField();
 
-    if (missingField) {
+    if (hasMissingRequiredField) {
       form.control.markAllAsTouched();
       return;
     }
@@ -308,6 +316,8 @@ export class EditEvent implements OnInit, OnDestroy {
       input.value = '';
     }
 
+    this.changeDetector.detectChanges();
+
   }
 
   async onGalleryImagesSelected(event: globalThis.Event): Promise<void> {
@@ -336,6 +346,8 @@ export class EditEvent implements OnInit, OnDestroy {
         'Unable to upload gallery images. Please choose valid image files.';
       input.value = '';
     }
+
+    this.changeDetector.detectChanges();
 
   }
 
@@ -374,74 +386,25 @@ export class EditEvent implements OnInit, OnDestroy {
 
   }
 
-  private getFirstMissingRequiredField():
-    { label: string; name: string } | undefined {
+  private hasMissingRequiredField(): boolean {
 
-    const requiredFields = [
-      {
-        label: 'Event title',
-        name: 'title',
-        value: this.title
-      },
-      {
-        label: 'Category',
-        name: 'category',
-        value: this.category
-      },
-      {
-        label: 'Description',
-        name: 'description',
-        value: this.description
-      },
-      {
-        label: 'Start date and time',
-        name: 'startDateTime',
-        value: this.startDateTime
-      },
-      {
-        label: 'End date and time',
-        name: 'endDateTime',
-        value: this.endDateTime
-      },
-      {
-        label: 'Venue',
-        name: 'venue',
-        value: this.venue
-      },
-      {
-        label: 'City',
-        name: 'city',
-        value: this.city
-      },
-      {
-        label: 'Venue address',
-        name: 'address',
-        value: this.address
-      },
-      {
-        label: 'Ticket price',
-        name: 'price',
-        value: this.price
-      },
-      {
-        label: 'Total seats',
-        name: 'totalSeats',
-        value: this.totalSeats
-      },
-      {
-        label: 'Organizer name',
-        name: 'organizerName',
-        value: this.organizerName
-      },
-      {
-        label: 'Organizer email',
-        name: 'organizerEmail',
-        value: this.organizerEmail
-      }
+    const requiredValues = [
+      this.title,
+      this.category,
+      this.description,
+      this.startDateTime,
+      this.endDateTime,
+      this.venue,
+      this.city,
+      this.address,
+      this.price,
+      this.totalSeats,
+      this.organizerName,
+      this.organizerEmail
     ];
 
-    return requiredFields
-      .find(field => !this.hasValue(field.value));
+    return requiredValues
+      .some(value => !this.hasValue(value));
 
   }
 

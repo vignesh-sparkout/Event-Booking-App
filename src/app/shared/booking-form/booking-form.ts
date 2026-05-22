@@ -32,9 +32,6 @@ import { Booking } from '../../Models/booking.model';
 })
 export class BookingForm {
 
-  private readonly attendeeEmailKey =
-    'currentAttendeeEmail';
-
   @Input()
   eventTitle = '';
 
@@ -163,11 +160,6 @@ export class BookingForm {
       bookingDate: new Date().toISOString(),
       status: 'Confirmed'
     };
-
-    localStorage.setItem(
-      this.attendeeEmailKey,
-      attendeeEmail
-    );
 
     this.bookingService.addBooking(booking);
 

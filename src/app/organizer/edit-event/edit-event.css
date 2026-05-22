@@ -50,6 +50,7 @@
 }
 
 label,
+.form-field,
 .upload-field {
   display: flex;
   flex-direction: column;
@@ -59,6 +60,7 @@ label,
 }
 
 label span,
+.form-field > span,
 .upload-copy span {
   font-size: 0.95rem;
 }

@@ -1,4 +1,11 @@
-import {Component,ElementRef,OnDestroy, OnInit,ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormsModule,NgForm} from '@angular/forms';
 import { Router } from '@angular/router';
@@ -51,7 +58,6 @@ export class CreateEvent implements OnInit, OnDestroy {
   totalSeats = 0;
   additionalInfo = '';
   validationMessage = '';
-  showSuccessModal = false;
   editor!: Editor;
   toolbar: Toolbar = [
     [
@@ -96,11 +102,11 @@ export class CreateEvent implements OnInit, OnDestroy {
     /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   private readonly uploadImageMaxSize = 900;
   private readonly uploadImageQuality = 0.82;
-  private redirectTimer?: ReturnType<typeof setTimeout>;
 
   constructor(
     private eventService: EventService,
-    private router: Router
+    private router: Router,
+    private changeDetector: ChangeDetectorRef
   ) {}
 
   get minimumStartDateTime(): string {
@@ -135,26 +141,18 @@ export class CreateEvent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
-    if (this.redirectTimer) {
-      clearTimeout(this.redirectTimer);
-    }
-
     this.editor.destroy();
 
   }
 
   createEvent(form: NgForm): void {
 
-    if (this.showSuccessModal) {
-      return;
-    }
-
     this.validationMessage = '';
 
-    const missingField =
-      this.getFirstMissingRequiredField();
+    const hasMissingRequiredField =
+      this.hasMissingRequiredField();
 
-    if (missingField) {
+    if (hasMissingRequiredField) {
       form.control.markAllAsTouched();
       return;
     }
@@ -237,7 +235,6 @@ export class CreateEvent implements OnInit, OnDestroy {
 
     this.eventService.addEvent(newEvent);
 
-    this.showSuccessModal = true;
     this.resetForm();
     form.resetForm({
       title: '',
@@ -256,13 +253,16 @@ export class CreateEvent implements OnInit, OnDestroy {
       totalSeats: 0
     });
     this.clearUploadInputs();
-    this.redirectTimer = setTimeout(
-      () => {
-        this.router.navigate([
-          '/organizer/manage-events'
-        ]);
-      },
-      1500
+    this.router.navigate(
+      [
+        '/organizer/manage-events'
+      ],
+      {
+        state: {
+          eventCreated: true,
+          eventTitle: newEvent.title
+        }
+      }
     );
 
   }
@@ -288,6 +288,8 @@ export class CreateEvent implements OnInit, OnDestroy {
         'Unable to upload cover image. Please choose a valid image file.';
       input.value = '';
     }
+
+    this.changeDetector.detectChanges();
 
   }
 
@@ -317,6 +319,8 @@ export class CreateEvent implements OnInit, OnDestroy {
         'Unable to upload gallery images. Please choose valid image files.';
       input.value = '';
     }
+
+    this.changeDetector.detectChanges();
 
   }
 
@@ -376,74 +380,25 @@ export class CreateEvent implements OnInit, OnDestroy {
 
   }
 
-  private getFirstMissingRequiredField():
-    { label: string; name: string } | undefined {
+  private hasMissingRequiredField(): boolean {
 
-    const requiredFields = [
-      {
-        label: 'Event title',
-        name: 'title',
-        value: this.title
-      },
-      {
-        label: 'Category',
-        name: 'category',
-        value: this.category
-      },
-      {
-        label: 'Description',
-        name: 'description',
-        value: this.description
-      },
-      {
-        label: 'Start date and time',
-        name: 'startDateTime',
-        value: this.startDateTime
-      },
-      {
-        label: 'End date and time',
-        name: 'endDateTime',
-        value: this.endDateTime
-      },
-      {
-        label: 'Venue',
-        name: 'venue',
-        value: this.venue
-      },
-      {
-        label: 'City',
-        name: 'city',
-        value: this.city
-      },
-      {
-        label: 'Venue address',
-        name: 'address',
-        value: this.address
-      },
-      {
-        label: 'Ticket price',
-        name: 'price',
-        value: this.price
-      },
-      {
-        label: 'Total seats',
-        name: 'totalSeats',
-        value: this.totalSeats
-      },
-      {
-        label: 'Organizer name',
-        name: 'organizerName',
-        value: this.organizerName
-      },
-      {
-        label: 'Organizer email',
-        name: 'organizerEmail',
-        value: this.organizerEmail
-      }
+    const requiredValues = [
+      this.title,
+      this.category,
+      this.description,
+      this.startDateTime,
+      this.endDateTime,
+      this.venue,
+      this.city,
+      this.address,
+      this.price,
+      this.totalSeats,
+      this.organizerName,
+      this.organizerEmail
     ];
 
-    return requiredFields
-      .find(field => !this.hasValue(field.value));
+    return requiredValues
+      .some(value => !this.hasValue(value));
 
   }
 

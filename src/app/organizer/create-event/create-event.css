@@ -52,7 +52,8 @@
   grid-column: 1 / -1;
 }
 
-label {
+label,
+.form-field {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -61,6 +62,7 @@ label {
 }
 
 label span,
+.form-field > span,
 .upload-field > span {
   font-size: 0.95rem;
 }
@@ -263,12 +265,6 @@ textarea {
   font-weight: 700;
 }
 
-.image-hints span:not(:first-child) {
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #f2f5f9;
-}
-
 button {
   margin-top: 22px;
   padding: 13px 22px;
@@ -301,4 +297,13 @@ button:hover {
   .input-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.event-form > button[type='submit'] {
+  transition: 0.2s ease;
+}
+
+.event-form > button[type='submit']:hover {
+  box-shadow: 0 18px 34px rgba(79, 70, 229, 0.3);
+  transform: translateY(-2px);
 }

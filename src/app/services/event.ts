@@ -8,6 +8,7 @@ import { Event } from '../Models/event.model';
 export class EventService {
 
   private events: Event[] = [];
+  private readonly eventsStorageKey = 'events';
 
   private readonly defaultEvents: Event[] = [
     {
@@ -119,7 +120,7 @@ export class EventService {
   constructor() {
 
     const savedEvents =
-      localStorage.getItem('events');
+      this.getSavedEvents();
     const parsedEvents =
       this.parseSavedEvents(savedEvents);
 
@@ -236,12 +237,6 @@ export class EventService {
 
   }
 
-  deleteEvent(id: number): void {
-
-    this.cancelEvent(id);
-
-  }
-
   cancelEvent(id: number): void {
 
     this.events =
@@ -319,9 +314,13 @@ export class EventService {
 
   private saveEvents(): void {
 
-    localStorage.setItem(
-      'events',
-      JSON.stringify(this.events)
+    if (this.trySaveEvents(this.events)) {
+      return;
+    }
+
+    // Uploaded data URLs can exceed localStorage limits.
+    this.trySaveEvents(
+      this.getPersistableEvents()
     );
 
   }
@@ -393,10 +392,11 @@ export class EventService {
       ...customEvents,
     ];
 
-    localStorage.setItem(
-      'events',
-      JSON.stringify(mergedEvents)
-    );
+    if (!this.trySaveEvents(mergedEvents)) {
+      this.trySaveEvents(
+        this.getPersistableEvents(mergedEvents)
+      );
+    }
 
     return mergedEvents;
 
@@ -604,6 +604,90 @@ export class EventService {
     }
 
     return normalizedPath;
+
+  }
+
+  private getSavedEvents(): string | null {
+
+    try {
+      return localStorage.getItem(this.eventsStorageKey);
+    } catch {
+      return null;
+    }
+
+  }
+
+  private trySaveEvents(events: Event[]): boolean {
+
+    try {
+      localStorage.setItem(
+        this.eventsStorageKey,
+        JSON.stringify(events)
+      );
+      return true;
+    } catch {
+      return false;
+    }
+
+  }
+
+  private getPersistableEvents(
+    events = this.events
+  ): Event[] {
+
+    return events.map(event => {
+      const image =
+        this.getPersistableImage(event.image, event.category);
+
+      return {
+        ...event,
+        image,
+        gallery: this.getPersistableGallery(
+          image,
+          event.category,
+          event.gallery
+        )
+      };
+    });
+
+  }
+
+  private getPersistableGallery(
+    image: string,
+    category: string,
+    gallery: string[]
+  ): string[] {
+
+    const persistableGallery =
+      gallery.map(galleryImage =>
+        this.getPersistableImage(galleryImage, category)
+      );
+
+    return this.getGalleryImages(
+      image,
+      category,
+      persistableGallery
+    );
+
+  }
+
+  private getPersistableImage(
+    imagePath: string,
+    category: string
+  ): string {
+
+    return this.isUploadedImageData(imagePath)
+      ? this.getFallbackGallery(category)[0]
+      : imagePath;
+
+  }
+
+  private isUploadedImageData(imagePath: string): boolean {
+
+    return (
+      imagePath.startsWith('data:') ||
+      imagePath.startsWith('blob:')
+    );
 
   }
 

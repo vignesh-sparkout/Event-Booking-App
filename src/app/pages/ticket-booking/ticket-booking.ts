@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import {Component,OnDestroy} from '@angular/core';
-import {ActivatedRoute,Router,RouterLink} from '@angular/router';
+import {Component} from '@angular/core';
+import {ActivatedRoute,RouterLink} from '@angular/router';
 import { Event } from '../../Models/event.model';
 import { BookingForm } from '../../shared/booking-form/booking-form';
 import { EventService } from '../../services/event';
@@ -12,17 +12,15 @@ import { EventService } from '../../services/event';
   templateUrl: './ticket-booking.html',
   styleUrl: './ticket-booking.css'
 })
-export class TicketBooking implements OnDestroy {
+export class TicketBooking {
 
   event?: Event;
   showSuccessModal = false;
   successBookingId = '';
   private eventId = 0;
-  private redirectTimer?: number;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private eventService: EventService
   ) {
 
@@ -33,15 +31,6 @@ export class TicketBooking implements OnDestroy {
     this.loadEvent();
 
   }
-
-  ngOnDestroy(): void {
-
-    if (this.redirectTimer) {
-      window.clearTimeout(this.redirectTimer);
-    }
-
-  }
-
   loadEvent(): void {
 
     this.event =
@@ -54,17 +43,6 @@ export class TicketBooking implements OnDestroy {
     this.loadEvent();
     this.successBookingId = bookingId;
     this.showSuccessModal = true;
-
-    if (this.redirectTimer) {
-      window.clearTimeout(this.redirectTimer);
-    }
-
-    this.redirectTimer = window.setTimeout(
-      () => {
-        this.router.navigate(['/my-bookings']);
-      },
-      2000
-    );
 
   }
 

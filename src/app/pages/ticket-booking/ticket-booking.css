@@ -221,6 +221,18 @@
   color: #4f46e5;
 }
 
+.success-action {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+  padding: 11px 16px;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #fff;
+  font-weight: 800;
+  text-decoration: none;
+}
+
 @media (max-width: 900px) {
   .booking-shell {
     padding: 24px 18px 36px;

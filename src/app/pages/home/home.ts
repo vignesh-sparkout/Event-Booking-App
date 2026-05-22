@@ -1,16 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
 import { Event } from '../../Models/event.model';
 import { EventService } from '../../services/event';
 
 @Component({
   selector: 'app-home',
-  imports: [
-    CommonModule,
-    RouterLink
-  ],
+  imports: [CommonModule, RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
