@@ -108,7 +108,7 @@ export class CreateEvent implements OnInit, OnDestroy {
     private router: Router,
     private changeDetector: ChangeDetectorRef
   ) {}
-
+  
   get minimumStartDateTime(): string {
 
     return this.formatDateTimeInput(

@@ -7,8 +7,15 @@
 }
 
 .form-shell {
+  flex: 1;
+  min-width: 0;
   width: 100%;
   padding: 36px;
+}
+
+.form-header {
+  width: min(100%, 1180px);
+  margin-inline: auto;
 }
 
 .eyebrow {
@@ -33,8 +40,9 @@
 }
 
 .event-form {
-  max-width: 900px;
-  margin-top: 28px;
+  box-sizing: border-box;
+  width: min(100%, 1180px);
+  margin: 28px auto 0;
   padding: 28px;
   border: 1px solid rgba(20, 33, 61, 0.08);
   border-radius: 8px;

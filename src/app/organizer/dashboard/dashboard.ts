@@ -24,11 +24,7 @@ interface EventSummary {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    Sidebar
-  ],
+  imports: [CommonModule, RouterLink, Sidebar],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

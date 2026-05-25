@@ -140,13 +140,6 @@ button {
   box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
-.filter-button {
-  min-height: 46px;
-  border-color: #4f46e5;
-  background: #4f46e5;
-  color: #fff;
-}
-
 .table-card,
 .empty-state {
   max-width: 1280px;
@@ -495,11 +488,6 @@ button:focus-visible {
 .pagination button:not(.active):not(:disabled):hover {
   background: #f8faff;
   color: #3730a3;
-}
-
-.filter-button:not(:disabled):hover {
-  background: #4338ca;
-  box-shadow: 0 16px 30px rgba(79, 70, 229, 0.24);
 }
 
 :is(th, td) {
