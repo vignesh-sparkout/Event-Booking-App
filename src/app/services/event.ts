@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { Event } from '../Models/event.model';
 
 @Injectable({
@@ -9,134 +8,22 @@ export class EventService {
 
   private events: Event[] = [];
   private readonly eventsStorageKey = 'events';
-
-  private readonly defaultEvents: Event[] = [
-    {
-      id: 1,
-      title: 'Angular Conference 2026',
-      category: 'Technology',
-      description:
-        'A full-day Angular conference focused on standalone APIs, routing, and production-ready UI patterns.',
-      date: '2026-06-20',
-      startDateTime: '2026-06-20T10:00',
-      endDateTime: '2026-06-20T17:00',
-      venue: 'Chennai Trade Centre',
-      city: 'Chennai',
-      address: 'Nandambakkam, Chennai',
-      organizerName: 'Tech Circle India',
-      organizerEmail: 'events@techcircle.in',
-      price: 500,
-      image: 'images/technology/tech.jpg',
-      gallery: [
-        'images/technology/tech.jpg',
-        'images/technology/tech-banner.jpg',
-        'images/technology/tech2.jpg'
-      ],
-      totalSeats: 100,
-      availableSeats: 100,
-      additionalInfo: 'Bring your laptop and a valid ticket confirmation.',
-      status: 'Active'
-    },
-    {
-      id: 2,
-      title: 'Music Night Festival',
-      category: 'Music',
-      description:
-        'An outdoor live music evening featuring indie bands, food stalls, and a city-wide crowd.',
-      date: '2026-05-30',
-      startDateTime: '2026-06-25T18:30',
-      endDateTime: '2026-06-25T22:30',
-      venue: 'Palace Grounds',
-      city: 'Bangalore',
-      address: 'Jayamahal Road, Bangalore',
-      organizerName: 'SoundStage Live',
-      organizerEmail: 'hello@soundstage.in',
-      price: 1000,
-      image: 'images/music/music1.png',
-      gallery: [
-        'images/music/music 2.png',
-        'images/music/music3.png',
-        'images/music/music-event.jpg'
-      ],
-      totalSeats: 200,
-      availableSeats: 200,
-      additionalInfo: 'Outside food is not allowed. Gates open at 5:30 PM.',
-      status: 'Active'
-    },
-    {
-      id: 3,
-      title: 'Champions Sports Carnival',
-      category: 'Sports',
-      description:
-        'A high-energy sports festival with live screenings, fan zones, fitness challenges, and family activities.',
-      date: '2026-06-30',
-      startDateTime: '2026-06-30T09:00',
-      endDateTime: '2026-06-30T19:00',
-      venue: 'Gachibowli Stadium',
-      city: 'Hyderabad',
-      address: 'Gachibowli, Hyderabad',
-      organizerName: 'Arena Sports Club',
-      organizerEmail: 'bookings@arenasports.in',
-      price: 750,
-      image: 'images/sports/sports-event.jpg',
-      gallery: [
-        'images/sports/sports-event.jpg',
-        'images/sports/sport-event2.jpg',
-        'images/sports/football3.jpg'
-      ],
-      totalSeats: 150,
-      availableSeats: 150,
-      additionalInfo: 'Wear comfortable shoes for activity zones.',
-      status: 'Active'
-    },
-    {
-      id: 4,
-      title: 'Street Food Festival',
-      category: 'Food',
-      description:
-        'A weekend food celebration packed with regional tasting stalls, chef specials, dessert counters, and live music.',
-      date: '2026-07-05',
-      startDateTime: '2026-07-05T12:00',
-      endDateTime: '2026-07-05T21:00',
-      venue: 'Jio World Garden',
-      city: 'Mumbai',
-      address: 'Bandra Kurla Complex, Mumbai',
-      organizerName: 'Fork Trail Events',
-      organizerEmail: 'care@forktrail.in',
-      price: 350,
-      image: 'images/foods/food-festival.jpg',
-      gallery: [
-        'images/foods/food-festival.jpg',
-        'images/foods/feed-festival-event.jpg',
-        'images/foods/foodfes.png'
-      ],
-      totalSeats: 120,
-      availableSeats: 120,
-      additionalInfo: 'Entry includes access to all public tasting counters.',
-      status: 'Active'
-    }
-  ];
+  private readonly seededDefaultEventIds =
+    new Set([1, 2, 3, 4]);
 
   constructor() {
 
-    const savedEvents =
-      this.getSavedEvents();
     const parsedEvents =
-      this.parseSavedEvents(savedEvents);
+      this.parseSavedEvents(
+        this.getSavedEvents()
+      );
 
-    if (parsedEvents) {
+    this.events =
+      parsedEvents
+        ? this.getAdminCreatedEvents(parsedEvents)
+        : [];
 
-      this.events = this.mergeDefaultEvents(parsedEvents);
-
-    }
-
-    else {
-
-      this.events = [...this.defaultEvents];
-
-      this.saveEvents();
-
-    }
+    this.saveEvents();
 
   }
 
@@ -158,12 +45,6 @@ export class EventService {
     } catch {
       return undefined;
     }
-
-  }
-
-  getEvents(): Event[] {
-
-    return [...this.events];
 
   }
 
@@ -349,56 +230,18 @@ export class EventService {
 
   }
 
-  private mergeDefaultEvents(
+  private getAdminCreatedEvents(
     savedEvents: Partial<Event>[]
   ): Event[] {
 
-    const defaultEventIds = new Set(
-      this.defaultEvents.map(
-        event => event.id
+    return savedEvents
+      .filter(event =>
+        event.id &&
+        !this.seededDefaultEventIds.has(Number(event.id))
       )
-    );
-
-    const savedById = new Map(
-      savedEvents
-        .filter(event => event.id)
-        .map(event => [
-          Number(event.id),
-          event
-        ])
-    );
-
-    const mergedDefaults =
-      this.defaultEvents.map(defaultEvent =>
-        this.normalizeEvent({
-          ...defaultEvent,
-          ...savedById.get(defaultEvent.id)
-        })
+      .map(event =>
+        this.normalizeEvent(event)
       );
-
-    const customEvents =
-      savedEvents
-        .filter(
-          event =>
-            event.id &&
-            !defaultEventIds.has(event.id)
-        )
-        .map(event =>
-          this.normalizeEvent(event)
-        );
-
-    const mergedEvents = [
-      ...mergedDefaults,
-      ...customEvents,
-    ];
-
-    if (!this.trySaveEvents(mergedEvents)) {
-      this.trySaveEvents(
-        this.getPersistableEvents(mergedEvents)
-      );
-    }
-
-    return mergedEvents;
 
   }
 
@@ -421,7 +264,7 @@ export class EventService {
       event.category || 'Workshop';
 
     const image =
-      this.normalizeImagePath(event.image, category) ||
+      this.normalizeImagePath(event.image) ||
       this.getFallbackGallery(category)[0];
 
     const totalSeats =
@@ -472,7 +315,7 @@ export class EventService {
     const images = [
       image,
       ...(gallery || []).map(galleryImage =>
-        this.normalizeImagePath(galleryImage, category)
+        this.normalizeImagePath(galleryImage)
       ),
       ...this.getFallbackGallery(category)
     ];
@@ -528,82 +371,14 @@ export class EventService {
   }
 
   private normalizeImagePath(
-    imagePath: string | undefined,
-    category: string
+    imagePath: string | undefined
   ): string | undefined {
 
     if (!imagePath) {
       return undefined;
     }
 
-    if (
-      imagePath.startsWith('data:') ||
-      imagePath.startsWith('blob:') ||
-      imagePath.startsWith('http://') ||
-      imagePath.startsWith('https://')
-    ) {
-      return imagePath;
-    }
-
-    const normalizedPath =
-      imagePath.replace(/^\/+/, '');
-
-    if (!normalizedPath.startsWith('images/')) {
-      return normalizedPath;
-    }
-
-    const legacyImagePaths: Record<string, string> = {
-      'images/baseketball.png': 'images/sports/baseketball.png',
-      'images/baseketball1.png': 'images/sports/baseketball1.png',
-      'images/baseketball2.png': 'images/sports/baseketball2.png',
-      'images/comedy-show.jpg': 'images/comedy/comedy-show.jpg',
-      'images/comedy-show1.jpg': 'images/comedy/comedy-show1.jpg',
-      'images/comedy1.png': 'images/comedy/comedy1.png',
-      'images/comedy2.png': 'images/comedy/comedy2.png',
-      'images/comedybg.png': 'images/comedy/comedybg.png',
-      'images/dashboard.jpg': 'images/home/dashboard.jpg',
-      'images/eventsexample.png': 'images/home/eventsexample.png',
-      'images/example.png': 'images/home/eventsexample.png',
-      'images/feed-festival-event.jpg': 'images/foods/feed-festival-event.jpg',
-      'images/food-festival.jpg': 'images/foods/food-festival.jpg',
-      'images/food1.png': 'images/foods/food1.png',
-      'images/food2.png': 'images/foods/food2.png',
-      'images/foodfes.png': 'images/foods/foodfes.png',
-      'images/football.png': 'images/sports/football.png',
-      'images/football1.png': 'images/sports/football1.png',
-      'images/football2.png': 'images/sports/football2.png',
-      'images/football3.jpg': 'images/sports/football3.jpg',
-      'images/homebg.png': 'images/home/eventsexample.png',
-      'images/homepage.png': 'images/home/eventsexample.png',
-      'images/homepage1.png': 'images/home/eventsexample.png',
-      'images/music 2.png': 'images/music/music 2.png',
-      'images/music-event.jpg': 'images/music/music-event.jpg',
-      'images/music-event1.jpg': 'images/music/music-event1.jpg',
-      'images/music1.png': 'images/music/music1.png',
-      'images/music2.png': 'images/music/music 2.png',
-      'images/music3.png': 'images/music/music3.png',
-      'images/music4.png': 'images/music/music4.png',
-      'images/musicbg.png': 'images/music/musicbg.png',
-      'images/sport-event2.jpg': 'images/sports/sport-event2.jpg',
-      'images/sports-event.jpg': 'images/sports/sports-event.jpg',
-      'images/sports.png': 'images/sports/sports.png',
-      'images/sportsbg.png': 'images/sports/sportsbg.png',
-      'images/tech-banner.jpg': 'images/technology/tech-banner.jpg',
-      'images/tech.jpg': 'images/technology/tech.jpg',
-      'images/tech2.jpg': 'images/technology/tech2.jpg',
-      'images/workshop-event.jpg': 'images/technology/tech.jpg',
-      'images/workshop-event1.jpg': 'images/technology/tech2.jpg'
-    };
-
-    if (legacyImagePaths[normalizedPath]) {
-      return legacyImagePaths[normalizedPath];
-    }
-
-    if (normalizedPath === 'images/banner.jpg') {
-      return this.getCategoryBanner(category);
-    }
-
-    return normalizedPath;
+    return imagePath.replace(/^\/+/, '');
 
   }
 
@@ -631,11 +406,9 @@ export class EventService {
 
   }
 
-  private getPersistableEvents(
-    events = this.events
-  ): Event[] {
+  private getPersistableEvents(): Event[] {
 
-    return events.map(event => {
+    return this.events.map(event => {
       const image =
         this.getPersistableImage(event.image, event.category);
 
@@ -676,33 +449,12 @@ export class EventService {
     category: string
   ): string {
 
-    return this.isUploadedImageData(imagePath)
-      ? this.getFallbackGallery(category)[0]
-      : imagePath;
-
-  }
-
-  private isUploadedImageData(imagePath: string): boolean {
-
     return (
       imagePath.startsWith('data:') ||
       imagePath.startsWith('blob:')
-    );
-
-  }
-
-  private getCategoryBanner(category: string): string {
-
-    const categoryBanners: Record<string, string> = {
-      Music: 'images/music/musicbg.png',
-      Technology: 'images/technology/tech-banner.jpg',
-      Workshop: 'images/technology/tech-banner.jpg',
-      Comedy: 'images/comedy/comedybg.png',
-      Sports: 'images/sports/sportsbg.png',
-      Food: 'images/foods/foodfes.png'
-    };
-
-    return categoryBanners[category] || categoryBanners['Workshop'];
+    )
+      ? this.getFallbackGallery(category)[0]
+      : imagePath;
 
   }
 

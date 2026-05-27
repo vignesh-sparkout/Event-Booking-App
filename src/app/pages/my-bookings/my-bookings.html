@@ -25,17 +25,30 @@
 
   <form
     class="lookup-form"
+    [formGroup]="lookupForm"
     (ngSubmit)="findBookings()"
   >
     <label>
       <span>Find My Bookings</span>
       <input
         type="email"
-        name="lookupEmail"
         placeholder="Enter booking email"
-        [(ngModel)]="lookupEmail"
-        required
+        formControlName="lookupEmail"
       >
+
+      <small
+        class="field-error"
+        *ngIf="lookupForm.controls.lookupEmail.errors?.['required'] && lookupForm.controls.lookupEmail.touched"
+      >
+        Email is required.
+      </small>
+
+      <small
+        class="field-error"
+        *ngIf="lookupForm.controls.lookupEmail.errors?.['email'] && lookupForm.controls.lookupEmail.touched"
+      >
+        Please enter a valid email address.
+      </small>
     </label>
 
     <button type="submit">

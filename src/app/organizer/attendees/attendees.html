@@ -52,8 +52,8 @@
           </span>
           <select
             aria-label="Filter bookings by date range"
-            [ngModel]="dateFilter"
-            (ngModelChange)="onDateFilterChange($event)"
+            [formControl]="dateFilterControl"
+            (change)="onDateFilterChange()"
           >
             <option>All Dates</option>
             <option>Today</option>
@@ -71,8 +71,8 @@
           <input
             type="search"
             placeholder="Name, email or phone"
-            [ngModel]="searchTerm"
-            (ngModelChange)="onSearchChange($event)"
+            [formControl]="searchControl"
+            (input)="onSearchChange()"
           >
         </label>
 

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { BookingService } from '../../services/booking';
 import { EventService } from '../../services/event';
@@ -9,7 +9,7 @@ import { Booking } from '../../Models/booking.model';
 @Component({
   selector: 'app-my-bookings',
   standalone: true,
-  imports: [ CommonModule,FormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './my-bookings.html',
   styleUrl: './my-bookings.css'
 })
@@ -18,7 +18,14 @@ export class MyBookings {
   bookings: Booking[] = [];
   bookingToCancel?: Booking;
   currentAttendeeEmail = '';
-  lookupEmail = '';
+
+  private readonly fb =
+    inject(FormBuilder);
+
+  lookupForm = this.fb.nonNullable.group({
+    lookupEmail: ['', [Validators.required, Validators.email]]
+  });
+
   get confirmedBookingsCount(): number {
 
     return this.bookings.filter(
@@ -55,8 +62,16 @@ export class MyBookings {
 
   findBookings(): void {
 
+    if (this.lookupForm.invalid) {
+      this.lookupForm.markAllAsTouched();
+      return;
+    }
+
+    const value =
+      this.lookupForm.getRawValue();
+
     this.currentAttendeeEmail =
-      this.normalizeEmail(this.lookupEmail);
+      this.normalizeEmail(value.lookupEmail);
 
     this.loadBookings();
 

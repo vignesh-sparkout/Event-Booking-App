@@ -1,6 +1,6 @@
 <section class="login-shell">
 
-  <form #loginForm="ngForm" class="login-card" (ngSubmit)="login(loginForm)">
+  <form [formGroup]="loginForm" class="login-card" (ngSubmit)="login()">
     <p class="eyebrow">
       Admin Access
     </p>
@@ -11,29 +11,33 @@
 
     <label>
       <span>Email</span>
-      <input #emailInput="ngModel" type="email" placeholder="admin@gmail.com" [(ngModel)]="email" name="email"
-        [class.input-error]="emailInput.invalid && emailInput.touched" [disabled]="showSuccessModal" email required>
+      <input
+        type="email" placeholder="admin@gmail.com" 
+        formControlName="email"
+        [class.input-error]="loginForm.controls.email.invalid && loginForm.controls.email.touched" [disabled]="showSuccessModal" email required>
 
-      <small class="field-error" *ngIf="emailInput.errors?.['required'] && emailInput.touched">
+      <small class="field-error" *ngIf="loginForm.controls.email.errors?.['required'] && loginForm.controls.email.touched">
         Email is required.
       </small>
 
-      <small class="field-error" *ngIf="emailInput.errors?.['email'] && emailInput.touched">
+      <small class="field-error" *ngIf="loginForm.controls.email.errors?.['email'] && loginForm.controls.email.touched">
         Please enter a valid email address.
       </small>
     </label>
 
     <label>
       <span>Password</span>
-      <input #passwordInput="ngModel" type="password" placeholder="Enter password" [(ngModel)]="password"
-        name="password" [class.input-error]="passwordInput.invalid && passwordInput.touched"
+      <input 
+       type="password" placeholder="Enter password"
+       formControlName="password" 
+       [class.input-error]="loginForm.controls.password.invalid && loginForm.controls.password.touched"
         [disabled]="showSuccessModal" minlength="6" required>
 
-      <small class="field-error" *ngIf="passwordInput.errors?.['required'] && passwordInput.touched">
+      <small class="field-error" *ngIf="loginForm.controls.password.errors?.['required'] && loginForm.controls.password.touched">
         Password is required.
       </small>
 
-      <small class="field-error" *ngIf="passwordInput.errors?.['minlength'] && passwordInput.touched">
+      <small class="field-error" *ngIf="loginForm.controls.password.errors?.['minlength'] && loginForm.controls.password.touched">
         Password must be at least 6 characters.
       </small>
     </label>

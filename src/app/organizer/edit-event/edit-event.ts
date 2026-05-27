@@ -1,15 +1,8 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FormsModule,NgForm} from '@angular/forms';
-import { ActivatedRoute, Router} from '@angular/router';
-import { Editor, NgxEditorModule, Toolbar} from 'ngx-editor';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
 import { Sidebar } from '../../layout/sidebar/sidebar';
 import { EventService } from '../../services/event';
 import { Event } from '../../Models/event.model';
@@ -17,7 +10,7 @@ import { Event } from '../../Models/event.model';
 @Component({
   selector: 'app-edit-event',
   standalone: true,
-  imports: [Sidebar, CommonModule,FormsModule,NgxEditorModule],
+  imports: [Sidebar, CommonModule, ReactiveFormsModule, NgxEditorModule],
   templateUrl: './edit-event.html',
   styleUrl: './edit-event.css'
 })
@@ -38,22 +31,9 @@ export class EditEvent implements OnInit, OnDestroy {
   ];
 
   id = 0;
-  title = '';
-  category = '';
-  description = '';
-  startDateTime = '';
-  endDateTime = '';
-  venue = '';
-  city = '';
-  address = '';
-  organizerName = '';
-  organizerEmail = '';
-  price = 0;
   image = '';
   galleryImages: string[] = [];
-  totalSeats = 0;
   availableSeats = 0;
-  additionalInfo = '';
   validationMessage = '';
   showSuccessModal = false;
   status: Event['status'] = 'Active';
@@ -97,11 +77,27 @@ export class EditEvent implements OnInit, OnDestroy {
     ]
   ];
 
-  private readonly emailPattern =
-    /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  private readonly fb =
+    inject(FormBuilder);
   private readonly uploadImageMaxSize = 900;
   private readonly uploadImageQuality = 0.82;
   private redirectTimer?: ReturnType<typeof setTimeout>;
+
+  editForm = this.fb.nonNullable.group({
+    title: ['', Validators.required],
+    category: ['', Validators.required],
+    description: ['', Validators.required],
+    startDateTime: ['', Validators.required],
+    endDateTime: ['', Validators.required],
+    venue: ['', Validators.required],
+    city: ['', Validators.required],
+    address: ['', Validators.required],
+    organizerName: ['', Validators.required],
+    organizerEmail: ['', [Validators.required, Validators.email]],
+    price: [0, [Validators.required, Validators.min(0)]],
+    totalSeats: [0, [Validators.required, Validators.min(1)]],
+    additionalInfo: ['']
+  });
 
   constructor(
     private route: ActivatedRoute,
@@ -118,22 +114,25 @@ export class EditEvent implements OnInit, OnDestroy {
       this.eventService.getEventById(this.id);
 
     if (event) {
-      this.title = event.title;
-      this.category = event.category;
-      this.description = event.description;
-      this.startDateTime = event.startDateTime;
-      this.endDateTime = event.endDateTime;
-      this.venue = event.venue;
-      this.city = event.city;
-      this.address = event.address;
-      this.organizerName = event.organizerName;
-      this.organizerEmail = event.organizerEmail;
-      this.price = event.price;
+      this.editForm.patchValue({
+        title: event.title,
+        category: event.category,
+        description: event.description,
+        startDateTime: event.startDateTime,
+        endDateTime: event.endDateTime,
+        venue: event.venue,
+        city: event.city,
+        address: event.address,
+        organizerName: event.organizerName,
+        organizerEmail: event.organizerEmail,
+        price: event.price,
+        totalSeats: event.totalSeats,
+        additionalInfo: event.additionalInfo
+      });
+
       this.image = event.image;
       this.galleryImages = [...event.gallery];
-      this.totalSeats = event.totalSeats;
       this.availableSeats = event.availableSeats;
-      this.additionalInfo = event.additionalInfo;
       this.status = event.status;
     }
 
@@ -152,7 +151,7 @@ export class EditEvent implements OnInit, OnDestroy {
     const todayStart =
       this.getTodayStart();
     const startDate =
-      this.parseDateTimeInput(this.startDateTime);
+      this.parseDateTimeInput(this.editForm.controls.startDateTime.value);
 
     if (startDate && startDate > todayStart) {
       return this.formatDateTimeInput(startDate);
@@ -179,7 +178,7 @@ export class EditEvent implements OnInit, OnDestroy {
 
   }
 
-  updateEvent(form: NgForm): void {
+  updateEvent(): void {
 
     if (this.showSuccessModal) {
       return;
@@ -187,55 +186,32 @@ export class EditEvent implements OnInit, OnDestroy {
 
     this.validationMessage = '';
 
-    const hasMissingRequiredField =
-      this.hasMissingRequiredField();
-
-    if (hasMissingRequiredField) {
-      form.control.markAllAsTouched();
+    if (this.editForm.invalid) {
+      this.editForm.markAllAsTouched();
       return;
     }
 
-    if (!this.emailPattern.test(this.organizerEmail.trim())) {
-      this.validationMessage =
-        'Please enter a valid organizer email address.';
-      this.markFieldAsTouched(form, 'organizerEmail');
-      return;
-    }
+    const value =
+      this.editForm.getRawValue();
 
-    if (Number(this.price) < 0) {
-      this.validationMessage =
-        'Ticket price cannot be negative.';
-      this.markFieldAsTouched(form, 'price');
-      return;
-    }
-
-    if (Number(this.totalSeats) < 1) {
-      this.validationMessage =
-        'Total seats must be at least 1.';
-      this.markFieldAsTouched(form, 'totalSeats');
-      return;
-    }
-
-    if (this.isBeforeToday(this.startDateTime)) {
+    if (this.isBeforeToday(value.startDateTime)) {
       this.validationMessage =
         'Start date and time cannot be before today.';
-      this.markFieldAsTouched(form, 'startDateTime');
+      this.editForm.controls.startDateTime.markAsTouched();
       return;
     }
 
-    if (this.isBeforeToday(this.endDateTime)) {
+    if (this.isBeforeToday(value.endDateTime)) {
       this.validationMessage =
         'End date and time cannot be before today.';
-      this.markFieldAsTouched(form, 'endDateTime');
+      this.editForm.controls.endDateTime.markAsTouched();
       return;
     }
 
-    if (
-      new Date(this.endDateTime) <= new Date(this.startDateTime)
-    ) {
+    if (new Date(value.endDateTime) <= new Date(value.startDateTime)) {
       this.validationMessage =
         'End date and time must be after start date and time.';
-      this.markFieldAsTouched(form, 'endDateTime');
+      this.editForm.controls.endDateTime.markAsTouched();
       return;
     }
 
@@ -254,35 +230,37 @@ export class EditEvent implements OnInit, OnDestroy {
 
     const updatedEvent: Event = {
       id: this.id,
-      title: this.title.trim(),
-      category: this.category,
-      description: this.description.trim(),
-      date: this.startDateTime.slice(0, 10),
-      startDateTime: this.startDateTime,
-      endDateTime: this.endDateTime,
-      venue: this.venue.trim(),
-      city: this.city.trim(),
-      address: this.address.trim(),
-      organizerName: this.organizerName.trim(),
-      organizerEmail: this.organizerEmail.trim(),
-      price: Number(this.price),
+      title: value.title.trim(),
+      category: value.category,
+      description: value.description.trim(),
+      date: value.startDateTime.slice(0, 10),
+      startDateTime: value.startDateTime,
+      endDateTime: value.endDateTime,
+      venue: value.venue.trim(),
+      city: value.city.trim(),
+      address: value.address.trim(),
+      organizerName: value.organizerName.trim(),
+      organizerEmail: value.organizerEmail.trim(),
+      price: Number(value.price),
       image: coverImage,
       gallery:
         this.galleryImages.length > 0
           ? this.galleryImages
           : [coverImage],
-      totalSeats: Number(this.totalSeats),
+      totalSeats: Number(value.totalSeats),
       availableSeats: Math.max(
-        Number(this.totalSeats) - soldSeats,
+        Number(value.totalSeats) - soldSeats,
         0
       ),
-      additionalInfo: this.additionalInfo,
+      additionalInfo: value.additionalInfo,
       status: this.status
     };
 
     this.eventService.updateEvent(updatedEvent);
 
     this.showSuccessModal = true;
+    this.editForm.disable();
+
     this.redirectTimer = setTimeout(
       () => {
         this.router.navigate([
@@ -371,55 +349,16 @@ export class EditEvent implements OnInit, OnDestroy {
 
   }
 
-  onStartDateTimeChange(value: string): void {
-
-    this.startDateTime = value;
+  onStartDateTimeChange(): void {
 
     const startDate =
-      this.parseDateTimeInput(this.startDateTime);
+      this.parseDateTimeInput(this.editForm.controls.startDateTime.value);
     const endDate =
-      this.parseDateTimeInput(this.endDateTime);
+      this.parseDateTimeInput(this.editForm.controls.endDateTime.value);
 
     if (startDate && endDate && endDate <= startDate) {
-      this.endDateTime = '';
+      this.editForm.controls.endDateTime.setValue('');
     }
-
-  }
-
-  private hasMissingRequiredField(): boolean {
-
-    const requiredValues = [
-      this.title,
-      this.category,
-      this.description,
-      this.startDateTime,
-      this.endDateTime,
-      this.venue,
-      this.city,
-      this.address,
-      this.price,
-      this.totalSeats,
-      this.organizerName,
-      this.organizerEmail
-    ];
-
-    return requiredValues
-      .some(value => !this.hasValue(value));
-
-  }
-
-  private hasValue(value: string | number): boolean {
-
-    return this.stripHtml(String(value ?? '')).length > 0;
-
-  }
-
-  private markFieldAsTouched(
-    form: NgForm,
-    controlName: string
-  ): void {
-
-    form.controls[controlName]?.markAsTouched();
 
   }
 
@@ -468,15 +407,6 @@ export class EditEvent implements OnInit, OnDestroy {
       pad(date.getMonth() + 1),
       pad(date.getDate())
     ].join('-') + `T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-
-  }
-
-  private stripHtml(value: string): string {
-
-    return value
-      .replace(/<[^>]*>/g, '')
-      .replace(/&nbsp;/g, ' ')
-      .trim();
 
   }
 

@@ -1,15 +1,8 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FormsModule,NgForm} from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import {Editor,NgxEditorModule,Toolbar} from 'ngx-editor';
+import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
 import { Sidebar } from '../../layout/sidebar/sidebar';
 import { EventService } from '../../services/event';
 import { Event } from '../../Models/event.model';
@@ -17,12 +10,7 @@ import { Event } from '../../Models/event.model';
 @Component({
   selector: 'app-create-event',
   standalone: true,
-  imports: [
-    Sidebar,
-    CommonModule,
-    FormsModule,
-    NgxEditorModule
-  ],
+  imports: [Sidebar, CommonModule, ReactiveFormsModule, NgxEditorModule],
   templateUrl: './create-event.html',
   styleUrl: './create-event.css'
 })
@@ -42,21 +30,24 @@ export class CreateEvent implements OnInit, OnDestroy {
     'Food'
   ];
 
-  title = '';
-  category = '';
-  description = '';
-  startDateTime = '';
-  endDateTime = '';
-  venue = '';
-  city = '';
-  address = '';
-  organizerName = '';
-  organizerEmail = '';
-  price = 0;
+  private readonly fb = inject(FormBuilder)
+  eventForm = this.fb.nonNullable.group({
+    title: ['', Validators.required],
+    category: ['', Validators.required],
+    description: ['', Validators.required],
+    startDateTime: ['', Validators.required],
+    endDateTime: ['', Validators.required],
+    venue: ['', Validators.required],
+    city: ['', Validators.required],
+    address: ['', Validators.required],
+    organizerName: ['', Validators.required],
+    organizerEmail: ['', [Validators.required, Validators.email]],
+    price: [0, [Validators.required, Validators.min(1)]],
+    totalSeats: [0, [Validators.required, Validators.min(0)]],
+    additionalInfo: ['']
+  });
   image = '';
   galleryImages: string[] = [];
-  totalSeats = 0;
-  additionalInfo = '';
   validationMessage = '';
   editor!: Editor;
   toolbar: Toolbar = [
@@ -98,17 +89,15 @@ export class CreateEvent implements OnInit, OnDestroy {
     ]
   ];
 
-  private readonly emailPattern =
-    /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   private readonly uploadImageMaxSize = 900;
   private readonly uploadImageQuality = 0.82;
 
   constructor(
     private eventService: EventService,
     private router: Router,
-    private changeDetector: ChangeDetectorRef
-  ) {}
-  
+    private changeDetector: ChangeDetectorRef,
+  ) { }
+
   get minimumStartDateTime(): string {
 
     return this.formatDateTimeInput(
@@ -122,7 +111,7 @@ export class CreateEvent implements OnInit, OnDestroy {
     const todayStart =
       this.getTodayStart();
     const startDate =
-      this.parseDateTimeInput(this.startDateTime);
+      this.parseDateTimeInput(this.eventForm.controls.startDateTime.value);
 
     if (startDate && startDate > todayStart) {
       return this.formatDateTimeInput(startDate);
@@ -145,98 +134,66 @@ export class CreateEvent implements OnInit, OnDestroy {
 
   }
 
-  createEvent(form: NgForm): void {
-
+  createEvent(): void {
     this.validationMessage = '';
 
-    const hasMissingRequiredField =
-      this.hasMissingRequiredField();
-
-    if (hasMissingRequiredField) {
-      form.control.markAllAsTouched();
+    if (this.eventForm.invalid) {
+      this.eventForm.markAllAsTouched();
       return;
     }
 
-    if (!this.emailPattern.test(this.organizerEmail.trim())) {
-      this.validationMessage =
-        'Please enter a valid organizer email address.';
-      this.markFieldAsTouched(form, 'organizerEmail');
-      return;
-    }
+    const value = this.eventForm.getRawValue();
 
-    if (Number(this.price) < 0) {
-      this.validationMessage =
-        'Ticket price cannot be negative.';
-      this.markFieldAsTouched(form, 'price');
-      return;
-    }
-
-    if (Number(this.totalSeats) < 1) {
-      this.validationMessage =
-        'Total seats must be at least 1.';
-      this.markFieldAsTouched(form, 'totalSeats');
-      return;
-    }
-
-    if (this.isBeforeToday(this.startDateTime)) {
+    if (this.isBeforeToday(value.startDateTime)) {
       this.validationMessage =
         'Start date and time cannot be before today.';
-      this.markFieldAsTouched(form, 'startDateTime');
+      this.eventForm.controls.startDateTime.markAsTouched();
       return;
     }
 
-    if (this.isBeforeToday(this.endDateTime)) {
+    if (this.isBeforeToday(value.endDateTime)) {
       this.validationMessage =
         'End date and time cannot be before today.';
-      this.markFieldAsTouched(form, 'endDateTime');
+      this.eventForm.controls.endDateTime.markAsTouched();
       return;
     }
 
     if (
-      this.startDateTime &&
-      this.endDateTime &&
-      new Date(this.endDateTime) <= new Date(this.startDateTime)
+      new Date(value.endDateTime) <= new Date(value.startDateTime)
     ) {
       this.validationMessage =
         'End date and time must be after start date and time.';
-      this.markFieldAsTouched(form, 'endDateTime');
+      this.eventForm.controls.endDateTime.markAsTouched();
       return;
     }
 
     const coverImage =
-      this.image ||
-      this.galleryImages[0] ||
-      'images/technology/tech.jpg';
+      this.image || this.galleryImages[0] || 'images/technology/tech.jpg';
 
     const newEvent: Event = {
       id: Date.now(),
-      title: this.title.trim(),
-      category: this.category,
-      description: this.description.trim(),
-      date: this.startDateTime.slice(0, 10),
-      startDateTime: this.startDateTime,
-      endDateTime: this.endDateTime,
-      venue: this.venue.trim(),
-      city: this.city.trim(),
-      address: this.address.trim(),
-      organizerName: this.organizerName.trim(),
-      organizerEmail: this.organizerEmail.trim(),
-      price: Number(this.price),
+      title: value.title.trim(),
+      category: value.category,
+      description: value.description.trim(),
+      date: value.startDateTime.slice(0, 10),
+      startDateTime: value.startDateTime,
+      endDateTime: value.endDateTime,
+      venue: value.venue.trim(),
+      city: value.city.trim(),
+      address: value.address.trim(),
+      organizerName: value.organizerName.trim(),
+      organizerEmail: value.organizerEmail.trim(),
+      price: Number(value.price),
       image: coverImage,
-      gallery:
-        this.galleryImages.length > 0
-          ? this.galleryImages
-          : [coverImage],
-      totalSeats: Number(this.totalSeats),
-      availableSeats: Number(this.totalSeats),
-      additionalInfo: this.additionalInfo,
+      gallery: this.galleryImages.length > 0 ? this.galleryImages : [coverImage],
+      totalSeats: Number(value.totalSeats),
+      availableSeats: Number(value.totalSeats),
+      additionalInfo: value.additionalInfo,
       status: 'Active'
     };
 
     this.eventService.addEvent(newEvent);
-
-    this.resetForm();
-    form.resetForm({
+    this.eventForm.reset({
       title: '',
       category: '',
       description: '',
@@ -248,22 +205,21 @@ export class CreateEvent implements OnInit, OnDestroy {
       organizerName: '',
       organizerEmail: '',
       price: 0,
-      image: '',
-      additionalInfo: '',
-      totalSeats: 0
+      totalSeats: 0,
+      additionalInfo: ''
     });
+
+    this.image = '';
+    this.galleryImages = [];
     this.clearUploadInputs();
     this.router.navigate(
-      [
-        '/organizer/manage-events'
-      ],
+      ['/organizer/manage-events'],
       {
         state: {
           eventCreated: true,
           eventTitle: newEvent.title
         }
-      }
-    );
+      });
 
   }
 
@@ -344,79 +300,18 @@ export class CreateEvent implements OnInit, OnDestroy {
 
   }
 
-  onStartDateTimeChange(value: string): void {
-
-    this.startDateTime = value;
+  onStartDateTimeChange(): void {
 
     const startDate =
-      this.parseDateTimeInput(this.startDateTime);
+      this.parseDateTimeInput(this.eventForm.controls.startDateTime.value);
     const endDate =
-      this.parseDateTimeInput(this.endDateTime);
+      this.parseDateTimeInput(this.eventForm.controls.endDateTime.value);
 
     if (startDate && endDate && endDate <= startDate) {
-      this.endDateTime = '';
+      this.eventForm.controls.endDateTime.setValue('')
     }
 
   }
-
-  private resetForm(): void {
-
-    this.title = '';
-    this.category = '';
-    this.description = '';
-    this.startDateTime = '';
-    this.endDateTime = '';
-    this.venue = '';
-    this.city = '';
-    this.address = '';
-    this.organizerName = '';
-    this.organizerEmail = '';
-    this.price = 0;
-    this.image = '';
-    this.galleryImages = [];
-    this.totalSeats = 0;
-    this.additionalInfo = '';
-    this.validationMessage = '';
-
-  }
-
-  private hasMissingRequiredField(): boolean {
-
-    const requiredValues = [
-      this.title,
-      this.category,
-      this.description,
-      this.startDateTime,
-      this.endDateTime,
-      this.venue,
-      this.city,
-      this.address,
-      this.price,
-      this.totalSeats,
-      this.organizerName,
-      this.organizerEmail
-    ];
-
-    return requiredValues
-      .some(value => !this.hasValue(value));
-
-  }
-
-  private hasValue(value: string | number): boolean {
-
-    return this.stripHtml(String(value ?? '')).length > 0;
-
-  }
-
-  private markFieldAsTouched(
-    form: NgForm,
-    controlName: string
-  ): void {
-
-    form.controls[controlName]?.markAsTouched();
-
-  }
-
   private isBeforeToday(value: string): boolean {
 
     const date =
@@ -465,15 +360,6 @@ export class CreateEvent implements OnInit, OnDestroy {
 
   }
 
-  private stripHtml(value: string): string {
-
-    return value
-      .replace(/<[^>]*>/g, '')
-      .replace(/&nbsp;/g, ' ')
-      .trim();
-
-  }
-
   private clearUploadInputs(): void {
 
     if (this.coverImageInput) {
@@ -485,7 +371,6 @@ export class CreateEvent implements OnInit, OnDestroy {
     }
 
   }
-
   private readImageAsCompressedDataUrl(file: File): Promise<string> {
 
     return new Promise((resolve, reject) => {

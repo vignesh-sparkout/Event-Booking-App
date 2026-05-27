@@ -1,14 +1,9 @@
 import { Component } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-
 import { Sidebar } from '../../layout/sidebar/sidebar';
-
 import { BookingService } from '../../services/booking';
-
 import { Booking } from '../../Models/booking.model';
 
 type AttendeeFilter = 'All' | 'Confirmed' | 'Cancelled';
@@ -17,11 +12,7 @@ type DateFilter = 'All Dates' | 'Today' | 'This Week' | 'This Month';
 @Component({
   selector: 'app-attendees',
   standalone: true,
-  imports: [
-    Sidebar,
-    CommonModule,
-    FormsModule
-  ],
+  imports: [Sidebar, CommonModule, ReactiveFormsModule],
   templateUrl: './attendees.html',
   styleUrl: './attendees.css'
 })
@@ -30,8 +21,15 @@ export class Attendees {
   bookings: Booking[] = [];
   eventId = 0;
   activeFilter: AttendeeFilter = 'All';
-  dateFilter: DateFilter = 'All Dates';
-  searchTerm = '';
+  dateFilter:DateFilter = 'All Dates'
+  searchTerm ='';
+  dateFilterControl = new FormControl<DateFilter> ('All Dates',{
+    nonNullable: true
+  });
+
+  searchControl= new FormControl('',{
+    nonNullable:true
+  });
   currentPage = 1;
   readonly pageSize = 6;
 
@@ -50,8 +48,8 @@ export class Attendees {
     this.bookings =
       this.eventId > 0
         ? allBookings.filter(
-            booking => booking.eventId === this.eventId
-          )
+          booking => booking.eventId === this.eventId
+        )
         : allBookings;
 
   }
@@ -155,16 +153,16 @@ export class Attendees {
 
   }
 
-  onSearchChange(searchTerm: string): void {
+  onSearchChange(): void {
 
-    this.searchTerm = searchTerm;
+    this.searchTerm = this.searchControl.value;
     this.currentPage = 1;
 
   }
 
-  onDateFilterChange(dateFilter: DateFilter): void {
+  onDateFilterChange(): void {
 
-    this.dateFilter = dateFilter;
+    this.dateFilter = this.dateFilterControl.value;
     this.currentPage = 1;
 
   }

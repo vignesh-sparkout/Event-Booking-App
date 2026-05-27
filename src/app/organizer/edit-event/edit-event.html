@@ -14,55 +14,32 @@
       </h1>
     </div>
 
-    <form
-      #editForm="ngForm"
-      class="event-form"
-      (ngSubmit)="updateEvent(editForm)"
-    >
+    <form [formGroup]="editForm" class="event-form" (ngSubmit)="updateEvent()">
 
       <div class="input-grid">
 
         <label>
           <span>Event Title</span>
-          <input
-            #titleInput="ngModel"
-            type="text"
-            placeholder="Enter Event Title"
-            [(ngModel)]="title"
-            name="title"
-            [class.input-error]="titleInput.invalid && titleInput.touched"
-            required
-          >
+          <input type="text" placeholder="Enter Event Title" formControlName="title"
+            [class.input-error]="editForm.controls.title.invalid && editForm.controls.title.touched">
 
-          <small
-            class="field-error"
-            *ngIf="titleInput.errors?.['required'] && titleInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.title.errors?.['required'] && editForm.controls.title.touched">
             Event title is required.
           </small>
         </label>
 
         <label>
           <span>Category</span>
-          <select
-            #categoryInput="ngModel"
-            [(ngModel)]="category"
-            name="category"
-            [class.input-error]="categoryInput.invalid && categoryInput.touched"
-            required
-          >
-            <option
-              *ngFor="let item of categories"
-              [value]="item"
-            >
+          <select formControlName="category"
+            [class.input-error]="editForm.controls.category.invalid && editForm.controls.category.touched">
+            <option *ngFor="let item of categories" [value]="item">
               {{ item }}
             </option>
           </select>
 
-          <small
-            class="field-error"
-            *ngIf="categoryInput.errors?.['required'] && categoryInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.category.errors?.['required'] && editForm.controls.category.touched">
             Category is required.
           </small>
         </label>
@@ -70,244 +47,136 @@
         <div class="form-field full-width">
           <span>Description</span>
 
-          <div
-            class="editor"
-            [class.input-error]="descriptionInput.invalid && descriptionInput.touched"
-          >
-            <ngx-editor-menu
-              [editor]="editor"
-              [toolbar]="toolbar"
-            ></ngx-editor-menu>
+          <div class="editor"
+            [class.input-error]="editForm.controls.description.invalid && editForm.controls.description.touched">
+            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"></ngx-editor-menu>
 
-            <ngx-editor
-              #descriptionInput="ngModel"
-              [editor]="editor"
-              [(ngModel)]="description"
-              name="description"
-              outputFormat="html"
+            <ngx-editor [editor]="editor" formControlName="description" outputFormat="html"
               placeholder="Describe the event, schedule, speakers, and experience."
-              (focusOut)="descriptionInput.control.markAsTouched()"
-              required
-            ></ngx-editor>
+              (focusOut)="editForm.controls.description.markAsTouched()"></ngx-editor>
           </div>
 
-          <small
-            class="field-error"
-            *ngIf="descriptionInput.errors?.['required'] && descriptionInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.description.errors?.['required'] && editForm.controls.description.touched">
             Description is required.
           </small>
         </div>
 
         <label>
           <span>Start Date & Time</span>
-          <input
-            #startDateTimeInput="ngModel"
-            type="datetime-local"
-            [(ngModel)]="startDateTime"
-            (ngModelChange)="onStartDateTimeChange($event)"
-            name="startDateTime"
+          <input type="datetime-local" formControlName="startDateTime" (change)="onStartDateTimeChange()"
             [min]="minimumStartDateTime"
-            [class.input-error]="startDateTimeInput.invalid && startDateTimeInput.touched"
-            required
-          >
+            [class.input-error]="editForm.controls.startDateTime.invalid && editForm.controls.startDateTime.touched">
 
-          <small
-            class="field-error"
-            *ngIf="startDateTimeInput.errors?.['required'] && startDateTimeInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.startDateTime.errors?.['required'] && editForm.controls.startDateTime.touched">
             Start date and time is required.
           </small>
         </label>
 
         <label>
           <span>End Date & Time</span>
-          <input
-            #endDateTimeInput="ngModel"
-            type="datetime-local"
-            [(ngModel)]="endDateTime"
-            name="endDateTime"
-            [min]="minimumEndDateTime"
-            [class.input-error]="endDateTimeInput.invalid && endDateTimeInput.touched"
-            required
-          >
+          <input type="datetime-local" formControlName="endDateTime" [min]="minimumEndDateTime"
+            [class.input-error]="editForm.controls.endDateTime.invalid && editForm.controls.endDateTime.touched">
 
-          <small
-            class="field-error"
-            *ngIf="endDateTimeInput.errors?.['required'] && endDateTimeInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.endDateTime.errors?.['required'] && editForm.controls.endDateTime.touched">
             End date and time is required.
           </small>
         </label>
 
         <label>
           <span>Venue</span>
-          <input
-            #venueInput="ngModel"
-            type="text"
-            placeholder="Enter Event Venue"
-            [(ngModel)]="venue"
-            name="venue"
-            [class.input-error]="venueInput.invalid && venueInput.touched"
-            required
-          >
+          <input type="text" placeholder="Enter Event Venue" formControlName="venue"
+            [class.input-error]="editForm.controls.venue.invalid && editForm.controls.venue.touched">
 
-          <small
-            class="field-error"
-            *ngIf="venueInput.errors?.['required'] && venueInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.venue.errors?.['required'] && editForm.controls.venue.touched">
             Venue is required.
           </small>
         </label>
 
         <label>
           <span>City</span>
-          <input
-            #cityInput="ngModel"
-            type="text"
-            placeholder="Enter City"
-            [(ngModel)]="city"
-            name="city"
-            [class.input-error]="cityInput.invalid && cityInput.touched"
-            required
-          >
+          <input type="text" placeholder="Enter City" formControlName="city"
+            [class.input-error]="editForm.controls.city.invalid && editForm.controls.city.touched">
 
-          <small
-            class="field-error"
-            *ngIf="cityInput.errors?.['required'] && cityInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.city.errors?.['required'] && editForm.controls.city.touched">
             City is required.
           </small>
         </label>
 
         <label class="full-width">
           <span>Venue Address</span>
-          <input
-            #addressInput="ngModel"
-            type="text"
-            placeholder="Full address"
-            [(ngModel)]="address"
-            name="address"
-            [class.input-error]="addressInput.invalid && addressInput.touched"
-            required
-          >
+          <input type="text" placeholder="Full address" formControlName="address"
+            [class.input-error]="editForm.controls.address.invalid && editForm.controls.address.touched">
 
-          <small
-            class="field-error"
-            *ngIf="addressInput.errors?.['required'] && addressInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.address.errors?.['required'] && editForm.controls.address.touched">
             Venue address is required.
           </small>
         </label>
 
         <label>
           <span>Ticket Price</span>
-          <input
-            #priceInput="ngModel"
-            type="number"
-            min="0"
-            placeholder="0 for free"
-            [(ngModel)]="price"
-            name="price"
-            [class.input-error]="priceInput.invalid && priceInput.touched"
-            required
-          >
+          <input type="number" min="0" placeholder="0 for free" formControlName="price"
+            [class.input-error]="editForm.controls.price.invalid && editForm.controls.price.touched">
 
-          <small
-            class="field-error"
-            *ngIf="priceInput.errors?.['required'] && priceInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.price.errors?.['required'] && editForm.controls.price.touched">
             Ticket price is required.
           </small>
 
-          <small
-            class="field-error"
-            *ngIf="priceInput.errors?.['min'] && priceInput.touched"
-          >
+          <small class="field-error" *ngIf="editForm.controls.price.errors?.['min'] && editForm.controls.price.touched">
             Ticket price cannot be negative.
           </small>
         </label>
 
         <label>
           <span>Total Seats</span>
-          <input
-            #totalSeatsInput="ngModel"
-            type="number"
-            min="1"
-            placeholder="100"
-            [(ngModel)]="totalSeats"
-            name="totalSeats"
-            [class.input-error]="totalSeatsInput.invalid && totalSeatsInput.touched"
-            required
-          >
+          <input type="number" min="1" placeholder="100" formControlName="totalSeats"
+            [class.input-error]="editForm.controls.totalSeats.invalid && editForm.controls.totalSeats.touched">
 
-          <small
-            class="field-error"
-            *ngIf="totalSeatsInput.errors?.['required'] && totalSeatsInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.totalSeats.errors?.['required'] && editForm.controls.totalSeats.touched">
             Total seats is required.
           </small>
 
-          <small
-            class="field-error"
-            *ngIf="totalSeatsInput.errors?.['min'] && totalSeatsInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.totalSeats.errors?.['min'] && editForm.controls.totalSeats.touched">
             Total seats must be at least 1.
           </small>
         </label>
 
         <label>
           <span>Organizer Name</span>
-          <input
-            #organizerNameInput="ngModel"
-            type="text"
-            placeholder="Organizer or company"
-            [(ngModel)]="organizerName"
-            name="organizerName"
-            [class.input-error]="organizerNameInput.invalid && organizerNameInput.touched"
-            required
-          >
+          <input type="text" placeholder="Organizer or company" formControlName="organizerName"
+            [class.input-error]="editForm.controls.organizerName.invalid && editForm.controls.organizerName.touched">
 
-          <small
-            class="field-error"
-            *ngIf="organizerNameInput.errors?.['required'] && organizerNameInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.organizerName.errors?.['required'] && editForm.controls.organizerName.touched">
             Organizer name is required.
           </small>
         </label>
 
         <label>
           <span>Organizer Email</span>
-          <input
-            #organizerEmailInput="ngModel"
-            type="email"
-            placeholder="organizer@gmail.com"
-            [(ngModel)]="organizerEmail"
-            name="organizerEmail"
-            [class.input-error]="organizerEmailInput.invalid && organizerEmailInput.touched"
-            email
-            required
-          >
+          <input type="email" placeholder="organizer@gmail.com" formControlName="organizerEmail"
+            [class.input-error]="editForm.controls.organizerEmail.invalid && editForm.controls.organizerEmail.touched">
 
-          <small
-            class="field-error"
-            *ngIf="organizerEmailInput.errors?.['required'] && organizerEmailInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.organizerEmail.errors?.['required'] && editForm.controls.organizerEmail.touched">
             Organizer email is required.
           </small>
 
-          <small
-            class="field-error"
-            *ngIf="organizerEmailInput.errors?.['email'] && organizerEmailInput.touched"
-          >
+          <small class="field-error"
+            *ngIf="editForm.controls.organizerEmail.errors?.['email'] && editForm.controls.organizerEmail.touched">
             Please enter a valid organizer email.
           </small>
         </label>
 
-        <div
-          class="upload-field"
-          [class.has-file]="image"
-        >
+        <div class="upload-field" [class.has-file]="image">
           <div class="upload-copy">
             <span>Cover Image</span>
             <small>
@@ -315,45 +184,25 @@
             </small>
           </div>
 
-          <input
-            #coverImageInput
-            class="file-input"
-            type="file"
-            accept="image/*"
-            (change)="onCoverImageSelected($event)"
-          >
+          <input #coverImageInput class="file-input" type="file" accept="image/*"
+            (change)="onCoverImageSelected($event)">
 
           <div class="upload-actions">
-            <button
-              type="button"
-              class="upload-btn"
-              (click)="coverImageInput.click()"
-            >
+            <button type="button" class="upload-btn" (click)="coverImageInput.click()">
               {{ image ? 'Change Cover Image' : 'Upload Cover Image' }}
             </button>
 
-            <button
-              *ngIf="image"
-              type="button"
-              class="clear-upload-btn"
-              (click)="clearCoverImage()"
-            >
+            <button *ngIf="image" type="button" class="clear-upload-btn" (click)="clearCoverImage()">
               Clear
             </button>
           </div>
 
-          <small
-            class="upload-status"
-            *ngIf="image"
-          >
+          <small class="upload-status" *ngIf="image">
             Cover image selected
           </small>
         </div>
 
-        <div
-          class="upload-field"
-          [class.has-file]="galleryImages.length > 0"
-        >
+        <div class="upload-field" [class.has-file]="galleryImages.length > 0">
           <div class="upload-copy">
             <span>Gallery Images</span>
             <small>
@@ -361,61 +210,38 @@
             </small>
           </div>
 
-          <input
-            #galleryImageInput
-            class="file-input"
-            type="file"
-            accept="image/*"
-            multiple
-            (change)="onGalleryImagesSelected($event)"
-          >
+          <input #galleryImageInput class="file-input" type="file" accept="image/*" multiple
+            (change)="onGalleryImagesSelected($event)">
 
           <div class="upload-actions">
-            <button
-              type="button"
-              class="upload-btn"
-              (click)="galleryImageInput.click()"
-            >
+            <button type="button" class="upload-btn" (click)="galleryImageInput.click()">
               {{
-                galleryImages.length > 0
-                  ? 'Change Gallery Images'
-                  : 'Upload Gallery Images'
+              galleryImages.length > 0
+              ? 'Change Gallery Images'
+              : 'Upload Gallery Images'
               }}
             </button>
 
-            <button
-              *ngIf="galleryImages.length > 0"
-              type="button"
-              class="clear-upload-btn"
-              (click)="clearGalleryImages()"
-            >
+            <button *ngIf="galleryImages.length > 0" type="button" class="clear-upload-btn"
+              (click)="clearGalleryImages()">
               Clear
             </button>
           </div>
 
-          <small
-            class="upload-status"
-            *ngIf="galleryImages.length > 0"
-          >
+          <small class="upload-status" *ngIf="galleryImages.length > 0">
             {{ galleryImages.length }} gallery image(s) selected
           </small>
         </div>
 
         <label class="full-width">
           <span>Rules / Contact / Additional Info</span>
-          <textarea
-            placeholder="Rules, contact number, entry notes, refund policy."
-            [(ngModel)]="additionalInfo"
-            name="additionalInfo"
-          ></textarea>
+          <textarea placeholder="Rules, contact number, entry notes, refund policy."
+            formControlName="additionalInfo"></textarea>
         </label>
 
       </div>
 
-      <p
-        class="error-message"
-        *ngIf="validationMessage"
-      >
+      <p class="error-message" *ngIf="validationMessage">
         {{ validationMessage }}
       </p>
 
@@ -425,13 +251,8 @@
 
     </form>
 
-    <div
-      class="event-success-modal-backdrop"
-      *ngIf="showSuccessModal"
-      role="alertdialog"
-      aria-modal="true"
-      aria-labelledby="edit-event-success-title"
-    >
+    <div class="event-success-modal-backdrop" *ngIf="showSuccessModal" role="alertdialog" aria-modal="true"
+      aria-labelledby="edit-event-success-title">
       <div class="event-success-modal">
         <div class="event-success-accent"></div>
 
