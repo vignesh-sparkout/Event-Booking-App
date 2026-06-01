@@ -9,6 +9,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth';
+import { LoggedInUser } from '../../Models/user.model';
 
 @Component({
   selector: 'app-navbar',
@@ -24,6 +25,7 @@ import { AuthService } from '../../services/auth';
 export class Navbar {
 
   adminState$: Observable<boolean>;
+  userState$: Observable<LoggedInUser | null>;
   menuOpen = false;
 
   get isOrganizerPage(): boolean {
@@ -39,6 +41,8 @@ export class Navbar {
 
     this.adminState$ =
       this.authService.adminState$;
+    this.userState$ =
+      this.authService.userState$;
 
   }
 
@@ -48,6 +52,16 @@ export class Navbar {
     this.closeMenu();
     this.router.navigate([
       '/'
+    ]);
+
+  }
+
+  logoutUser(): void {
+
+    this.authService.userLogout();
+    this.closeMenu();
+    this.router.navigate([
+      '/events'
     ]);
 
   }

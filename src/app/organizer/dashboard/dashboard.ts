@@ -136,7 +136,7 @@ export class Dashboard {
   private getEventSummary(event: Event): EventSummary {
 
     const ticketsSold =
-      this.bookingService.getTicketsSold(event.id);
+      this.bookingService.getTicketsSold(event.id); 
     const revenue =
       this.bookingService.getRevenueForEvent(event.id);
     const occupancy =

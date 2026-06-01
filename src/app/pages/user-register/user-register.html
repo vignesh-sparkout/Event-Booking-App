@@ -1,0 +1,179 @@
+<section class="auth-shell">
+
+  <form
+    class="auth-card"
+    [formGroup]="registerForm"
+    (ngSubmit)="register()"
+  >
+    <p class="eyebrow">
+      User Register
+    </p>
+
+    <h1>
+      Create your account
+    </h1>
+
+    <p class="intro">
+      Registered users can book tickets and save bookings with their email.
+    </p>
+
+    <label>
+      <span>Full Name</span>
+      <input
+        type="text"
+        placeholder="Enter your name"
+        formControlName="name"
+        [class.input-error]="registerForm.controls.name.invalid && registerForm.controls.name.touched"
+      >
+
+      <small
+        class="field-error"
+        *ngIf="registerForm.controls.name.errors?.['required'] && registerForm.controls.name.touched"
+      >
+        Name is required.
+      </small>
+
+      <small
+        class="field-error"
+        *ngIf="registerForm.controls.name.errors?.['minlength'] && registerForm.controls.name.touched"
+      >
+        Name must be at least 2 characters.
+      </small>
+    </label>
+
+    <label>
+      <span>Email</span>
+      <input
+        type="email"
+        placeholder="Enter your email"
+        formControlName="email"
+        [class.input-error]="registerForm.controls.email.invalid && registerForm.controls.email.touched"
+      >
+
+      <small
+        class="field-error"
+        *ngIf="registerForm.controls.email.errors?.['required'] && registerForm.controls.email.touched"
+      >
+        Email is required.
+      </small>
+
+      <small
+        class="field-error"
+        *ngIf="registerForm.controls.email.errors?.['email'] && registerForm.controls.email.touched"
+      >
+        Please enter a valid email address.
+      </small>
+    </label>
+
+    <label>
+      <span>Phone Number</span>
+
+      <div class="phone-row">
+        <select formControlName="countryCode">
+          <option
+            *ngFor="let country of countryCodes"
+            [value]="country.code"
+          >
+            {{ country.code }} {{ country.label }}
+          </option>
+        </select>
+
+        <input
+          type="tel"
+          placeholder="Enter phone number"
+          formControlName="phone"
+          [class.input-error]="registerForm.controls.phone.invalid && registerForm.controls.phone.touched"
+        >
+      </div>
+
+      <small
+        class="field-error"
+        *ngIf="registerForm.controls.phone.errors?.['required'] && registerForm.controls.phone.touched"
+      >
+        Phone number is required.
+      </small>
+
+      <small
+        class="field-error"
+        *ngIf="registerForm.controls.phone.errors?.['pattern'] && registerForm.controls.phone.touched"
+      >
+        Enter a valid phone number.
+      </small>
+    </label>
+
+    <label>
+      <span>Password</span>
+      <input
+        type="password"
+        placeholder="Create password"
+        formControlName="password"
+        [class.input-error]="registerForm.controls.password.invalid && registerForm.controls.password.touched"
+      >
+
+      <small
+        class="field-error"
+        *ngIf="registerForm.controls.password.errors?.['required'] && registerForm.controls.password.touched"
+      >
+        Password is required.
+      </small>
+
+      <small
+        class="field-error"
+        *ngIf="registerForm.controls.password.errors?.['minlength'] && registerForm.controls.password.touched"
+      >
+        Password must be at least 6 characters.
+      </small>
+    </label>
+
+    <label>
+      <span>Confirm Password</span>
+      <input
+        type="password"
+        placeholder="Confirm password"
+        formControlName="confirmPassword"
+        [class.input-error]="(registerForm.controls.confirmPassword.invalid || passwordMismatch) && registerForm.controls.confirmPassword.touched"
+      >
+
+      <small
+        class="field-error"
+        *ngIf="registerForm.controls.confirmPassword.errors?.['required'] && registerForm.controls.confirmPassword.touched"
+      >
+        Confirm password is required.
+      </small>
+
+      <small
+        class="field-error"
+        *ngIf="passwordMismatch"
+      >
+        Passwords do not match.
+      </small>
+    </label>
+
+    <p
+      class="error-message"
+      *ngIf="errorMessage"
+    >
+      {{ errorMessage }}
+    </p>
+
+    <button type="submit">
+      Register
+    </button>
+
+    <div class="auth-links">
+      <a
+        routerLink="/signin"
+        [queryParams]="{
+          returnUrl: returnUrl
+        }"
+      >
+        Already registered?
+      </a>
+
+      <a routerLink="/events">
+        Browse events
+      </a>
+    </div>
+  </form>
+
+</section>

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { adminGuard } from './services/admin.guard';
+import { userGuard } from './services/user.guard';
 
 export const routes: Routes = [
 
@@ -22,8 +23,19 @@ export const routes: Routes = [
   },
   {
     path: 'ticket-booking/:id',
+    canActivate: [userGuard],
     loadComponent: () =>
       import('./pages/ticket-booking/ticket-booking').then(component => component.TicketBooking)
+  },
+  {
+    path: 'signin',
+    loadComponent: () =>
+      import('./pages/user-signin/user-signin').then(component => component.UserSignin)
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./pages/user-register/user-register').then(component => component.UserRegister)
   },
 
   {
@@ -46,6 +58,7 @@ export const routes: Routes = [
   },
   {
     path: 'my-bookings',
+    canActivate: [userGuard],
     loadComponent: () =>
       import('./pages/my-bookings/my-bookings').then(component => component.MyBookings)
   },
@@ -56,8 +69,8 @@ export const routes: Routes = [
   },
   {
     path: 'signup',
-    loadComponent: () =>
-      import('./pages/admin-login/admin-login').then(component => component.AdminLogin)
+    redirectTo: 'register',
+    pathMatch: 'full'
   },
   {
     path: 'organizer/edit-event/:id',

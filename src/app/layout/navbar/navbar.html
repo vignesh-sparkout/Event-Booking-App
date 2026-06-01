@@ -64,7 +64,7 @@
 
     </li>
 
-    <li>
+    <li *ngIf="userState$ | async">
 
       <a
         routerLink="/my-bookings"
@@ -76,20 +76,37 @@
 
     </li>
 
-    <li>
 
-      <a
-        *ngIf="adminState$ | async"
-        routerLink="/organizer/dashboard"
-        routerLinkActive="active-link"
-        (click)="closeMenu()"
-      >
-        Organizer
-      </a>
+    <ng-container *ngIf="userState$ | async as user; else guestUserLinks">
+      <li class="user-menu">
+        <span class="user-chip">
+          {{ user.name || user.email }}
+        </span>
 
-    </li>
+        <button
+          type="button"
+          class="user-logout-btn"
+          (click)="logoutUser()"
+        >
+          Logout
+        </button>
+      </li>
+    </ng-container>
 
-    <li *ngIf="!(adminState$ | async)">
+    <ng-template #guestUserLinks>
+      <li>
+        <a
+          routerLink="/signin"
+          routerLinkActive="active-link"
+          (click)="closeMenu()"
+        >
+          Sign In
+        </a>
+      </li>
+    </ng-template>
+
+
+    <li *ngIf="!(adminState$ | async) && !(userState$ | async)">
 
       <a
         class="admin-login-link"

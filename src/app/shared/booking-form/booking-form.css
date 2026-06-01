@@ -68,6 +68,12 @@ input::placeholder {
   color: #94a3b8;
 }
 
+input[readonly] {
+  background: #f1f5f9;
+  color: #475569;
+  cursor: not-allowed;
+}
+
 input:focus,
 select:focus {
   border-color: #4f46e5;

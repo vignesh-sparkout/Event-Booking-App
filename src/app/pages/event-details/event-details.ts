@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterLink} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { EventService } from '../../services/event';
 import { Event } from '../../Models/event.model';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-event-details',
@@ -15,9 +16,16 @@ export class EventDetails {
   event?: Event;
   private eventId = 0;
 
+  get isUserLoggedIn(): boolean {
+
+    return this.authService.isUserLoggedIn;
+
+  }
+
   constructor(
     private route: ActivatedRoute,
-    private eventService: EventService
+    private eventService: EventService,
+    private authService: AuthService
   ) {
     this.eventId = Number(
       this.route.snapshot.paramMap.get('id')

@@ -27,7 +27,7 @@ export class CreateEvent implements OnInit, OnDestroy {
     'Workshop',
     'Comedy',
     'Sports',
-    'Food'
+    'Food',
   ];
 
   private readonly fb = inject(FormBuilder)
@@ -108,7 +108,7 @@ export class CreateEvent implements OnInit, OnDestroy {
 
   get minimumEndDateTime(): string {
 
-    const todayStart =
+    const todayStart = 
       this.getTodayStart();
     const startDate =
       this.parseDateTimeInput(this.eventForm.controls.startDateTime.value);
@@ -432,7 +432,7 @@ export class CreateEvent implements OnInit, OnDestroy {
         () => reject(reader.error);
 
       reader.readAsDataURL(file);
-    });
+  });
 
   }
 

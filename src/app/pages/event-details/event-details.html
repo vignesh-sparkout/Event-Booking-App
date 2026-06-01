@@ -40,7 +40,7 @@
 
       <div class="hero-actions">
         <a
-          *ngIf="event.availableSeats > 0"
+          *ngIf="event.availableSeats > 0 && isUserLoggedIn"
           class="book-ticket-btn"
           [routerLink]="[
             '/ticket-booking',
@@ -48,6 +48,17 @@
           ]"
         >
           Book Ticket
+        </a>
+
+        <a
+          *ngIf="event.availableSeats > 0 && !isUserLoggedIn"
+          class="book-ticket-btn"
+          routerLink="/signin"
+          [queryParams]="{
+            returnUrl: '/ticket-booking/' + event.id
+          }"
+        >
+          Sign In to Book
         </a>
 
         <span

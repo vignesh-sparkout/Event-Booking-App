@@ -18,6 +18,7 @@ import { BookingService } from '../../services/booking';
 import { EventService } from '../../services/event';
 
 import { Booking } from '../../Models/booking.model';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-booking-form',
@@ -62,6 +63,7 @@ export class BookingForm {
   bookingId = '';
   seatError = '';
   formError = '';
+  isRegisteredAttendee = false;
   readonly countryCodes = [
     {
       label: 'India',
@@ -97,8 +99,22 @@ export class BookingForm {
 
   constructor(
     private bookingService: BookingService,
-    private eventService: EventService
-  ) {}
+    private eventService: EventService,
+    private authService: AuthService
+  ) {
+
+    const currentUser =
+      this.authService.currentUser;
+
+    if (currentUser) {
+      this.name = currentUser.name;
+      this.email = currentUser.email;
+      this.countryCode = currentUser.countryCode;
+      this.phone = currentUser.phone;
+      this.isRegisteredAttendee = true;
+    }
+
+  }
 
   get totalAmount(): number {
 

@@ -27,6 +27,7 @@
         [(ngModel)]="name"
         name="name"
         [class.input-error]="nameInput.invalid && nameInput.touched"
+        [readonly]="isRegisteredAttendee"
         [disabled]="bookingSuccess"
         required
       >
@@ -49,6 +50,7 @@
         [(ngModel)]="email"
         name="email"
         [class.input-error]="emailInput.invalid && emailInput.touched"
+        [readonly]="isRegisteredAttendee"
         [disabled]="bookingSuccess"
         email
         required

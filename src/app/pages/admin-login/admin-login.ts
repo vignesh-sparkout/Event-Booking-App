@@ -73,7 +73,7 @@
         () => {
           this.router.navigateByUrl(this.returnUrl);
         },
-        1300
+        1200
       );
 
     }
