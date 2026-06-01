@@ -1,17 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  ReactiveFormsModule,
-  ValidationErrors,
-  Validators
-} from '@angular/forms';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink
-} from '@angular/router';
+import {AbstractControl,FormBuilder,ReactiveFormsModule,
+  ValidationErrors,Validators} from '@angular/forms';
+import {ActivatedRoute,Router,RouterLink} from '@angular/router';
 import { AuthService } from '../../services/auth';
 
 function passwordMatchValidator(
@@ -36,11 +27,7 @@ function passwordMatchValidator(
 @Component({
   selector: 'app-user-register',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterLink
-  ],
+  imports: [CommonModule,ReactiveFormsModule,RouterLink],
   templateUrl: './user-register.html',
   styleUrl: './user-register.css'
 })
@@ -51,9 +38,8 @@ export class UserRegister {
 
   registerForm = this.fb.nonNullable.group(
     {
-      name: [
-        '',
-        [
+      name: [ '',     
+          [
           Validators.required,
           Validators.minLength(2)
         ]

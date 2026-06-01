@@ -77,12 +77,8 @@
     </li>
 
 
-    <ng-container *ngIf="userState$ | async as user; else guestUserLinks">
+    <ng-container *ngIf="userState$ | async; else guestUserLinks">
       <li class="user-menu">
-        <span class="user-chip">
-          {{ user.name || user.email }}
-        </span>
-
         <button
           type="button"
           class="user-logout-btn"

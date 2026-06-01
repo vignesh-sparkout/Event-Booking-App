@@ -61,7 +61,7 @@ export class Navbar {
     this.authService.userLogout();
     this.closeMenu();
     this.router.navigate([
-      '/events'
+      '/'
     ]);
 
   }

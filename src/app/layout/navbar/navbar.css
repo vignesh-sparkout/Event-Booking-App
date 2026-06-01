@@ -146,15 +146,6 @@
   gap: 10px;
 }
 
-.user-chip {
-  max-width: 160px;
-  overflow: hidden;
-  color: #f8fafc;
-  font-weight: 800;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .logout-btn,
 .user-logout-btn {
   justify-self: end;
@@ -261,11 +252,6 @@
     display: grid;
     width: 100%;
     gap: 10px;
-  }
-
-  .user-chip {
-    max-width: none;
-    padding: 0 14px;
   }
 
   .nav-links a {

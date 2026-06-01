@@ -1,25 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import {
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink
-} from '@angular/router';
+import {FormBuilder,ReactiveFormsModule,Validators} from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-user-signin',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterLink
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink ],
   templateUrl: './user-signin.html',
   styleUrl: './user-signin.css'
 })
