@@ -1,152 +1,176 @@
 # Event Booking System
 
-An Angular event booking application for browsing events, viewing event details, booking tickets, managing attendee bookings, and handling organizer event administration.
+A frontend event booking platform built with Angular. The application supports attendee registration, event discovery, ticket booking, booking management, and an organizer dashboard for creating and managing events.
 
-The project uses local browser storage for demo data, so it can run without a backend API.
+This project is designed as a browser-based demo application. It uses `localStorage` for persistence, so it can run locally without a backend API or database.
 
-## Project Description
+## Overview
 
-Event Booking System is a frontend-only Angular application with two main user flows:
+Event Booking System provides two main workflows:
 
-- Attendees can browse upcoming events, search/filter events, view event details, book tickets, and manage their bookings.
-- Organizers can log in, view a dashboard, create events, edit events, cancel events, and view attendees.
+- Attendees can register, sign in, browse upcoming events, filter events, view event details, book tickets, and cancel eligible bookings.
+- Organizers can sign in to a protected admin area, create events, edit event details, cancel events, view dashboard metrics, and review attendee bookings.
 
-Default event data is seeded through the event service and saved into `localStorage` on first load.
+The app is built with standalone Angular components, route guards, reactive forms, template-driven forms, reusable shared components, and local browser storage.
+
+## Features
+
+### Attendee
+
+- User registration and sign-in
+- Protected ticket booking and booking history routes
+- Event listing with keyword search
+- Category, price, and date filtering
+- Event details page with venue map link
+- Ticket booking form with seat validation
+- Automatic ticket total calculation
+- Booking confirmation flow
+- My Bookings page with booking status, ticket totals, and cancellation support
+- Seat restoration when a confirmed booking is cancelled
+
+### Organizer
+
+- Demo admin login
+- Protected organizer routes
+- Dashboard with live events, revenue, tickets sold, available seats, occupancy, and recent bookings
+- Create event form with validation
+- Rich text event description editor
+- Cover and gallery image upload with client-side compression
+- Edit event details while preserving sold-seat counts
+- Cancel events and remove them from active listings
+- Attendee list with search, status filters, date filters, and pagination
 
 ## Tech Stack
 
-- Angular 21.2
+- Angular 21
+- TypeScript 5.9
 - Angular Router
 - Angular Forms
 - Standalone Angular components
-- TypeScript 5.9
 - RxJS
 - Tailwind CSS 4
 - ngx-editor
-- Vitest for unit testing
-- Browser `localStorage` for demo persistence
+- Vitest
+- Browser `localStorage`
 
-## Main Features
+## Getting Started
 
-- Home page with event discovery entry point
-- Event listing page
-- Search and filter support
-- Event details page
-- Ticket booking form
-- Booking success modal
-- My Bookings page with booking lookup by email
-- Cancel booking confirmation modal
-- Organizer/admin login
-- Protected organizer routes using route guard
-- Organizer dashboard
-- Create, edit, manage, and cancel events
-- Attendee list for organizer events
-- Seat count update when tickets are booked or cancelled
+### Prerequisites
 
-## Angular Version
+Install Node.js and npm before running the project.
 
-This project was generated with Angular CLI `21.2.7`.
-
-Main Angular packages:
-
-```bash
-@angular/core     ^21.2.0
-@angular/cli      ^21.2.7
-@angular/router   ^21.2.0
-@angular/forms    ^21.2.0
-```
-
-## Project Setup
-
-Install dependencies:
+### Installation
 
 ```bash
 npm install
 ```
 
-Start the development server:
+### Run the Development Server
 
 ```bash
 npm start
 ```
 
-or:
-
-```bash
-ng serve
-```
-
-Open the app in your browser:
+The app will be available at:
 
 ```text
 http://localhost:4200/
 ```
 
-## Build
-
-Create a production build:
+You can also run the Angular CLI command directly:
 
 ```bash
-npm run build
+ng serve
 ```
 
-or:
+## Demo Credentials
 
-```bash
-ng build
-```
+### Organizer Login
 
-Build output will be generated in the `dist/` folder.
-
-## Run Tests
-
-Run unit tests:
-
-```bash
-npm test
-```
-
-or:
-
-```bash
-ng test
-```
-
-## Demo Admin Login
-
-The organizer/admin area uses a demo login stored in the frontend service.
+Use these credentials to access the organizer dashboard:
 
 ```text
 Email: vicky@gmail.com
 Password: 121212
 ```
 
-After login, protected organizer routes can be accessed.
+Organizer routes are protected and redirect unauthenticated users to the admin login page.
+
+### Attendee Login
+
+Attendees can create their own account from the registration page. Registered attendee accounts are stored in browser `localStorage`.
+
+## Available Scripts
+
+```bash
+npm start
+```
+
+Runs the application locally.
+
+```bash
+npm run build
+```
+
+Creates a production build in the `dist/` directory.
+
+```bash
+npm run watch
+```
+
+Builds the project in development mode and watches for file changes.
+
+```bash
+npm test
+```
+
+Runs the unit test suite.
+
+## Application Routes
+
+| Route | Description |
+| --- | --- |
+| `/` | Home page |
+| `/events` | Event listing and filters |
+| `/event-details/:id` | Event details |
+| `/ticket-booking/:id` | Protected ticket booking page |
+| `/signin` | Attendee sign-in |
+| `/register` | Attendee registration |
+| `/my-bookings` | Protected attendee bookings |
+| `/admin-login` | Organizer/admin login |
+| `/organizer/dashboard` | Protected organizer dashboard |
+| `/organizer/create-event` | Protected event creation |
+| `/organizer/manage-events` | Protected event management |
+| `/organizer/edit-event/:id` | Protected event editing |
+| `/organizer/attendees` | Protected attendee overview |
+| `/organizer/attendees/:id` | Protected attendee list for one event |
 
 ## Data Storage
 
-This project does not use a backend database.
+The project does not connect to a backend database. Data is persisted in browser `localStorage`.
 
-Data is stored in browser `localStorage`:
+| Key | Purpose |
+| --- | --- |
+| `events` | Stores created and updated event data |
+| `bookings` | Stores ticket bookings |
+| `eventBookingAdminSession` | Stores organizer login state |
+| `eventBookingRegisteredUsers` | Stores registered attendee accounts |
+| `eventBookingUserSession` | Stores current attendee session |
 
-- `events` stores event data
-- `bookings` stores booking data
-- `currentAttendeeEmail` stores the last searched attendee email
-- `eventBookingAdminSession` stores admin login session state
-
-Because of this, clearing browser storage will reset saved events, bookings, and login state.
+Clearing browser storage will remove saved events, bookings, registered users, and active sessions.
 
 ## Project Structure
 
 ```text
 src/app/
   layout/
-    navbar/
     footer/
+    navbar/
     sidebar/
   Models/
     booking.model.ts
     event.model.ts
+    user.model.ts
   organizer/
     attendees/
     create-event/
@@ -160,45 +184,29 @@ src/app/
     home/
     my-bookings/
     ticket-booking/
+    user-register/
+    user-signin/
   services/
     admin.guard.ts
     auth.ts
     booking.ts
     event.ts
+    user.guard.ts
   shared/
     booking-form/
     filter-bar/
     search-bar/
 ```
 
-## Useful Commands
+Static image assets are stored in:
 
-```bash
-npm start
+```text
+public/images/
 ```
-
-Runs the local development server.
-
-```bash
-npm run build
-```
-
-Builds the application.
-
-```bash
-npm test
-```
-
-Runs unit tests.
-
-```bash
-npm run watch
-```
-
-Builds continuously in development mode.
 
 ## Notes
 
-- This is a demo frontend project, so event and booking data are not shared across browsers or devices.
-- Default events are used as seed data for first-time app load.
-- Organizer authentication is frontend-only and should be replaced with backend authentication for production use.
+- This is a frontend-only demo application.
+- A fresh browser storage state starts without user-created events. Sign in as the organizer and create events to populate the listing.
+- Authentication is handled on the client for demonstration purposes only.
+- For production use, replace local authentication and `localStorage` persistence with a secure backend API and database.
