@@ -48,45 +48,6 @@
   white-space: nowrap;
 }
 
-.lookup-form {
-  display: grid;
-  grid-template-columns: minmax(240px, 420px) auto;
-  gap: 12px;
-  align-items: end;
-  max-width: 620px;
-  margin-top: 24px;
-  padding: 16px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
-}
-
-.lookup-form label {
-  display: grid;
-  gap: 8px;
-  color: #233044;
-  font-weight: 800;
-}
-
-.lookup-form input {
-  width: 100%;
-  padding: 12px 13px;
-  border: 1px solid #d5dce6;
-  border-radius: 8px;
-  background: #fff;
-  color: #1f2937;
-  font: inherit;
-}
-
-.lookup-form button {
-  background: #4f46e5;
-}
-
-.lookup-form button:hover {
-  background: #4338ca;
-}
-
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -271,9 +232,98 @@ button:hover {
   line-height: 1.6;
 }
 
+.cancel-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.56);
+}
+
+.cancel-modal {
+  width: min(460px, 100%);
+  padding: 28px;
+  border-radius: 8px;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
+}
+
+.warning-icon {
+  display: inline-grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 50%;
+  background: #fef2f2;
+  color: #d62828;
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.modal-kicker {
+  margin: 14px 0 8px;
+  color: #d62828;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.event-preview {
+  display: grid;
+  gap: 4px;
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid #fee2e2;
+  border-radius: 8px;
+  background: #fff7f7;
+  text-align: left;
+}
+
+.event-preview span {
+  color: #b91c1c;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.event-preview small {
+  color: #64748b;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.modal-actions button {
+  flex: 1;
+}
+
+.keep-btn {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+}
+
+.keep-btn:hover {
+  background: #f8fafc;
+}
+
 @media (max-width: 768px) {
   .booking-container {
     padding: 24px 18px 36px;
+  }
+
+  .cancel-modal {
+    padding: 24px 20px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
   }
 
   .page-header,
@@ -293,13 +343,8 @@ button:hover {
   }
 
   .browse-link,
-  .lookup-form,
   button {
     width: 100%;
-  }
-
-  .lookup-form {
-    grid-template-columns: 1fr;
   }
 }
 

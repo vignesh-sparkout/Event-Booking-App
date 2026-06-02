@@ -11,7 +11,7 @@
       </h1>
 
       <p class="header-copy">
-        Review your tickets, booking status, and upcoming event details.
+        Review tickets booked with your signed-in account.
       </p>
     </div>
 
@@ -22,39 +22,6 @@
       Browse Events
     </a>
   </div>
-
-  <form
-    class="lookup-form"
-    [formGroup]="lookupForm"
-    (ngSubmit)="findBookings()"
-  >
-    <label>
-      <span>Find My Bookings</span>
-      <input
-        type="email"
-        placeholder="Enter booking email"
-        formControlName="lookupEmail"
-      >
-
-      <small
-        class="field-error"
-        *ngIf="lookupForm.controls.lookupEmail.errors?.['required'] && lookupForm.controls.lookupEmail.touched"
-      >
-        Email is required.
-      </small>
-
-      <small
-        class="field-error"
-        *ngIf="lookupForm.controls.lookupEmail.errors?.['email'] && lookupForm.controls.lookupEmail.touched"
-      >
-        Please enter a valid email address.
-      </small>
-    </label>
-
-    <button type="submit">
-      Search
-    </button>
-  </form>
 
   <div
     class="summary-grid"
@@ -86,19 +53,11 @@
     *ngIf="bookings.length === 0"
   >
     <h2>
-      {{
-        currentAttendeeEmail
-          ? 'No booking found for this user'
-          : 'Search your bookings'
-      }}
+      No bookings found
     </h2>
 
     <p>
-      {{
-        currentAttendeeEmail
-          ? 'Book an event with this email to see tickets here.'
-          : 'Enter the email used during booking to see tickets here.'
-      }}
+      Book an event with your signed-in account to see tickets here.
     </p>
 
     <a routerLink="/events">

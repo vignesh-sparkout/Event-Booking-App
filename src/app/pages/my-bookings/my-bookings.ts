@@ -1,15 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { BookingService } from '../../services/booking';
 import { EventService } from '../../services/event';
 import { Booking } from '../../Models/booking.model';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-my-bookings',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './my-bookings.html',
   styleUrl: './my-bookings.css'
 })
@@ -18,13 +18,6 @@ export class MyBookings {
   bookings: Booking[] = [];
   bookingToCancel?: Booking;
   currentAttendeeEmail = '';
-
-  private readonly fb =
-    inject(FormBuilder);
-
-  lookupForm = this.fb.nonNullable.group({
-    lookupEmail: ['', [Validators.required, Validators.email]]
-  });
 
   get confirmedBookingsCount(): number {
 
@@ -57,21 +50,15 @@ export class MyBookings {
 
   constructor(
     private bookingService: BookingService,
-    private eventService: EventService
-  ) {}
+    private eventService: EventService,
+    private authService: AuthService
+  ) {
 
-  findBookings(): void {
-
-    if (this.lookupForm.invalid) {
-      this.lookupForm.markAllAsTouched();
-      return;
-    }
-
-    const value =
-      this.lookupForm.getRawValue();
+    const currentUser =
+      this.authService.currentUser;
 
     this.currentAttendeeEmail =
-      this.normalizeEmail(value.lookupEmail);
+      this.normalizeEmail(currentUser?.email || '');
 
     this.loadBookings();
 
@@ -100,6 +87,10 @@ export class MyBookings {
 
   openCancelDialog(booking: Booking): void {
 
+    if (!this.isCurrentUserBooking(booking)) {
+      return;
+    }
+
     this.bookingToCancel = booking;
 
   }
@@ -112,7 +103,10 @@ export class MyBookings {
 
   confirmCancelBooking(): void {
 
-    if (!this.bookingToCancel) {
+    if (
+      !this.bookingToCancel ||
+      !this.isCurrentUserBooking(this.bookingToCancel)
+    ) {
       return;
     }
 
@@ -138,6 +132,7 @@ export class MyBookings {
   canCancel(booking: Booking): boolean {
 
     return (
+      this.isCurrentUserBooking(booking) &&
       booking.status === 'Confirmed' &&
       new Date(booking.eventDate) > new Date()
     );
@@ -155,6 +150,15 @@ export class MyBookings {
   private normalizeEmail(email: string): string {
 
     return email.trim().toLowerCase();
+
+  }
+
+  private isCurrentUserBooking(booking: Booking): boolean {
+
+    return (
+      Boolean(this.currentAttendeeEmail) &&
+      this.normalizeEmail(booking.email) === this.currentAttendeeEmail
+    );
 
   }
 

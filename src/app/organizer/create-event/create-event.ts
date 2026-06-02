@@ -42,7 +42,7 @@ export class CreateEvent implements OnInit, OnDestroy {
     address: ['', Validators.required],
     organizerName: ['', Validators.required],
     organizerEmail: ['', [Validators.required, Validators.email]],
-    price: [0, [Validators.required, Validators.min(1)]],
+    price: [0, [Validators.required, Validators.min(0)]],
     totalSeats: [0, [Validators.required, Validators.min(0)]],
     additionalInfo: ['']
   });

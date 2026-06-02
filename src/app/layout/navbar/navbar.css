@@ -112,7 +112,6 @@
 }
 
 .admin-login-link,
-.register-link,
 .logout-btn,
 .user-logout-btn {
   display: inline-flex;
@@ -127,8 +126,7 @@
   white-space: nowrap;
 }
 
-.admin-login-link::after,
-.register-link::after {
+.admin-login-link::after {
   display: none;
 }
 
@@ -160,7 +158,6 @@
 }
 
 .admin-login-link:hover,
-.register-link:hover,
 .logout-btn:hover,
 .user-logout-btn:hover {
   background: rgba(168, 85, 247, 0.16);

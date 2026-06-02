@@ -4,15 +4,12 @@ import { CommonModule } from '@angular/common';
 import { EventService } from '../../services/event';
 import { SearchBar } from '../../shared/search-bar/search-bar';
 import { Event } from '../../Models/event.model';
-import {
-  EventFilters,
-  FilterBar
-} from '../../shared/filter-bar/filter-bar';
+import { EventFilters, FilterBar } from '../../shared/filter-bar/filter-bar';
 
 @Component({
   selector: 'app-event-list',
   standalone: true,
-  imports: [RouterLink, CommonModule, SearchBar,FilterBar],
+  imports: [RouterLink, CommonModule, SearchBar, FilterBar],
   templateUrl: './event-list.html',
   styleUrl: './event-list.css',
 })
