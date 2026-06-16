@@ -1,8 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnDestroy
-} from '@angular/core';
+import {ChangeDetectorRef,Component,OnDestroy} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Sidebar } from '../../layout/sidebar/sidebar';
 import { EventService } from '../../services/event';
@@ -12,11 +8,7 @@ import { Event } from '../../Models/event.model';
 @Component({
   selector: 'app-manage-events',
   standalone: true,
-  imports: [
-    Sidebar,
-    CommonModule,
-    RouterLink
-  ],
+  imports: [Sidebar,CommonModule,RouterLink],
   templateUrl: './manage-events.html',
   styleUrl: './manage-events.css'
 })

@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
-
-import {
-  Router,
-  RouterLink,
-  RouterLinkActive
-} from '@angular/router';
+import { Router, RouterLink,RouterLinkActive} from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth';
 import { LoggedInUser } from '../../Models/user.model';
@@ -14,11 +8,7 @@ import { LoggedInUser } from '../../Models/user.model';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    RouterLinkActive
-  ],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })

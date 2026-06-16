@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {
-  LoggedInUser,
-  RegisteredUser,
-  UserRegistration
-} from '../Models/user.model';
+import {LoggedInUser, RegisteredUser, UserRegistration} from '../Models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +51,7 @@ export class AuthService {
       return false;
     }
 
-    localStorage.setItem(
+    sessionStorage.setItem(
       this.sessionKey,
       'true'
     );
@@ -146,6 +142,7 @@ export class AuthService {
 
   userLogout(): void {
 
+    sessionStorage.removeItem(this.userSessionKey);
     localStorage.removeItem(this.userSessionKey);
     this.userState.next(null);
 
@@ -153,6 +150,7 @@ export class AuthService {
 
   logout(): void {
 
+    sessionStorage.removeItem(this.sessionKey);
     localStorage.removeItem(this.sessionKey);
     this.adminState.next(false);
 
@@ -160,14 +158,18 @@ export class AuthService {
 
   private hasAdminSession(): boolean {
 
-    return localStorage.getItem(this.sessionKey) === 'true';
+    localStorage.removeItem(this.sessionKey);
+
+    return sessionStorage.getItem(this.sessionKey) === 'true';
 
   }
 
   private getUserSession(): LoggedInUser | null {
 
+    localStorage.removeItem(this.userSessionKey);
+
     const savedUser =
-      localStorage.getItem(this.userSessionKey);
+      sessionStorage.getItem(this.userSessionKey);
 
     if (!savedUser) {
       return null;
@@ -186,7 +188,7 @@ export class AuthService {
 
   private setUserSession(user: LoggedInUser): void {
 
-    localStorage.setItem(
+    sessionStorage.setItem(
       this.userSessionKey,
       JSON.stringify(user)
     );
@@ -295,5 +297,4 @@ export class AuthService {
     return email.replace(/\s+/g, '').toLowerCase();
 
   }
-
 }

@@ -98,7 +98,7 @@ export class Dashboard {
         label: 'Live Events',
         value: this.totalEvents,
         note: `${this.categories} active categories`,
-        tone: 'blue'
+        tone:'blue'
       },
       {
         label: 'Revenue',

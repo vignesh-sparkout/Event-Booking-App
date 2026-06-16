@@ -89,6 +89,11 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     loadComponent: () =>
       import('./organizer/attendees/attendees').then(component => component.Attendees)
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./pages/page-not-found/page-not-found').then(component => component.PageNotFound)
   }
 
 ];
